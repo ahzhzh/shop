@@ -871,36 +871,264 @@
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
 
-		<!-- 음성 인식 기능을 위한 JavaScript 코드 추가 -->
+
 		<script>
 			document.addEventListener('DOMContentLoaded', function() {
-			  const voiceSearchBtn = document.getElementById('voice-search-btn');
-			  const searchInput = document.querySelector('.header-search input.input');
-		
-			  if ('webkitSpeechRecognition' in window) {
-				const recognition = new webkitSpeechRecognition();
-				recognition.continuous = false;
-				recognition.lang = 'ko-KR';
-		
-				voiceSearchBtn.addEventListener('click', function(event) {
-				  event.preventDefault();
-				  recognition.start();
+				// 이전 페이지에서 음성 인식 상태 확인
+				const wasListening = sessionStorage.getItem('voiceRecognitionActive') === 'true';
+				
+				const voiceSearchBtn = document.getElementById('voice-search-btn');
+				const searchInput = document.querySelector('.header-search input.input');
+				let isListening = false;
+				let ws = null;
+				let audioContext = null;
+				let mediaStreamSource = null;
+				let processor = null;
+				let lastAudioTime = Date.now();
+				let autoStopTimer;
+			
+				// 이전 페이지에서 음성 인식 중이었다면 자동으로 시작
+				if (wasListening) {
+					setTimeout(() => {
+						startListening();
+					}, 1000); // 페이지 로드 후 1초 후에 시작
+				}
+			
+				async function startListening() {
+					try {
+						const stream = await navigator.mediaDevices.getUserMedia({ 
+							audio: {
+								echoCancellation: true,
+								noiseSuppression: true,
+								sampleRate: 48000,
+								channelCount: 1
+							}
+						});
+						
+						audioContext = new (window.AudioContext || window.webkitAudioContext)({
+							sampleRate: 48000
+						});
+						mediaStreamSource = audioContext.createMediaStreamSource(stream);
+						processor = audioContext.createScriptProcessor(2048, 1, 1);
+						
+						processor.onaudioprocess = (e) => {
+							if (ws && ws.readyState === WebSocket.OPEN) {
+								const inputData = e.inputBuffer.getChannelData(0);
+								const audioData = convertFloat32ToInt16(inputData);
+								
+								if (audioData.some(sample => Math.abs(sample) > 50)) {
+									lastAudioTime = Date.now();
+								}
+			
+								try {
+									const audioArray = new Uint8Array(audioData.buffer);
+									const base64Audio = btoa(String.fromCharCode.apply(null, audioArray));
+									
+									ws.send(JSON.stringify({
+										type: 'audio',
+										audio: base64Audio
+									}));
+									
+								} catch (error) {
+									console.error('Error sending audio data:', error);
+								}
+							}
+						};
+			
+						mediaStreamSource.connect(processor);
+						processor.connect(audioContext.destination);
+			
+						console.log('Audio processing started');
+						startWebSocket();
+						isListening = true;
+						voiceSearchBtn.classList.add('listening');
+						sessionStorage.setItem('voiceRecognitionActive', 'true');
+			
+						autoStopTimer = setInterval(() => {
+							if (Date.now() - lastAudioTime > 10000) {
+								stopListening('10초 동안 음성이 감지되지 않아 종료합니다.');
+								setTimeout(() => {
+									location.reload();
+								}, 1500);
+							}
+						}, 1000);
+			
+					} catch (error) {
+						console.error('마이크 접근 오류:', error);
+						alert('마이크 접근이 거부되었습니다.');
+					}
+				}
+			
+				function startWebSocket() {
+					const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+					const wsUrl = `${protocol}//${window.location.hostname}:3001`;
+					
+					ws = new WebSocket(wsUrl);
+					
+					ws.onopen = () => {
+						console.log('WebSocket connected to:', wsUrl);
+						ws.send(JSON.stringify({ type: 'start' }));
+					};
+			
+					ws.onmessage = async (event) => {
+						try {
+							const data = JSON.parse(event.data);
+							console.log('Received WebSocket message:', data.type);
+			
+							if (data.type === 'interim') {
+								console.log('Interim transcript:', data.transcript);
+								searchInput.value = data.transcript;
+							} else if (data.type === 'result') {
+								console.log('Final transcript:', data.transcript);
+								searchInput.value = data.transcript;
+								
+								const text = data.transcript.toLowerCase();
+								// 장바구니 확인 명령어 추가
+								if (text.includes('장바구니') && (text.includes('확인') || text.includes('보여줘') || text.includes('열어줘'))) {
+									const cartIcon = document.querySelector('.fa-shopping-cart').closest('a');
+									if (cartIcon) {
+										if (data.audio) {
+											const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+											audio.onended = () => {
+												cartIcon.click();
+											};
+											await audio.play();
+										} else {
+											cartIcon.click();
+										}
+									}
+								// A상품 정보 보기 명령어 처리
+								}else if ((text.includes('정보') || text.includes('보여줘') || text.includes('알려줘')) 
+									&& (text.includes('a상품') || text.includes('에이상품') || text.includes('a 상품') || text.includes('에이 상품'))) {
+									// 먼저 Gemini의 음성 응답 재생
+									if (data.audio) {
+										const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+										
+										// 음성 재생이 끝난 후 클릭 동작 실행
+										audio.onended = () => {
+											setTimeout(() => {
+												const productNameLink = document.querySelector('.product h3.product-name a');
+												if (productNameLink) {
+													productNameLink.click();
+													console.log('A상품 정보 페이지로 이동');
+												}
+											}, 500); // 0.5초 후 클릭 실행
+										};
+										
+										await audio.play();
+									}
+											
+								// A상품 장바구니 추가 명령어 처리
+								} else if ((text.includes('장바구니') || text.includes('담아줘') || text.includes('추가해줘')) 
+									&& (text.includes('a상품') || text.includes('에이상품') || text.includes('a 상품') || text.includes('에이 상품'))) {
+									const addToCartBtn = document.querySelector('.product .add-to-cart-btn');
+									if (addToCartBtn) {
+										const productElement = addToCartBtn.closest('.product');
+										if (productElement) {
+											productElement.dispatchEvent(new MouseEvent('mouseenter'));
+											setTimeout(() => {
+												addToCartBtn.click();
+												console.log('장바구니에 추가됨: A 상품');
+												productElement.dispatchEvent(new MouseEvent('mouseleave'));
+											}, 100);
+										}
+									}
+								} else if (text.includes('꺼 줘') || text.includes('종료') || text.includes('그만')) {
+									// 음성 응답 재생 후 새로고침
+									if (data.audio) {
+										const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+										audio.onended = () => {
+											setTimeout(() => {
+												location.reload();
+											}, 1000);
+										};
+										await audio.play();
+									}
+								} else if (text.includes('스크롤') || text.includes('내려') || text.includes('아래')) {
+									window.scrollBy({
+										top: window.innerHeight,
+										behavior: 'smooth'
+									});
+								} else if (text.includes('위로') || text.includes('올려')) {
+									window.scrollBy({
+										top: -window.innerHeight,
+										behavior: 'smooth'
+									});
+								}
+			
+								if (data.audio) {
+									const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+									await audio.play();
+								}
+							}
+						} catch (error) {
+							console.error('WebSocket message processing error:', error);
+						}
+					};
+			
+					ws.onerror = (error) => {
+						console.error('WebSocket error:', error);
+					};
+			
+					ws.onclose = () => {
+						console.log('WebSocket closed');
+					};
+				}
+			
+				function stopListening(message = '음성 인식을 종료합니다.') {
+					if (isListening) {
+						if (autoStopTimer) {
+							clearInterval(autoStopTimer);
+							autoStopTimer = null;
+						}
+			
+						if (ws) {
+							ws.send(JSON.stringify({ type: 'stop' }));
+							ws.close();
+						}
+						
+						if (processor) {
+							processor.disconnect();
+							mediaStreamSource.disconnect();
+							audioContext.close();
+						}
+			
+						isListening = false;
+						voiceSearchBtn.classList.remove('listening');
+						sessionStorage.removeItem('voiceRecognitionActive');
+						
+						const utterance = new SpeechSynthesisUtterance(message);
+						utterance.lang = 'ko-KR';
+						speechSynthesis.speak(utterance);
+					}
+				}
+			
+				function convertFloat32ToInt16(float32Array) {
+					const int16Array = new Int16Array(float32Array.length);
+					for (let i = 0; i < float32Array.length; i++) {
+						const s = Math.max(-1, Math.min(1, float32Array[i]));
+						int16Array[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+					}
+					return int16Array;
+				}
+			
+				voiceSearchBtn.addEventListener('click', (event) => {
+					event.preventDefault();
+					if (!isListening) {
+						startListening();
+					} else {
+						stopListening();
+					}
 				});
-		
-				recognition.onresult = function(event) {
-				  const result = event.results[0][0].transcript;
-				  searchInput.value = result;
-				  // 음성 인식 결과로 검색 실행
-				  document.querySelector('.header-search form').submit();
-				};
-		
-				recognition.onerror = function(event) {
-				  console.error('음성 인식 오류:', event.error);
-				};
-			  } else {
-				voiceSearchBtn.style.display = 'none';
-				console.log('이 브라우저는 음성 인식을 지원하지 않습니다.');
-			  }
+			
+				// 페이지를 떠날 때 WebSocket 연결 정리
+				window.addEventListener('beforeunload', () => {
+					if (isListening) {
+						if (ws) {
+							ws.close();
+						}
+					}
+				});
 			});
 			</script>
 
