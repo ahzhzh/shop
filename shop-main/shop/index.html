@@ -983,6 +983,28 @@
 								searchInput.value = data.transcript;
 								
 								const text = data.transcript.toLowerCase();
+								
+								
+								// 카테고리 스크롤 명령어 처리
+								if (text.includes('new') || text.includes('뉴') || text.includes('새 상품')) {
+									const newSection = document.querySelector('.section-title .title:contains("N E W")').closest('.section');
+									if (newSection) {
+										newSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+										if (data.audio) {
+											const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+											await audio.play();
+										}
+									}
+								} else if (text.includes('인기') || text.includes('인기 상품')) {
+									const hotSection = document.querySelector('.section-title .title:contains("인기 상품")').closest('.section');
+									if (hotSection) {
+										hotSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+										if (data.audio) {
+											const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+											await audio.play();
+										}
+									}
+								}
 								// 장바구니 확인 명령어 추가
 								if (text.includes('장바구니') && (text.includes('확인') || text.includes('보여줘') || text.includes('열어줘'))) {
 									const cartIcon = document.querySelector('.fa-shopping-cart').closest('a');
