@@ -272,7 +272,7 @@
                     const inputData = e.inputBuffer.getChannelData(0);
                     
                     // 음성이 감지되었는지 확인
-                    const soundDetected = inputData.some(value => Math.abs(value) > 0.01);
+                    const soundDetected = inputData.some(value => Math.abs(value) > 100);
                     
                     if (soundDetected) {
                         lastAudioTime = Date.now();

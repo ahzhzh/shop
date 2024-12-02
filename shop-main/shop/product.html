@@ -1412,8 +1412,8 @@
 							if (ws && ws.readyState === WebSocket.OPEN) {
 								const inputData = e.inputBuffer.getChannelData(0);
 								const audioData = convertFloat32ToInt16(inputData);
-								
-								if (audioData.some(sample => Math.abs(sample) > 50)) {
+								//임계값 설정
+								if (audioData.some(sample => Math.abs(sample) > 100)) {
 									lastAudioTime = Date.now();
 								}
 			

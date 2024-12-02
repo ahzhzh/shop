@@ -915,8 +915,8 @@
 							if (ws && ws.readyState === WebSocket.OPEN) {
 								const inputData = e.inputBuffer.getChannelData(0);
 								const audioData = convertFloat32ToInt16(inputData);
-								
-								if (audioData.some(sample => Math.abs(sample) > 50)) {
+								//임계값 설정
+								if (audioData.some(sample => Math.abs(sample) > 100)) {
 									lastAudioTime = Date.now();
 								}
 			
@@ -986,7 +986,7 @@
 								
 								
 								// 장바구니 확인 명령어 추가
-								if (text.includes('장바구니') && (text.includes('확인') || text.includes('보여줘') || text.includes('열어줘'))) {
+								if (text.includes('장바구니') && (text.includes('확인') || text.includes('보여') || text.includes('열어'))) {
 									const cartIcon = document.querySelector('.fa-shopping-cart').closest('a');
 									if (cartIcon) {
 										if (data.audio) {
@@ -1058,52 +1058,43 @@
 										top: -window.innerHeight,
 										behavior: 'smooth'
 									});
-								} else if (text.includes('new') || text.includes('뉴') || text.includes('새로운') || 
-										  (text.includes('새로운') && text.includes('상품')) || 
-										  (text.includes('뉴') && text.includes('상품'))) {
-									
-									// NEW 섹션을 찾는 다양한 방법 추가
-									const newSection = document.querySelector('.section-title .title') || // class로 찾기
-													document.querySelector('h3.title') ||              // h3 태그로 찾기
-													Array.from(document.querySelectorAll('h3')).find(el => el.textContent.includes('N E W')) || // 텍스트 내용으로 찾기
-													Array.from(document.querySelectorAll('div')).find(el => el.textContent.includes('N E W')); // div에서 텍스트로 찾기
-									
-									console.log('Found NEW section:', newSection); // 디버깅용 로그
-									
-									if (newSection) {
-										// 먼저 요소가 있는 위치로 스크롤
-										newSection.scrollIntoView({ 
-											behavior: 'smooth',
-											block: 'start'
-										});
+								} else if (text.includes('인기') || text.includes('인기상품') || text.includes('인기 상품')) {
+										// 인기 상품 섹션을 찾는 더 구체적인 방법
+										const hotSection = Array.from(document.querySelectorAll('h3.title')).find(el => 
+											el.textContent.trim() === '인기 상품'
+										);
 										
-										// 헤더 높이만큼 위로 조정
-										setTimeout(() => {
-											window.scrollBy({
-												top: -100,
-												behavior: 'smooth'
-											});
-										}, 500);
-									} else {
-										console.log('NEW 섹션을 찾을 수 없습니다.'); // 디버깅용 로그
-									}
-								} // 인기 상품 섹션
-									else if (text.includes('인기') || text.includes('인기상품') || text.includes('인기 상품')) {
-										
-										// 인기 상품 섹션을 찾는 방법 수정
-										const hotSection = document.querySelector('.section-title h3.title') || 
-														Array.from(document.querySelectorAll('h3.title')).find(el => el.textContent.includes('인기 상품'));
-										
-										console.log('Found Hot Items section:', hotSection); // 디버깅용 로그
+										console.log('Found Hot Items section:', hotSection);
 										
 										if (hotSection) {
-											// 먼저 요소가 있는 위치로 스크롤
 											hotSection.scrollIntoView({ 
 												behavior: 'smooth',
 												block: 'start'
 											});
 											
-											// 헤더 높이만큼 위로 조정
+											setTimeout(() => {
+												window.scrollBy({
+													top: -100,
+													behavior: 'smooth'
+												});
+											}, 500);
+										}
+									} else if (text.includes('new') || text.includes('뉴') || text.includes('새로운') || 
+											(text.includes('새로운') && text.includes('상품')) || 
+											(text.includes('뉴') && text.includes('상품'))) {
+										
+										const newSection = Array.from(document.querySelectorAll('h3.title')).find(el => 
+											el.textContent.trim() === 'N E W'
+										);
+										
+										console.log('Found NEW section:', newSection);
+										
+										if (newSection) {
+											newSection.scrollIntoView({ 
+												behavior: 'smooth',
+												block: 'start'
+											});
+											
 											setTimeout(() => {
 												window.scrollBy({
 													top: -100,
