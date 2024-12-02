@@ -252,7 +252,7 @@
 											</div>
 											<div class="product-body">
 												<p class="product-category">Category</p>
-												<h3 class="product-name"><a href="product.html?id=1">AMD 라이젠5-5세대 7500F</a></h3>
+												<h3 class="product-name"><a href="product.html?id=1">AMD 라이젠 5 5세대 7500F</a></h3>
 												<h4 class="product-price">₩198,000
 												<div class="product-rating">
 												</div>
@@ -973,11 +973,29 @@
 					ws.onmessage = async (event) => {
 						try {
 							const data = JSON.parse(event.data);
-							console.log('Received WebSocket message:', data.type);
+							let silenceTimeout = null;
+							
 			
 							if (data.type === 'interim') {
 								console.log('Interim transcript:', data.transcript);
 								searchInput.value = data.transcript;
+								// 중간 결과가 수신될 때마다 타이머 리셋
+								if (silenceTimeout) clearTimeout(silenceTimeout);
+								silenceTimeout = setTimeout(async () => {
+									// 3초 동안 새로운 중간 결과가 없으면 현재 결과를 최종으로 처리
+									if (data.transcript.trim()) {  // 빈 문자열이 아닌 경우에만 처리
+										const finalTranscript = data.transcript;
+										console.log('Final transcript (from silence):', finalTranscript);
+										
+										// 서버에 최종 결과 전송
+										if (ws && ws.readyState === WebSocket.OPEN) {
+											ws.send(JSON.stringify({
+												type: 'final',
+												transcript: finalTranscript
+											}));
+										}
+									}
+								}, 3000);  // 3초 대기 
 							} else if (data.type === 'result') {
 								console.log('Final transcript:', data.transcript);
 								searchInput.value = data.transcript;
@@ -1035,6 +1053,26 @@
 											}, 100);
 										}
 									}
+								} else if ((text.includes('장바구니') || text.includes('담아줘') || text.includes('추가해줘')) 
+										&& (text.includes('라이젠5') || text.includes('라이젠 5') || text.includes('라이젠 5세대') || text.includes('라이젠5 5세대'))) {
+										// 라이젠5 5세대 제품의 장바구니 버튼을 찾습니다
+										const productName = 'AMD 라이젠 5 5세대 7500F';
+										const addToCartBtn = Array.from(document.querySelectorAll('.product-name a')).find(a => 
+											a.textContent.includes(productName)
+										)?.closest('.product')?.querySelector('.add-to-cart-btn');
+
+										if (addToCartBtn) {
+											const productElement = addToCartBtn.closest('.product');
+											if (productElement) {
+												productElement.dispatchEvent(new MouseEvent('mouseenter'));
+												setTimeout(() => {
+													addToCartBtn.click();
+													console.log('장바구니에 추가됨: AMD 라이젠 5 5세대 7500F');
+													productElement.dispatchEvent(new MouseEvent('mouseleave'));
+												}, 100);
+											}
+										}
+									
 								} else if (text.includes('꺼 줘') || text.includes('종료') || text.includes('그만')) {
 									// 음성 응답 재생 후 새로고침
 									if (data.audio) {

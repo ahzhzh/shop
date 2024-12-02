@@ -1470,11 +1470,29 @@
 					ws.onmessage = async (event) => {
 						try {
 							const data = JSON.parse(event.data);
-							console.log('Received WebSocket message:', data.type);
+							let silenceTimeout = null;
 			
 							if (data.type === 'interim') {
 								console.log('Interim transcript:', data.transcript);
 								searchInput.value = data.transcript;
+
+								// 중간 결과가 수신될 때마다 타이머 리셋
+								if (silenceTimeout) clearTimeout(silenceTimeout);
+								silenceTimeout = setTimeout(async () => {
+									// 3초 동안 새로운 중간 결과가 없으면 현재 결과를 최종으로 처리
+									if (data.transcript.trim()) {  // 빈 문자열이 아닌 경우에만 처리
+										const finalTranscript = data.transcript;
+										console.log('Final transcript (from silence):', finalTranscript);
+										
+										// 서버에 최종 결과 전송
+										if (ws && ws.readyState === WebSocket.OPEN) {
+											ws.send(JSON.stringify({
+												type: 'final',
+												transcript: finalTranscript
+											}));
+										}
+									}
+								}, 3000);  // 3초 대기
 							} else if (data.type === 'result') {
 								console.log('Final transcript:', data.transcript);
 								searchInput.value = data.transcript;
