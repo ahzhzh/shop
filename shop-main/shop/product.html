@@ -1442,8 +1442,8 @@
 						sessionStorage.setItem('voiceRecognitionActive', 'true');
 			
 						autoStopTimer = setInterval(() => {
-							if (Date.now() - lastAudioTime > 10000) {
-								stopListening('10초 동안 음성이 감지되지 않아 종료합니다.');
+							if (Date.now() - lastAudioTime > 60000) {
+								stopListening('1분 동안 음성이 감지되지 않아 종료합니다.');
 								setTimeout(() => {
 									location.reload();
 								}, 1500);
