@@ -1,8 +1,30 @@
 // 장바구니 아이템을 저장할 배열
-if (typeof cartItems === 'undefined') {
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-} else {
-    cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+let cartItems = [];
+
+// 장바구니 초기화 함수
+function initCart() {
+    // localStorage에서 장바구니 데이터 불러오기
+    const savedCart = localStorage.getItem('cartItems');
+    if (savedCart) {
+        cartItems = JSON.parse(savedCart);
+    }
+    
+    // 장바구니 카운트 업데이트
+    updateCartCount();
+    
+    // 장바구니 페이지인 경우 장바구니 표시 업데이트
+    if (window.location.pathname.includes('cart.html')) {
+        updateCartDisplay();
+    }
+}
+
+// 장바구니 카운트 업데이트 함수
+function updateCartCount() {
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+    }
 }
 
 // 가격 문자열을 숫자로 변환하는 함수
@@ -36,6 +58,7 @@ function addToCart(productId, name, price, imageUrl) {
 
     showNotification('상품이 장바구니에 추가되었습니다.');
     updateCartDisplay();
+    updateCartCount();
     saveCart();
 }
 
@@ -44,6 +67,7 @@ function removeFromCart(productId) {
     productId = productId.toString(); // productId를 문자열로 변환
     cartItems = cartItems.filter(item => item.id !== productId);
     updateCartDisplay();
+    updateCartCount();
     saveCart();
 }
 
@@ -106,18 +130,9 @@ function updateCartDisplay() {
 // 장바구니 저장 함수
 function saveCart() {
     try {
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
     } catch (e) {
-      console.error('Failed to save cart to localStorage:', e);
-    }
-  }
-
-// 장바구니 불러오기 함수
-function loadCart() {
-    const savedCart = localStorage.getItem('cartItems');
-    if (savedCart) {
-        cartItems = JSON.parse(savedCart);
-        updateCartDisplay();
+        console.error('Failed to save cart to localStorage:', e);
     }
 }
 
@@ -132,36 +147,17 @@ function showNotification(message) {
     }, 3000);
 }
 
-// 페이지 로드 시 실행
-window.addEventListener('load', function() {
-    loadCart();
-    if (window.location.pathname.includes('cart.html')) {
-        updateCartDisplay();
-    }
-});
-
 // 'Add to Cart' 버튼에 이벤트 리스너 추가
-document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const product = this.closest('.product');
-        const productId = product.dataset.id;
-        const productName = product.querySelector('.product-name').textContent;
-        const price = product.querySelector('.product-price').textContent;
-        const imageUrl = product.querySelector('img').src;
-        addToCart(productId, productName, price, imageUrl);
-    });
-});
-
 document.addEventListener('click', function(e) {
     if (e.target && e.target.classList.contains('add-to-cart-btn')) {
-      const button = e.target;
-      const productId = button.dataset.id;
-      const name = button.dataset.name;
-      const price = button.dataset.price;
-      const imageUrl = button.dataset.image;
-      addToCart(productId, name, price, imageUrl);
+        const button = e.target;
+        const productId = button.dataset.id;
+        const name = button.dataset.name;
+        const price = button.dataset.price;
+        const imageUrl = button.dataset.image;
+        addToCart(productId, name, price, imageUrl);
     }
-  });
+});
 
 
   

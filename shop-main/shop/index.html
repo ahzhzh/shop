@@ -227,8 +227,8 @@
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
-												<h3 class="product-name"><a href="product.html?id=1"> A 상품</a></h3>
+												<p class="product-category">PC</p>
+												<h3 class="product-name"><a href="product.html?id=1&name=A 상품&price=3150000&image=./img/product01.png&category=PC">A 상품</a></h3>
 												<h4 class="product-price">₩3,150,000 
 												<div class="product-rating">
 												</div>
@@ -251,8 +251,8 @@
 												</div>
 											</div>
 											<div class="product-body">
-												<p class="product-category">Category</p>
-												<h3 class="product-name"><a href="product.html?id=1">AMD 라이젠 5 5세대 7500F</a></h3>
+												<p class="product-category">CPU</p>
+												<h3 class="product-name"><a href="product.html?id=2&name=AMD 라이젠 5 5세대 7500F&price=198000&image=./img/product02.png&category=CPU">AMD 라이젠 5 5세대 7500F</a></h3>
 												<h4 class="product-price">₩198,000
 												<div class="product-rating">
 												</div>
@@ -262,7 +262,7 @@
 												</div>
 											</div>
 											<div class="add-to-cart">
-												<button class="add-to-cart-btn" data-id="2" data-name="AMD 라이젠5-5세대 7500F" data-price="198000" data-image="./img/product02.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+												<button class="add-to-cart-btn" data-id="2" data-name="AMD 라이젠 5 5세대 7500F" data-price="198000" data-image="./img/product02.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
 											</div>
 										</div>
 										<!-- /product -->
@@ -510,6 +510,7 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+
 
 		<!-- SECTION -->
 		<div class="section">
@@ -896,72 +897,118 @@
 			
 				async function startListening() {
 					try {
-						const stream = await navigator.mediaDevices.getUserMedia({ 
-							audio: {
-								echoCancellation: true,
-								noiseSuppression: true,
-								sampleRate: 48000,
-								channelCount: 1
-							}
-						});
+						// 마이크 접근 권한 요청 알림이 이미 표시되었는지 확인
+						const hasShownAlert = localStorage.getItem('hasShownMicAlert');
+						if (!hasShownAlert) {
+							alert('마이크 접근 권한이 필요합니다. 권한을 허용해주세요.');
+							localStorage.setItem('hasShownMicAlert', 'true');
+						}
 						
-						audioContext = new (window.AudioContext || window.webkitAudioContext)({
-							sampleRate: 48000
-						});
-						mediaStreamSource = audioContext.createMediaStreamSource(stream);
-						processor = audioContext.createScriptProcessor(2048, 1, 1);
+						// 마이크 권한 상태 확인
+						const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
 						
-						processor.onaudioprocess = (e) => {
-							if (ws && ws.readyState === WebSocket.OPEN) {
-								const inputData = e.inputBuffer.getChannelData(0);
-								const audioData = convertFloat32ToInt16(inputData);
-								 //임계값 설정
-								if (audioData.some(sample => Math.abs(sample) > 100)) {
-									lastAudioTime = Date.now();
+						if (permissionStatus.state === 'granted') {
+							// 이미 권한이 허용된 경우
+							const stream = await navigator.mediaDevices.getUserMedia({ 
+								audio: {
+									echoCancellation: true,
+									noiseSuppression: true,
+									sampleRate: 48000,
+									channelCount: 1
 								}
-			
-								try {
-									const audioArray = new Uint8Array(audioData.buffer);
-									const base64Audio = btoa(String.fromCharCode.apply(null, audioArray));
-									
-									ws.send(JSON.stringify({
-										type: 'audio',
-										audio: base64Audio
-									}));
-									
-								} catch (error) {
-									console.error('Error sending audio data:', error);
+							});
+							
+							if (!stream) {
+								throw new Error('마이크 스트림을 가져올 수 없습니다.');
+							}
+							
+							setupAudioProcessing(stream);
+						} else if (permissionStatus.state === 'prompt') {
+							// 권한 요청이 필요한 경우
+							const stream = await navigator.mediaDevices.getUserMedia({ 
+								audio: {
+									echoCancellation: true,
+									noiseSuppression: true,
+									sampleRate: 48000,
+									channelCount: 1
 								}
+							});
+							
+							if (!stream) {
+								throw new Error('마이크 스트림을 가져올 수 없습니다.');
 							}
-						};
-			
-						mediaStreamSource.connect(processor);
-						processor.connect(audioContext.destination);
-			
-						console.log('Audio processing started');
-						startWebSocket();
-						isListening = true;
-						voiceSearchBtn.classList.add('listening');
-						sessionStorage.setItem('voiceRecognitionActive', 'true');
-			
-						autoStopTimer = setInterval(() => {
-							if (Date.now() - lastAudioTime > 60000) {
-								stopListening('1분 동안 음성이 감지되지 않아 종료합니다.');
-								setTimeout(() => {
-									location.reload();
-								}, 1500);
-							}
-						}, 1000);
-			
+							
+							setupAudioProcessing(stream);
+						} else {
+							throw new Error('마이크 접근이 거부되었습니다. 브라우저 설정에서 마이크 권한을 허용해주세요.');
+						}
 					} catch (error) {
 						console.error('마이크 접근 오류:', error);
-						alert('마이크 접근이 거부되었습니다.');
+						alert('마이크 접근에 실패했습니다. 다음을 확인해주세요:\n1. 마이크가 연결되어 있는지\n2. 브라우저 설정에서 마이크 권한이 허용되어 있는지\n3. 다른 앱이 마이크를 사용 중이지 않은지');
 					}
+				}
+			
+				function setupAudioProcessing(stream) {
+					audioContext = new (window.AudioContext || window.webkitAudioContext)({
+						sampleRate: 48000
+					});
+					
+					if (!audioContext) {
+						throw new Error('오디오 컨텍스트를 생성할 수 없습니다.');
+					}
+
+					mediaStreamSource = audioContext.createMediaStreamSource(stream);
+					processor = audioContext.createScriptProcessor(2048, 1, 1);
+					
+					if (!processor) {
+						throw new Error('오디오 프로세서를 생성할 수 없습니다.');
+					}
+					
+					processor.onaudioprocess = (e) => {
+						if (ws && ws.readyState === WebSocket.OPEN) {
+							const inputData = e.inputBuffer.getChannelData(0);
+							const audioData = convertFloat32ToInt16(inputData);
+							if (audioData.some(sample => Math.abs(sample) > 100)) {
+								lastAudioTime = Date.now();
+							}
+
+							try {
+								const audioArray = new Uint8Array(audioData.buffer);
+								const base64Audio = btoa(String.fromCharCode.apply(null, audioArray));
+								
+								ws.send(JSON.stringify({
+									type: 'audio',
+									audio: base64Audio
+								}));
+								
+							} catch (error) {
+								console.error('오디오 데이터 전송 오류:', error);
+							}
+						}
+					};
+
+					mediaStreamSource.connect(processor);
+					processor.connect(audioContext.destination);
+
+					console.log('오디오 처리 시작됨');
+					startWebSocket();
+					isListening = true;
+					voiceSearchBtn.classList.add('listening');
+					sessionStorage.setItem('voiceRecognitionActive', 'true');
+
+					autoStopTimer = setInterval(() => {
+						if (Date.now() - lastAudioTime > 60000) {
+							stopListening('1분 동안 음성이 감지되지 않아 종료합니다.');
+							setTimeout(() => {
+								location.reload();
+							}, 1500);
+						}
+					}, 1000);
 				}
 			
 				function startWebSocket() {
 					const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-					const wsUrl = `${protocol}//${window.location.hostname}:3001`;
+					const wsUrl = `${protocol}//${window.location.hostname || 'localhost'}:3001`;
 					
 					ws = new WebSocket(wsUrl);
 					
