@@ -736,159 +736,143 @@
 		<script src="js/nouislider.min.js"></script>
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
+		<!-- Voice Recognition -->
+		<script src="js/voice-recognition.js"></script>
 
-		<!-- 음성 인식 기능을 위한 JavaScript 코드 추가 -->
+		<!-- Header and Footer Load Script -->
 		<script>
 			document.addEventListener('DOMContentLoaded', function() {
-			  const voiceSearchBtn = document.getElementById('voice-search-btn');
-			  const searchInput = document.querySelector('.header-search input.input');
-		
-			  if ('webkitSpeechRecognition' in window) {
-				const recognition = new webkitSpeechRecognition();
-				recognition.continuous = false;
-				recognition.lang = 'ko-KR';
-		
-				voiceSearchBtn.addEventListener('click', function(event) {
-				  event.preventDefault();
-				  recognition.start();
-				});
-		
-				recognition.onresult = function(event) {
-				  const result = event.results[0][0].transcript;
-				  searchInput.value = result;
-				  // 음성 인식 결과로 검색 실행
-				  document.querySelector('.header-search form').submit();
-				};
-		
-				recognition.onerror = function(event) {
-				  console.error('음성 인식 오류:', event.error);
-				};
-			  } else {
-				voiceSearchBtn.style.display = 'none';
-				console.log('이 브라우저는 음성 인식을 지원하지 않습니다.');
-			  }
+				// 헤더 로드
+				fetch('header.html')
+					.then(response => response.text())
+					.then(data => {
+						// header 태그 내용을 header.html의 내용 중 header 태그 내부 내용만 추출하여 교체
+						const tempDiv = document.createElement('div');
+						tempDiv.innerHTML = data;
+						const headerContent = tempDiv.querySelector('header').innerHTML;
+						document.querySelector('header').innerHTML = headerContent;
+						
+						// 헤더가 로드된 후 음성 인식 초기화
+						if (typeof initVoiceRecognition === 'function') {
+							initVoiceRecognition();
+						}
+					})
+					.catch(error => console.error('헤더 로드 중 오류:', error));
+
+				// 푸터 로드
+				fetch('footer.html')
+					.then(response => response.text())
+					.then(data => {
+						document.querySelector('footer').innerHTML = data;
+					})
+					.catch(error => console.error('푸터 로드 중 오류:', error));
 			});
-			</script>
-
-<script>
-    // 여기에 장바구니 관련 JavaScript 코드를 붙여넣으세요
-    let cartItems = [];
-
-    function addToCart(productId, productName, price) {
-        let existingItem = cartItems.find(item => item.id === productId);
-        
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cartItems.push({
-        id: productId.toString(), // id를 문자열로 저장
-        name: name,
-        price: numericPrice,
-        quantity: 1,
-        image: imageUrl
-    });
-        }
-        
-        updateCartDisplay();
-    }
-
-    function removeFromCart(productId) {
-    productId = productId.toString(); 
-    cartItems = cartItems.filter(item => item.id !== productId);
-    updateCartDisplay();
-    saveCart();
-}
-
-function updateCartDisplay() {
-    const cartList = document.querySelector('.cart-list');
-    const cartTotal = document.getElementById('cart-total');
-    const cartItemCount = document.getElementById('cart-item-count');
-    let total = 0;
-    let itemCount = 0;
-
-    cartList.innerHTML = '';
-
-    cartItems.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-        itemCount += item.quantity;
-        
-        const productWidget = document.createElement('div');
-        productWidget.className = 'product-widget';
-        productWidget.innerHTML = `
-            <div class="product-body">
-                <h3 class="product-name"><a href="#">${item.name}</a></h3>
-                <h4 class="product-price"><span class="qty">${item.quantity}x</span>$${item.price.toFixed(2)}</h4>
-            </div>
-        `;
-
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'delete';
-        deleteButton.innerHTML = '<i class="fa fa-close"></i>';
-        deleteButton.addEventListener('click', () => removeFromCart(item.id));
-
-        productWidget.appendChild(deleteButton);
-        cartList.appendChild(productWidget);
-    });
-
-    if (cartTotal) cartTotal.textContent = total.toFixed(2);
-    if (cartItemCount) cartItemCount.textContent = itemCount;
-}
-
-    // 상품 추가 버튼에 이벤트 리스너 추가
-    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.getAttribute('data-id');
-            const productName = this.getAttribute('data-name');
-            const price = parseFloat(this.getAttribute('data-price'));
-            addToCart(productId, productName, price);
-        });
-    });
-    </script>
-	
-	<script src="js/cart.js"></script>
-
-	<script>
-		const slider = document.querySelector('.banner-slider'); // 슬라이더 트랙
-const slides = document.querySelectorAll('.branding-banner'); // 개별 배너
-const totalSlides = slides.length; // 슬라이드 개수
-
-// 첫 번째와 마지막 슬라이드를 복제하여 트랙 앞뒤에 추가
-const firstClone = slides[0].cloneNode(true);
-const lastClone = slides[totalSlides - 1].cloneNode(true);
-slider.appendChild(firstClone); // 첫 번째 슬라이드 복제본을 끝에 추가
-slider.insertBefore(lastClone, slides[0]); // 마지막 슬라이드 복제본을 맨 앞에 추가
-
-let currentIndex = 1; // 첫 번째 실제 슬라이드부터 시작
-slider.style.transform = `translateX(-${currentIndex * 100}%)`; // 초기 위치 설정
-
-function nextSlide() {
-    currentIndex++;
-    slider.style.transition = "transform 0.5s ease-in-out"; // 부드러운 이동 효과
-    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-    // 마지막 복제 슬라이드에서 실제 첫 번째 슬라이드로 이동
-    if (currentIndex === totalSlides + 1) {
-        setTimeout(() => {
-            slider.style.transition = "none"; // 트랜지션 효과 제거
-            currentIndex = 1; // 첫 번째 실제 슬라이드로 이동
-            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-        }, 500); // 트랜지션 시간과 동일하게 설정
-    }
-}
-
-// 일정 시간마다 슬라이드 이동
-setInterval(nextSlide, 3000); // 5초마다 실행
-
-
-
 		</script>
 
+		<script>
+			const slider = document.querySelector('.banner-slider');
+			const slides = document.querySelectorAll('.branding-banner');
+			const totalSlides = slides.length;
 
-	
+			const firstClone = slides[0].cloneNode(true);
+			const lastClone = slides[totalSlides - 1].cloneNode(true);
+			slider.appendChild(firstClone);
+			slider.insertBefore(lastClone, slides[0]);
 
-	
+			let currentIndex = 1;
+			slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+			function nextSlide() {
+				currentIndex++;
+				slider.style.transition = "transform 0.5s ease-in-out";
+				slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+				if (currentIndex === totalSlides + 1) {
+					setTimeout(() => {
+						slider.style.transition = "none";
+						currentIndex = 1;
+						slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+					}, 500);
+				}
+			}
+
+			setInterval(nextSlide, 3000);
+		</script>
+
+		<script>
+			let cartItems = [];
+
+			function addToCart(productId, productName, price) {
+				let existingItem = cartItems.find(item => item.id === productId);
+				
+				if (existingItem) {
+					existingItem.quantity++;
+				} else {
+					cartItems.push({
+				id: productId.toString(),
+				name: name,
+				price: numericPrice,
+				quantity: 1,
+				image: imageUrl
+			});
+				}
+				
+				updateCartDisplay();
+			}
+
+			function removeFromCart(productId) {
+			productId = productId.toString(); 
+			cartItems = cartItems.filter(item => item.id !== productId);
+			updateCartDisplay();
+			saveCart();
+			}
+
+			function updateCartDisplay() {
+				const cartList = document.querySelector('.cart-list');
+				const cartTotal = document.getElementById('cart-total');
+				const cartItemCount = document.getElementById('cart-item-count');
+				let total = 0;
+				let itemCount = 0;
+
+				cartList.innerHTML = '';
+
+				cartItems.forEach(item => {
+					const itemTotal = item.price * item.quantity;
+					total += itemTotal;
+					itemCount += item.quantity;
+					
+					const productWidget = document.createElement('div');
+					productWidget.className = 'product-widget';
+					productWidget.innerHTML = `
+						<div class="product-body">
+							<h3 class="product-name"><a href="#">${item.name}</a></h3>
+							<h4 class="product-price"><span class="qty">${item.quantity}x</span>$${item.price.toFixed(2)}</h4>
+						</div>
+					`;
+
+					const deleteButton = document.createElement('button');
+					deleteButton.className = 'delete';
+					deleteButton.innerHTML = '<i class="fa fa-close"></i>';
+					deleteButton.addEventListener('click', () => removeFromCart(item.id));
+
+					productWidget.appendChild(deleteButton);
+					cartList.appendChild(productWidget);
+				});
+
+				if (cartTotal) cartTotal.textContent = total.toFixed(2);
+				if (cartItemCount) cartItemCount.textContent = itemCount;
+			}
+
+			document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+				button.addEventListener('click', function() {
+					const productId = this.getAttribute('data-id');
+					const productName = this.getAttribute('data-name');
+					const price = parseFloat(this.getAttribute('data-price'));
+					addToCart(productId, productName, price);
+				});
+			});
+		</script>
+		
+		<script src="js/cart.js"></script>
 	</body>
-
-	
 </html>
