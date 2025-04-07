@@ -1419,9 +1419,6 @@ textarea.input {
   visibility: visible;
 }
 
-#product-main-img .zoomImg {
-  background-color: #FFF;
-}
 
 #product-imgs .product-preview {
   margin: 0px 5px;
@@ -1459,6 +1456,8 @@ textarea.input {
 .product-preview img {
   width: 100%;
 }
+
+
 
 /*----------------------------*\
 	Product details
@@ -1509,7 +1508,6 @@ textarea.input {
 
 
 .product-details .product-name {
-  text-transform: uppercase;
   font-size: 18px;
 }
 
@@ -1566,7 +1564,7 @@ textarea.input {
 }
 
 .product-details .product-options .input-select {
-  width: 90px;
+  width: 95px;
 }
 
 .product-details .add-to-cart {
@@ -1621,7 +1619,7 @@ textarea.input {
 }
 
 .product-details .add-to-cart .qty-label .input-number {
-  width: 90px;
+  width: 95px;
   display: inline-block;
 }
 
