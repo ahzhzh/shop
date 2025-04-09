@@ -27,6 +27,9 @@
  		<!-- Custom stlylesheet -->
  		<link type="text/css" rel="stylesheet" href="css/style.css"/>
 
+        <!-- voice-search.css 추가 -->
+        <link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
+
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -443,8 +446,6 @@
 
 
 
-
-
 		<!-- Footer Placeholder -->
 		<footer></footer>
 
@@ -460,6 +461,39 @@
 			// 장바구니 기능 초기화
 			initCart();
 		</script>
+
+        <!-- Voice Recognition -->
+        <script src="js/voice-recognition.js"></script>
+
+        <!-- Header and Footer Load Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // 헤더 로드
+                fetch('header.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        // header 태그 내용을 header.html의 내용 중 header 태그 내부 내용만 추출하여 교체
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = data;
+                        const headerContent = tempDiv.querySelector('header').innerHTML;
+                        document.querySelector('header').innerHTML = headerContent;
+                        
+                        // 헤더가 로드된 후 음성 인식 초기화
+                        if (typeof initVoiceRecognition === 'function') {
+                            initVoiceRecognition();
+                        }
+                    })
+                    .catch(error => console.error('헤더 로드 중 오류:', error));
+
+                // 푸터 로드
+                fetch('footer.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.querySelector('footer').innerHTML = data;
+                    })
+                    .catch(error => console.error('푸터 로드 중 오류:', error));
+            });
+        </script>
 
 	</body>
 </html>

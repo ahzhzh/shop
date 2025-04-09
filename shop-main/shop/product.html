@@ -27,6 +27,9 @@
  		<!-- Custom stlylesheet -->
  		<link type="text/css" rel="stylesheet" href="css/style.css"/>
 
+        <!-- voice-search.css 추가 -->
+        <link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
+
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -256,19 +259,12 @@
 														</div>
 													</li>
 												</ul>
-												<ul class="reviews-pagination">
-													<li class="active">1</li>
-													<li><a href="#">2</a></li>
-													<li><a href="#">3</a></li>
-													<li><a href="#">4</a></li>
-													<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-												</ul>
 											</div>
 										</div>
 										<!-- /Reviews -->
 
 										<!-- Review Form -->
-										<div class="col-md-3">
+										<div class="col-md-6">
 											<div id="review-form">
 												<form class="review-form">
 													<input class="input" type="text" placeholder="Your Name">
@@ -310,10 +306,9 @@
 			<div class="container">
 				<!-- row -->
 				<div class="row">
-
 					<div class="col-md-12">
 						<div class="section-title text-center">
-							
+							<h3 class="title">Related Products</h3>
 						</div>
 					</div>
 
@@ -324,6 +319,7 @@
 								<img src="./img/product01.png" alt="">
 								<div class="product-label">
 									<span class="sale">-30%</span>
+									<span class="new">NEW</span>
 								</div>
 							</div>
 							<div class="product-body">
@@ -331,6 +327,11 @@
 								<h3 class="product-name"><a href="#">product name goes here</a></h3>
 								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
 								<div class="product-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
 								</div>
 								<div class="product-btns">
 									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
@@ -356,7 +357,7 @@
 							<div class="product-body">
 								<p class="product-category">Category</p>
 								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+								<h4 class="product-price">$980.00</h4>
 								<div class="product-rating">
 									<i class="fa fa-star"></i>
 									<i class="fa fa-star"></i>
@@ -387,13 +388,13 @@
 							<div class="product-body">
 								<p class="product-category">Category</p>
 								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+								<h4 class="product-price">$980.00</h4>
 								<div class="product-rating">
 									<i class="fa fa-star"></i>
 									<i class="fa fa-star"></i>
 									<i class="fa fa-star"></i>
 									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o"></i>
+									<i class="fa fa-star-o empty"></i>
 								</div>
 								<div class="product-btns">
 									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
@@ -416,8 +417,13 @@
 							<div class="product-body">
 								<p class="product-category">Category</p>
 								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+								<h4 class="product-price">$980.00</h4>
 								<div class="product-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
 								</div>
 								<div class="product-btns">
 									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
@@ -430,20 +436,12 @@
 						</div>
 					</div>
 					<!-- /product -->
-
 				</div>
 				<!-- /row -->
 			</div>
 			<!-- /container -->
 		</div>
 		<!-- /Section -->
-		
-
-
-
-
-
-
 
 		<!-- Footer Placeholder -->
 		<footer></footer>
@@ -453,13 +451,41 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/slick.min.js"></script>
 		<script src="js/nouislider.min.js"></script>
+		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
 
-		<script src="js/cart.js"></script>
-		<script>
-			// 장바구니 기능 초기화
-			initCart();
-		</script>
+        <!-- Voice Recognition -->
+        <script src="js/voice-recognition.js"></script>
+
+        <!-- Header and Footer Load Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // 헤더 로드
+                fetch('header.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        // header 태그 내용을 header.html의 내용 중 header 태그 내부 내용만 추출하여 교체
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = data;
+                        const headerContent = tempDiv.querySelector('header').innerHTML;
+                        document.querySelector('header').innerHTML = headerContent;
+                        
+                        // 헤더가 로드된 후 음성 인식 초기화
+                        if (typeof initVoiceRecognition === 'function') {
+                            initVoiceRecognition();
+                        }
+                    })
+                    .catch(error => console.error('헤더 로드 중 오류:', error));
+
+                // 푸터 로드
+                fetch('footer.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.querySelector('footer').innerHTML = data;
+                    })
+                    .catch(error => console.error('푸터 로드 중 오류:', error));
+            });
+        </script>
 
 	</body>
 </html>

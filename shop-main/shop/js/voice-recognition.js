@@ -6,6 +6,7 @@ let mediaStreamSource = null;
 let processor = null;
 let lastAudioTime = Date.now();
 let autoStopTimer;
+let silenceTimeout = null; // 3초 무음 감지를 위한 타이머
 
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
@@ -109,6 +110,15 @@ function setupAudioProcessing(stream) {
             // 음성 감지 임계값 조정
             if (audioData.some(sample => Math.abs(sample) > 50)) {
                 lastAudioTime = Date.now();
+                
+                // 음성이 감지되면 3초 타이머 리셋
+                if (silenceTimeout) {
+                    clearTimeout(silenceTimeout);
+                }
+                silenceTimeout = setTimeout(() => {
+                    // 3초 동안 음성이 없으면 음성 인식 종료
+                    stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
+                }, 3000);
             }
 
             try {
@@ -138,6 +148,11 @@ function setupAudioProcessing(stream) {
     }
     sessionStorage.setItem('voiceRecognitionActive', 'true');
 
+    // 3초 무음 감지 타이머 시작
+    silenceTimeout = setTimeout(() => {
+        stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
+    }, 3000);
+
     autoStopTimer = setInterval(() => {
         if (Date.now() - lastAudioTime > 60000) {
             stopListening('1분 동안 음성이 감지되지 않아 종료합니다.');
@@ -162,24 +177,34 @@ function startWebSocket() {
     ws.onmessage = async (event) => {
         try {
             const data = JSON.parse(event.data);
-            let silenceTimeout = null;
 
             if (data.type === 'interim') {
                 console.log('Interim transcript:', data.transcript);
                 searchInput.value = data.transcript;
-
-                // 중간 결과가 수신될 때마다 타이머 리셋
-                if (silenceTimeout) clearTimeout(silenceTimeout);
-                silenceTimeout = setTimeout(async () => {
+                
+                // 중간 결과가 수신되면 3초 타이머 리셋
+                if (silenceTimeout) {
+                    clearTimeout(silenceTimeout);
+                }
+                silenceTimeout = setTimeout(() => {
                     // 3초 동안 새로운 중간 결과가 없으면 음성 인식 종료
                     stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
-                }, 3000);  // 3초 대기
+                }, 3000);
             } else if (data.type === 'result') {
                 console.log('Final transcript:', data.transcript);
                 searchInput.value = data.transcript;
                 
                 const text = data.transcript.toLowerCase();
                 handleVoiceCommand(text, data.audio);
+                
+                // 최종 결과가 수신되면 3초 타이머 리셋
+                if (silenceTimeout) {
+                    clearTimeout(silenceTimeout);
+                }
+                silenceTimeout = setTimeout(() => {
+                    // 3초 동안 새로운 음성이 없으면 음성 인식 종료
+                    stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
+                }, 3000);
             }
         } catch (error) {
             console.error('WebSocket message processing error:', error);
@@ -259,6 +284,11 @@ function stopListening(message = '음성 인식을 종료합니다.') {
         if (autoStopTimer) {
             clearInterval(autoStopTimer);
             autoStopTimer = null;
+        }
+        
+        if (silenceTimeout) {
+            clearTimeout(silenceTimeout);
+            silenceTimeout = null;
         }
 
         if (ws) {
