@@ -397,8 +397,6 @@ textarea.input {
 }
 
 
-
-
 /*=========================================================
 	02 -> HEADER
 ===========================================================*/
@@ -427,14 +425,7 @@ textarea.input {
   color: #FFF;
 }
 
-.header-links li a:hover {
-  color: #D10024;
-}
 
-.header-links li i {
-  color: #D10024;
-  margin-right: 5px;
-}
 
 /*----------------------------*\
 	Logo
@@ -466,7 +457,7 @@ textarea.input {
   position: relative;
   display: flex;
   align-items: center;
-  left: 40px;
+  left: 160px;
 }
 
 .header-search form .input-select {
@@ -481,7 +472,7 @@ textarea.input {
 
 .header-search form .input {
   height: 45px;
-  width: 480px; /* 검색창 너비를 조금 더 길게 설정 */
+  width: 420px; /* 검색창 너비를 조금 더 길게 설정 */
   border: none;
   border-radius: 0px;
   padding: 0px 15px;
