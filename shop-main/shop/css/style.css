@@ -36,7 +36,7 @@ Table OF Contents
 7 > STORE PAGE
 ------ Aside
 ------ Store
-8 > PRODUCT DETAILS PAGE 상품 정보 페이지
+8 > PRODUCT DETAILS PAGE
 ------ Product view
 ------ Product details
 ------ Product tab
@@ -1369,7 +1369,7 @@ textarea.input {
 }
 
 /*=========================================================
-	08 -> PRODUCT DETAILS PAGE 상품 정보 페이지
+	08 -> PRODUCT DETAILS PAGE
 ===========================================================*/
 
 /* 상품 상세 정보 섹션 */
@@ -1379,6 +1379,17 @@ textarea.input {
   gap: 25px; /* 각 요소 간의 간격 설정 (기본 간격 25px) */
 }
 
+/* 특정 페이지에서 상품 위치 변경 */
+#product-main-img {
+  order: 1; /* 이미지 */
+  bottom: 20px;
+  right: 40px;
+}
+
+.product-details {
+  order: 2; /* 제품 명 */
+  bottom: 80px;
+}
 
 /* Flexbox를 사용해 부모 요소 정렬 */
 .row.product-row {
@@ -1388,6 +1399,16 @@ textarea.input {
   align-items: center; /* 수직 가운데 정렬 */
 }
 
+
+/* 상품 이름 스타일 */
+.product-name {
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
+  max-width: 100%;
+  display: block;
+  position: relative;
+}
 
 .product-details .product-name {
   font-size: 18px; /* 글자 크기 설정 */
@@ -1434,7 +1455,11 @@ textarea.input {
 }
 
 
-
+/* 상품 상세 정보 섹션 */
+.product-details {
+  display: flex; /* Flexbox를 사용하여 정렬 */
+  flex-direction: column; /* 세로로 배치 */
+}
 
 /* 상품명 위치 조정 */
 .product-details .product-name {
@@ -1548,6 +1573,16 @@ textarea.input {
 }
 
 
+/* 반응형 디자인을 위한 추가 수정 */
+/* 모바일 화면에서 사진과 텍스트 배치 조정 (768px 이하)*/
+@media (max-width:768px) {
+    #product-main-img, 
+    .product-details {
+        flex-direction: column-reverse;
+        align-items:center;
+        margin-right :0
+        }
+}
 
 /*=========================================================
 	09 -> CHECKOUT PAGE
