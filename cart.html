@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>장바구니</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="css/slick.css"/>
+    <link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+
+    <!-- Custom stylesheet -->
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+
+    <!-- cart.css 추가 -->
+    <link type="text/css" rel="stylesheet" href="css/cart.css"/>
+</head>
+<body>
+    <!-- 전체 컨테이너 -->
+    <div id="wrapper">
+        <!-- Header Placeholder -->
+        <header></header>
+
+        <!-- Navigation Placeholder -->
+        <nav></nav>
+
+        <!-- 장바구니 섹션 -->
+        <div id="breadcrumb" class="section">
+            <div class="container">
+                <div class="row">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="section content">
+            <div class="container">
+                <div class="row">
+                    <!-- 장바구니 테이블 -->
+                    <div class="col-md-8">
+                        <!-- 상품 목록 박스형태로 고정 -->
+                        <div class="cart-table scrollable-container shadow-sm p-3 mb-5 bg-white rounded">
+                            <table class="table table-hover">
+                                <thead class="sticky-header">
+                                    <tr>
+                                        <th>상품명</th>
+                                        <th>가격</th>
+                                        <th>수량</th>
+                                        <th>합계</th>
+                                        <th>삭제</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart-items">
+                                    <!-- 상품 목록이 없을 경우 기본 메시지 표시 -->
+                                    <tr class="empty-cart-message">
+                                        <td colspan="6">장바구니가 비어 있습니다.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 장바구니 합계 -->
+                    <div class="col-md-4 cart-summary-container">
+                        <div class="cart-summary shadow-sm p-3 mb-5 bg-white rounded">
+                            <h3>장바구니 합계</h3>
+                            <hr/>
+                            <div class="cart-total mb-3">
+                                <strong>총 금액:</strong>
+                                <span id="cart-total">₩0</span>
+                            </div>
+                            <!-- 결제하기 버튼 유지 -->
+                            <a href="checkout.html" class="primary-btn order-submit">결제하기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Placeholder -->
+        <footer></footer>
+    </div>
+
+    <!-- Header and Footer Load Script -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/slick.min.js"></script>
+    <script src="./js/nouislider.min.js"></script>
+    <script src="./js/jquery.zoom.min.js"></script>
+    <script src="./js/main.js"></script>
+
+    <!-- cart.js 추가 -->
+    <script src="./js/cart.js"></script>
+
+</body>
+</html>
