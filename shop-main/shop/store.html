@@ -1,43 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
+		<meta charset="utf-8"> 
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-		<title>Electro - HTML Ecommerce Template</title>
+		<title>TEST</title>
 
- 		<!-- Google font -->
- 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+		<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
- 		<!-- Bootstrap -->
- 		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+		<!-- Bootstrap -->
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
 
- 		<!-- Slick -->
- 		<link type="text/css" rel="stylesheet" href="css/slick.css"/>
- 		<link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+		<!-- Slick -->
+		<link type="text/css" rel="stylesheet" href="css/slick.css"/>
+		<link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
 
- 		<!-- nouislider -->
- 		<link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+		<!-- nouislider -->
+		<link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
 
- 		<!-- Font Awesome Icon -->
- 		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<!-- Font Awesome Icon -->
+		<link rel="stylesheet" href="css/font-awesome.min.css">
 
- 		<!-- Custom stlylesheet -->
- 		<link type="text/css" rel="stylesheet" href="css/style.css"/>
+		<!-- Custom stlylesheet -->
+		<link type="text/css" rel="stylesheet" href="css/style.css"/>
 
-        <!-- voice-search.css 추가 -->
-        <link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
+		<!-- voice-search.css 추가 -->
+		<link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
 
-		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-		<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
+        <link type="text/css" rel="stylesheet" href="css/store.css"/>
 
-    </head>
+        </head>
 	<body>
 		
 		<!-- Header Placeholder -->
@@ -47,519 +42,468 @@
 		<nav></nav>
 
 		
-		<!-- BREADCRUMB -->
-		<div id="breadcrumb" class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12">
-						<ul class="breadcrumb-tree">
-							<li><a href="#">Home</a></li>
-							<li><a href="#">All Categories</a></li>
-							<li><a href="#">Accessories</a></li>
-							<li class="active">Headphones (227,490 Results)</li>
-						</ul>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /BREADCRUMB -->
+	
 
-		<!-- SECTION -->
-		<div class="section">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<!-- ASIDE -->
-					<div id="aside" class="col-md-3">
-						<!-- aside Widget -->
-						<div class="aside">
-							<h3 class="aside-title">Categories</h3>
-							<div class="checkbox-filter">
+        <div class="section">
+            <!-- Container -->
+            <div class="container">
+                <div class="row">
+                    <!-- 첫 번째 카테고리 박스 -->
+                    <div class="cat_list_box">
+                        <div class="nav_head">
+                            <h3 class="cat_name_main">전체 카테고리</h3>
+                        </div>
+                        <!-- CPU -->
+            <div class="main_item" onclick="showSubItems('cpu')">
+                <a href="#" class="main_link">CPU</a>
+                <div id="cpu" class="sub_cat_list" style="display: none;">
+                    <div class="sub_item"><input type="checkbox" id="core_ultra"><label for="core_ultra">코어울트라 시리즈2</label></div>
+                    <div class="sub_item"><input type="checkbox" id="intel_14"><label for="intel_14">인텔 14세대</label></div>
+                    <div class="sub_item"><input type="checkbox" id="intel_13_12"><label for="intel_13_12">인텔 13~12세대</label></div>
+                    <div class="sub_item"><input type="checkbox" id="intel"><label for="intel">인텔</label></div>
+                    <div class="sub_item"><input type="checkbox" id="ryzen_6"><label for="ryzen_6">라이젠 6세대</label></div>
+                    <div class="sub_item"><input type="checkbox" id="ryzen_5_4"><label for="ryzen_5_4">라이젠 5~4세대</label></div>
+                    <div class="sub_item"><input type="checkbox" id="amd"><label for="amd">AMD</label></div>
+                    <div class="sub_item"><input type="checkbox" id="integrated_graphics"><label for="integrated_graphics">내장그래픽 CPU</label></div>
+                </div>
+            </div>
 
-								<div class="input-checkbox">
-									<input type="checkbox" id="category-1">
-									<label for="category-1">
-										<span></span>
-										Laptops
-										<small>(120)</small>
-									</label>
-								</div>
+            <!-- 메인보드 -->
+            <div class="main_item" onclick="showSubItems('motherboard')">
+                <a href="#" class="main_link">메인보드</a>
+                <div id="motherboard" class="sub_cat_list" style="display: none;">
+                    <div class="sub_item"><input type="checkbox" id="socket_1851"><label for="socket_1851">인텔 1851소켓 지원</label></div>
+                    <div class="sub_item"><input type="checkbox" id="socket_1700"><label for="socket_1700">인텔 1700소켓 지원</label></div>
+                    <div class="sub_item"><input type="checkbox" id="intel_board"><label for="intel_board">인텔용 메인보드</label></div>
+                    <div class="sub_item"><input type="checkbox" id="amd_am5"><label for="amd_am5">AMD AM5소켓 지원</label></div>
+                    <div class="sub_item"><input type="checkbox" id="amd_board"><label for="amd_board">AMD용 메인보드</label></div>
+                    <div class="sub_item"><input type="checkbox" id="ddr5_support"><label for="ddr5_support">DDR5 메모리 지원</label></div>
+                    <div class="sub_item"><input type="checkbox" id="wifi_support_board"><label for="wifi_support_board">Wi-Fi지원 메인보드</label></div>
+                    <div class="sub_item"><input type="checkbox" id="drmos_power_supply"><label for="drmos_power_supply">Dr.MOS 전원부 사용</label></div>
+                    <div class="sub_item"><input type="checkbox" id ="pcie5_support_board"><label for ="pcie5_support_board">PCIe5.0 지원</label></div>
+                </div>
+            </div>
 
-								<div class="input-checkbox">
-									<input type="checkbox" id="category-2">
-									<label for="category-2">
-										<span></span>
-										Smartphones
-										<small>(740)</small>
-									</label>
-								</div>
+            <!-- RAM -->
+            <div class="main_item" onclick ="showSubItems('ram')">
+                <a href="#" class ="main_link">RAM</a>
+                <div id ="ram" class ="sub_cat_list" style ="display: none;">
+                    <div class ="sub_item"><input type ="checkbox" id ="pc_ddr5"><label for ="pc_ddr5">PC용 DDR5</label></div>
+                    <div class ="sub_item"><input type ="checkbox" id ="pc_ddr4"><label for ="pc_ddr4">PC용 DDR4</label></div>
+                    <div class ="sub_item"><input type ="checkbox" id ="pc_ddr3"><label for ="pc_ddr3">PC용 DDR3</label></div>
+                    <div class ="sub_item"><input type ="checkbox" id ="laptop_ddr5"><label for ="laptop_ddr5">노트북용 DDR5</label></div>
+                    <div class ="sub_item"><input type ="checkbox" id ="laptop_ddr4"><label for ="laptop_ddr4">노트북용 DDR4</label></div>
+                    <div class ="sub_item"><input type ="checkbox" id ="laptop_ddr3"><label for ="laptop_ddr3">노트북용 DDR3</label></div>
+                    <div class ="sub_item"><input type ="checkbox" id ="server_ram"><label for ="server_ram">서버용 RAM</label></div>
+                            </div>
+                        </div>
 
-								<div class="input-checkbox">
-									<input type="checkbox" id="category-3">
-									<label for="category-3">
-										<span></span>
-										Cameras
-										<small>(1450)</small>
-									</label>
-								</div>
+                        <!-- 그래픽카드 -->
+            <div class="main_item" onclick="showSubItems('graphics')">
+                <a href="#" class="main_link">그래픽카드(VGA)</a>
+                <div id="graphics" class="sub_cat_list" style="display: none;">
+                    <div class="sub_item"><input type="checkbox" id="nvidia"><label for="nvidia">NVIDIA 계열</label></div>
+                    <div class="sub_item"><input type="checkbox" id="amd"><label for="amd">AMD 계열</label></div>
+                    <div class="sub_item"><input type="checkbox" id="intel"><label for="intel">인텔 계열</label></div>
+                    <div class="sub_item"><input type="checkbox" id="short"><label for="short">길이 300mm 미만</label></div>
+                    <div class="sub_item"><input type="checkbox" id="pro"><label for="pro">전문가용 VGA</label></div>
+                </div>
+            </div>
 
-								<div class="input-checkbox">
-									<input type="checkbox" id="category-4">
-									<label for="category-4">
-										<span></span>
-										Accessories
-										<small>(578)</small>
-									</label>
-								</div>
+            <!-- SSD -->
+            <div class="main_item" onclick="showSubItems('ssd')">
+                <a href="#" class="main_link">SSD</a>
+                <div id="ssd" class="sub_cat_list" style="display: none;">
+                    <div class="sub_item"><input type="checkbox" id="nvme_all"><label for="nvme_all">M.2 NVMe 전체</label></div>
+                    <div class="sub_item"><input type="checkbox" id="nvme_5"><label for="nvme_5">M.2 NVMe 5.0</label></div>
+                    <div class="sub_item"><input type="checkbox" id="nvme_4"><label for="nvme_4">M.2 NVMe 4.0</label></div>
+                    <div class="sub_item"><input type="checkbox" id="sata_25"><label for="sata_25">2.5인치 SATA</label></div>
+                </div>
+            </div>
 
-								<div class="input-checkbox">
-									<input type="checkbox" id="category-5">
-									<label for="category-5">
-										<span></span>
-										Laptops
-										<small>(120)</small>
-									</label>
-								</div>
+            <!-- HDD -->
+            <div class="main_item" onclick="showSubItems('hdd')">
+                <a href="#" class="main_link">HDD</a>
+                <div id="hdd" class="sub_cat_list" style="display: none;">
+                    <div class="sub_item"><input type="checkbox" id="pc_hdd"><label for="pc_hdd">PC용 HDD</label></div>
+                    <div class="sub_item"><input type="checkbox" id="nas_hdd"><label for="nas_hdd">NAS용 HDD</label></div>
+                    <div class="sub_item"><input type="checkbox" id= "cctv_hdd"><label for= "cctv_hdd">CCTV용 HDD</label></div>
+                </div>
+            </div>
 
-								<div class="input-checkbox">
-									<input type="checkbox" id="category-6">
-									<label for="category-6">
-										<span></span>
-										Smartphones
-										<small>(740)</small>
-									</label>
-								</div>
-							</div>
-						</div>
-						<!-- /aside Widget -->
+        </div>
+            
+                    <!-- 두 번째 카테고리 박스 -->
+                    <div class="cat_list_box" id ="second_box">
+                        <!-- 선택된 카테고리의 하위 메뉴가 표시됩니다 -->
+                        <section id ="second_cat_list"></section> 
+                    </div>               
+                </div> 
 
-						<!-- aside Widget -->
-						<div class="aside">
-							<h3 class="aside-title">Price</h3>
-							<div class="price-filter">
-								<div id="price-slider"></div>
-								<div class="input-number price-min">
-									<input id="price-min" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
-								</div>
-								<span>-</span>
-								<div class="input-number price-max">
-									<input id="price-max" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
-								</div>
-							</div>
-						</div>
-						<!-- /aside Widget -->
+                <!-- 세 번째 박스 -->
+        <div id="third_box" class="content_box">
+            <div id="third_cat_list">
+                <!-- 세 번째 박스 내용 -->
+            </div>
+        </div>
+            
+          
+        
+            
 
-						<!-- aside Widget -->
-						<div class="aside">
-							<h3 class="aside-title">Brand</h3>
-							<div class="checkbox-filter">
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-1">
-									<label for="brand-1">
-										<span></span>
-										SAMSUNG
-										<small>(578)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-2">
-									<label for="brand-2">
-										<span></span>
-										LG
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-3">
-									<label for="brand-3">
-										<span></span>
-										SONY
-										<small>(755)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-4">
-									<label for="brand-4">
-										<span></span>
-										SAMSUNG
-										<small>(578)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-5">
-									<label for="brand-5">
-										<span></span>
-										LG
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-6">
-									<label for="brand-6">
-										<span></span>
-										SONY
-										<small>(755)</small>
-									</label>
-								</div>
-							</div>
-						</div>
-						<!-- /aside Widget -->
-
-						<!-- aside Widget -->
-						<div class="aside">
-							<h3 class="aside-title">Top selling</h3>
-							<div class="product-widget">
-								<div class="product-img">
-									<img src="./img/product01.png" alt="">
-								</div>
-								<div class="product-body">
-									<p class="product-category">Category</p>
-									<h3 class="product-name"><a href="#">product name goes here</a></h3>
-									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								</div>
-							</div>
-
-							<div class="product-widget">
-								<div class="product-img">
-									<img src="./img/product02.png" alt="">
-								</div>
-								<div class="product-body">
-									<p class="product-category">Category</p>
-									<h3 class="product-name"><a href="#">product name goes here</a></h3>
-									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								</div>
-							</div>
-
-							<div class="product-widget">
-								<div class="product-img">
-									<img src="./img/product03.png" alt="">
-								</div>
-								<div class="product-body">
-									<p class="product-category">Category</p>
-									<h3 class="product-name"><a href="#">product name goes here</a></h3>
-									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								</div>
-							</div>
-						</div>
-						<!-- /aside Widget -->
-					</div>
-					<!-- /ASIDE -->
-
-					<!-- STORE -->
-					<div id="store" class="col-md-9">
-						<!-- store top filter -->
-						<div class="store-filter clearfix">
-							<div class="store-sort">
-								<label>
-									Sort By:
-									<select class="input-select">
-										<option value="0">Popular</option>
-										<option value="1">Position</option>
-									</select>
-								</label>
-
-								<label>
-									Show:
-									<select class="input-select">
-										<option value="0">20</option>
-										<option value="1">50</option>
-									</select>
-								</label>
-							</div>
-							<ul class="store-grid">
-								<li class="active"><i class="fa fa-th"></i></li>
-								<li><a href="#"><i class="fa fa-th-list"></i></a></li>
-							</ul>
-						</div>
-						<!-- /store top filter -->
-
-						<!-- store products -->
-						<div class="row">
+                        <!-- Products tab & slick -->
+					 
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="products-tabs">
+                                    <!-- tab -->
+                                    <div id="tab1" class="tab-pane active">
+                                        <div class="products-slick" data-nav="#slick-nav-1">
 							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product01.png" alt="">
-										<div class="product-label">
-											<span class="sale">-30%</span>
-											<span class="new">NEW</span>
-										</div>
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
+                            <div class="product">
+                                <div class="product-img">
+                                    <img src="./img/product00.png" alt="">
+                                    <div class="product-label"></div>
+                                </div>
+                                <div class="product-body">
+                                    <p class="product-category">그래픽카드(VGA)</p>
+                                    <h3 class="product-name">
+                                        <!-- 상품 상세 페이지로 이동할 때 ID를 포함 -->
+                                        <a href="product.html?id=a">갤럭시 GALAX 지포스 RTX 4070 Ti SUPER EX GAMER WHITE OC D6X 16GB</a>
+                                    </h3>
+                                    <h4 class="product-price">₩1,915,800</h4>
+                                    <div class="product-rating"></div>
+                                    <div class="product-btns">
+                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                    </div>
+                                </div>
+                                <div class="add-to-cart">
+                                    <button class="add-to-cart-btn" data-id="a" data-name="갤럭시 GALAX 지포스 RTX 4070 ..." data-price="1915800" data-image="./img/product00.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                </div>
+                            </div>
+                            <!-- /product -->
 
-							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product02.png" alt="">
-										<div class="product-label">
-											<span class="new">NEW</span>
-										</div>
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00</h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
 
-							<div class="clearfix visible-sm visible-xs"></div>
+                            <!-- product -->
+                            <div class="product">
+                                <div class="product-img">
+                                    <img src="./img/product01.png" alt="이엠텍 지포스 RTX 5070 MIRACLE WHITE D7 12GB">
+                                    <div class="product-label"></div>
+                                </div>
+                                <div class="product-body">
+                                    <p class="product-category">그래픽카드(VGA)</p>
+                                    <h3 class="product-name">
+                                        <!-- 상품 상세 페이지로 이동할 때 ID를 포함 -->
+                                        <a href="product.html?id=b">이엠텍 지포스 RTX 5070 MIRACLE WHITE D7 12GB</a>
+                                    </h3>
+                                    <h4 class="product-price">₩1,044,000</h4>
+                                    <div class="product-rating"></div>
+                                    <div class="product-btns">
+                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                    </div>
+                                </div>
+                                <div class="add-to-cart">
+                                    <!-- 장바구니 버튼에 b 상품 데이터 추가 -->
+                                    <button class="add-to-cart-btn" data-id="b" data-name="이엠텍 지포스 RTX 5070 MIRACLE WHITE D7 12GB" data-price="1044000" data-image="./img/product01.png">
+                                        <i class="fa fa-shopping-cart"></i> add to cart
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /product -->
 
-							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product03.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00</h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star-o empty"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
 
-							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product04.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00</h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
+                            <!-- product -->
+                            <div class="product">
+                                <div class="product-img">
+                                    <img src="./img/product02.png" alt="MSI 지포스 RTX 5080 뱅가드 SOC D7 16GB 하이퍼프로져">
+                                </div>
+                                <div class="product-body">
+                                    <p class="product-category">그래픽카드(VGA)</p>
+                                    <h3 class="product-name">
+                                        <!-- 상품 상세 페이지로 이동할 때 ID를 포함 -->
+                                        <a href="product.html?id=c">MSI 지포스 RTX 5080 뱅가드 SOC D7 16GB 하이퍼프로져</a>
+                                    </h3>
+                                    <h4 class="product-price">₩2,293,200</h4>
+                                    <div class="product-rating"></div>
+                                    <div class="product-btns">
+                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                    </div>
+                                </div>
+                                <div class="add-to-cart">
+                                    <!-- 장바구니 버튼에 c 상품 데이터 추가 -->
+                                    <button class="add-to-cart-btn" data-id="c" data-name="MSI 지포스 RTX 5080 뱅가드 SOC D7 16GB 하이퍼프로져" data-price="2293200" data-image="./img/product02.png">
+                                        <i class="fa fa-shopping-cart"></i> add to cart
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /product -->
 
-							<div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>
 
-							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product05.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00</h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
-
-							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product06.png" alt="">
-										<div class="product-label">
-											<span class="sale">-30%</span>
-										</div>
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
-
-							<div class="clearfix visible-sm visible-xs"></div>
-
-							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product07.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00</h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
-
-							<!-- product -->
-							<div class="col-md-4 col-xs-6">
-								<div class="product">
-									<div class="product-img">
-										<img src="./img/product08.png" alt="">
-										<div class="product-label">
-											<span class="new">NEW</span>
-										</div>
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price">$980.00</h4>
-										<div class="product-rating">
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-											<i class="fa fa-star"></i>
-										</div>
-										<div class="product-btns">
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-									</div>
-								</div>
-							</div>
-							<!-- /product -->
+                            <!-- product -->
+                            <div class="product">
+                                <div class="product-img">
+                                    <img src="./img/product03.png" alt="갤럭시 GALAX 지포스 RTX 5070 EX GAMER WHITE OC D7 12GB">
+                                </div>
+                                <div class="product-body">
+                                    <p class="product-category">그래픽카드(VGA)</p>
+                                    <h3 class="product-name">
+                                        <!-- 상품 상세 페이지로 이동할 때 ID를 포함 -->
+                                        <a href="product.html?id=d">갤럭시 GALAX 지포스 RTX 5070 EX GAMER WHITE OC D7 12GB</a>
+                                    </h3>
+                                    <h4 class="product-price">₩1,099,900</h4>
+                                    <div class="product-rating"></div>
+                                    <div class="product-btns">
+                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                    </div>
+                                </div>
+                                <div class="add-to-cart">
+                                    <!-- 장바구니 버튼에 d 상품 데이터 추가 -->
+                                    <button class="add-to-cart-btn" data-id="d" data-name="갤럭시 GALAX 지포스 RTX 5070 EX GAMER WHITE OC D7 12GB" data-price="1099900" data-image="./img/product03.png">
+                                        <i class="fa fa-shopping-cart"></i> add to cart
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /product -->
+						
 						</div>
 						<!-- /store products -->
 
-						<!-- store bottom filter -->
-						<div class="store-filter clearfix">
-							<span class="store-qty">Showing 20-100 products</span>
-							<ul class="store-pagination">
-								<li class="active">1</li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-							</ul>
-						</div>
-						<!-- /store bottom filter -->
-					</div>
-					<!-- /STORE -->
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /SECTION -->
+                        <div style="margin-bottom: 60px;"></div>
 
-		<!-- Footer Placeholder -->
-		<footer></footer>
+                         <!-- 2번째 줄-->
+
+                        <div class="col-md-12">
+						<div class="row">
+							<div class="products-tabs">
+								<!-- tab -->
+								<div id="tab2" class="tab-pane fade in active">
+									<div class="products-slick" data-nav="#slick-nav-2">
+										<!-- product -->
+										<div class="product">
+											<div class="product-img">
+												<img src="./img/product05.png" alt="인텔 코어 울트라7 시리즈2 265K (애로우레이크)">
+											</div>
+											<div class="product-body">
+												<p class="product-category">CPU</p>
+												<h3 class="product-name">
+													<!-- 상품 상세 페이지로 이동할 때 ID를 포함 -->
+													<a href="product.html?id=f">인텔 코어 울트라7 시리즈2 265K (애로우레이크)</a>
+												</h3>
+												<h4 class="product-price">₩539,990</h4>
+												<div class="product-rating"></div>
+												<div class="product-btns">
+													<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+												</div>
+											</div>
+											<div class="add-to-cart">
+												<!-- 장바구니 버튼에 f 상품 데이터 추가 -->
+												<button class="add-to-cart-btn" data-id="f" data-name="인텔 코어 울트라7 시리즈2 265K (애로우레이크)" data-price="539,990" data-image="./img/product05.png">
+													<i class="fa fa-shopping-cart"></i> add to cart
+												</button>
+											</div>
+										</div>
+										<!-- /product -->
+
+
+										<!-- product -->
+										<div class="product">
+											<div class="product-img">
+												<img src="./img/product06.png" alt="AMD 라이젠7-6세대 9700X (그래니트 릿지)">
+												<div class="product-label">
+													
+												</div>
+											</div>
+											<div class="product-body">
+												<p class="product-category">CPU</p>
+												<h3 class="product-name"><a href="product.html?id=g">AMD 라이젠7-6세대 9700X (그래니트 릿지)</a></h3>
+												<h4 class="product-price">₩474,040
+												<div class="product-rating">
+												</div>
+												<div class="product-btns">
+													<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+												</div>
+											</div>
+											<div class="add-to-cart">
+												<button class="add-to-cart-btn" data-id="7" data-name="AMD 라이젠7-6세대 9700X (그래니트 릿지)" data-price="474,040" data-image="./img/product06.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+											</div>
+										</div>
+										<!-- /product -->
+
+										<!-- product -->
+										<div class="product">
+											<div class="product-img">
+												<img src="./img/product07.png" alt="AMD 라이젠7-6세대 9800X3D (그래니트 릿지)">
+												<div class="product-label">
+													
+												</div>
+											</div>
+											<div class="product-body">
+												<p class="product-category">CPU</p>
+												<h3 class="product-name"><a href="product.html?id=h">AMD 라이젠7-6세대 9800X3D (그래니트 릿지)</a></h3>
+												<h4 class="product-price">₩795,990
+
+												<div class="product-rating">
+												</div>
+												<div class="product-btns">
+													<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+												</div>
+											</div>
+											<div class="add-to-cart">
+												<button class="add-to-cart-btn" data-id="8" data-name="AMD 라이젠7-6세대 9800X3D (그래니트 릿지)" data-price="795990" data-image="./img/product07.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+											</div>
+										</div>
+										<!-- /product -->
+
+										<!-- product -->
+										<div class="product">
+											<div class="product-img">
+												<img src="./img/product08.png" alt="인텔 코어i7-14세대 14700K (랩터레이크 리프레시)">
+											</div>
+											<div class="product-body">
+												<p class="product-category">CPU</p>
+												<h3 class="product-name"><a href="product.html?id=i">인텔 코어i7-14세대 14700K (랩터레이크 리프레시) </a></h3>
+												<h4 class="product-price">₩552,890 
+													<div class="product-rating">
+													</div>
+												<div class="product-btns">
+													<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+												</div>
+											</div>
+											<div class="add-to-cart">
+												<button class="add-to-cart-btn" data-id="9" data-name="인텔 코어i7-14세대 14700K (랩터레이크 리프레시) " data-price="552890" data-image="./img/product08.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+											</div>
+										</div>
+										<!-- /product -->        
+						</div>
+						<!-- /store products -->
+
+                        <div style="margin-bottom: 60px;"></div>
+
+                         <!-- 3번째 줄-->
+
+                         <div class="col-md-12">
+                            <div class="row">
+                                <div class="products-tabs">
+                                    <!-- tab -->
+                                    <div id="tab2" class="tab-pane fade in active">
+                                        <div class="products-slick" data-nav="#slick-nav-2">
+
+                                            <!-- product -->
+                                            <div class="product">
+                                                <div class="product-img">
+                                                    <img src="./img/product05.png" alt="인텔 코어 울트라7 시리즈2 265K (애로우레이크)">
+                                                </div>
+                                                <div class="product-body">
+                                                    <p class="product-category">CPU</p>
+                                                    <h3 class="product-name">
+                                                        <!-- 상품 상세 페이지로 이동할 때 ID를 포함 -->
+                                                        <a href="product.html?id=f">인텔 코어 울트라7 시리즈2 265K (애로우레이크)</a></h3>
+                                                    <h4 class="product-price">₩539,990</h4>
+                                                    <div class="product-rating"></div>
+                                                    <div class="product-btns">
+                                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="add-to-cart">
+                                                    <!-- 장바구니 버튼에 f 상품 데이터 추가 -->
+                                                    <button class="add-to-cart-btn" data-id="f" data-name="인텔 코어 울트라7 시리즈2 265K (애로우레이크)" data-price="539,990" data-image="./img/product05.png">
+                                                        <i class="fa fa-shopping-cart"></i> add to cart
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- /product -->
+    
+    
+                                            <!-- product -->
+                                            <div class="product">
+                                                <div class="product-img">
+                                                    <img src="./img/product06.png" alt="AMD 라이젠7-6세대 9700X (그래니트 릿지)">
+                                                    <div class="product-label">
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="product-body">
+                                                    <p class="product-category">CPU</p>
+                                                    <h3 class="product-name"><a href="product.html?id=g">AMD 라이젠7-6세대 9700X (그래니트 릿지)</a></h3>
+                                                    <h4 class="product-price">₩474,040
+                                                    <div class="product-rating">
+                                                    </div>
+                                                    <div class="product-btns">
+                                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="add-to-cart">
+                                                    <button class="add-to-cart-btn" data-id="7" data-name="AMD 라이젠7-6세대 9700X (그래니트 릿지)" data-price="474,040" data-image="./img/product06.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                                </div>
+                                            </div>
+                                            <!-- /product -->
+    
+                                            <!-- product -->
+                                            <div class="product">
+                                                <div class="product-img">
+                                                    <img src="./img/product07.png" alt="AMD 라이젠7-6세대 9800X3D (그래니트 릿지)">
+                                                    <div class="product-label">
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="product-body">
+                                                    <p class="product-category">CPU</p>
+                                                    <h3 class="product-name"><a href="product.html?id=h">AMD 라이젠7-6세대 9800X3D (그래니트 릿지)</a></h3>
+                                                    <h4 class="product-price">₩795,990
+    
+                                                    <div class="product-rating">
+                                                    </div>
+                                                    <div class="product-btns">
+                                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="add-to-cart">
+                                                    <button class="add-to-cart-btn" data-id="8" data-name="AMD 라이젠7-6세대 9800X3D (그래니트 릿지)" data-price="795990" data-image="./img/product07.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                                </div>
+                                            </div>
+                                            <!-- /product -->
+    
+                                            <!-- product -->
+                                            <div class="product">
+                                                <div class="product-img">
+                                                    <img src="./img/product08.png" alt="인텔 코어i7-14세대 14700K (랩터레이크 리프레시)">
+                                                </div>
+                                                <div class="product-body">
+                                                    <p class="product-category">CPU</p>
+                                                    <h3 class="product-name"><a href="product.html?id=i">인텔 코어i7-14세대 14700K (랩터레이크 리프레시) </a></h3>
+                                                    <h4 class="product-price">₩552,890 
+                                                        <div class="product-rating">
+                                                        </div>
+                                                    <div class="product-btns">
+                                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="add-to-cart">
+                                                    <button class="add-to-cart-btn" data-id="9" data-name="인텔 코어i7-14세대 14700K (랩터레이크 리프레시) " data-price="552890" data-image="./img/product08.png"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                                </div>
+                                            </div>
+                                            <!-- /product -->        
+                            </div>
+                            <!-- /store products -->
+                         
+                         
+
+                        
+
+						
+        		        
 
 		<!-- jQuery Plugins -->
 		<script src="js/jquery.min.js"></script>
@@ -568,6 +512,9 @@
 		<script src="js/nouislider.min.js"></script>
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
+        <script src="js/store.js"></script>
+        <script src="js/cart.js"></script>
+
 
         <!-- Voice Recognition -->
         <script src="js/voice-recognition.js"></script>
@@ -601,6 +548,8 @@
                     .catch(error => console.error('푸터 로드 중 오류:', error));
             });
         </script>
+
+        
 
 	</body>
 </html>
