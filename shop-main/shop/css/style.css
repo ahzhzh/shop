@@ -356,11 +356,7 @@ textarea.input {
 	Breadcrumb
 \*----------------------------*/
 
-#breadcrumb {
-  padding: 30px 0px;
-  border-bottom: 1px solid #E4E7ED;
-  margin-bottom: 30px;
-}
+
 
 #breadcrumb .breadcrumb-header {
   display: inline-block;
@@ -632,7 +628,7 @@ textarea.input {
 #navigation {
   background: #FFF;
   border-bottom: 0.5px solid #50586C;
-  margin-top: -10px; /* 헤더와 네비게이션바 간격 줄이기 */
+  margin-top: 0px; /* 헤더와 네비게이션바 간격 줄이기 */
   padding-top: 0px; /* 내부 상단 여백 제거 */
   padding-bottom: 10px; /* 내부 하단 여백 제거 */
 }
@@ -1262,111 +1258,7 @@ textarea.input {
   width: calc(50% - 7px);
 }
 
-/*----------------------------*\
-	Store
-\*----------------------------*/
 
-.store-filter {
-  margin-bottom: 15px;
-  margin-top: 15px;
-}
-
-/*-- Store Sort --*/
-
-.store-sort {
-  display: inline-block;
-}
-
-.store-sort label {
-  font-weight: 500;
-  font-size: 12px;
-  text-transform: uppercase;
-  margin-right: 15px;
-}
-
-/*-- Store Grid --*/
-
-.store-grid {
-  float: right;
-}
-
-.store-grid li {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  background-color: #FFF;
-  border: 1px solid #E4E7ED;
-  text-align: center;
-  -webkit-transition: 0.2s all;
-  transition: 0.2s all;
-}
-
-.store-grid li+li {
-  margin-left: 5px;
-}
-
-.store-grid li:hover {
-  background-color: #E4E7ED;
-  color: #D10024;
-}
-
-.store-grid li.active {
-  background-color: #D10024;
-  border-color: #D10024;
-  color: #FFF;
-  cursor: default;
-}
-
-.store-grid li a {
-  display: block;
-}
-
-/*-- Store Pagination --*/
-
-.store-pagination {
-  float: right;
-}
-
-.store-pagination li {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  background-color: #FFF;
-  border: 1px solid #E4E7ED;
-  -webkit-transition: 0.2s all;
-  transition: 0.2s all;
-}
-
-.store-pagination li+li {
-  margin-left: 5px;
-}
-
-.store-pagination li:hover {
-  background-color: #E4E7ED;
-  color: #D10024;
-}
-
-.store-pagination li.active {
-  background-color: #D10024;
-  border-color: #D10024;
-  color: #FFF;
-  font-weight: 500;
-  cursor: default;
-}
-
-.store-pagination li a {
-  display: block;
-}
-
-.store-qty {
-  margin-right: 30px;
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 12px;
-}
 
 /*=========================================================
 	08 -> PRODUCT DETAILS PAGE

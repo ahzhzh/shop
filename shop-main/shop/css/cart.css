@@ -2,12 +2,14 @@
 .cart-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* 테이블 셀 너비를 고정 */
 }
 
 /* 상품 목록 박스 고정 크기 */
 .scrollable-container {
     height: 420px; /* 고정된 높이 설정 */
     overflow-y: auto; /* 세로 스크롤 활성화 */
+    margin-top: 20px; /* 상단 간격 추가 (헤더와 네비게이션 바와 간격 유지) */
 }
 
 /* 크롬 기본 스크롤 색상 */
@@ -28,6 +30,7 @@
 .cart-table td {
     padding: 15px;
     text-align: left;
+    box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
 }
 
 .cart-table th {
@@ -38,11 +41,13 @@
 .empty-cart-message {
     text-align: center;
     color: #999;
+    margin-top: 20px; /* 헤더와 간격 유지 */
 }
 
 /* 상품 이미지 스타일 */
 .product-img img {
     max-width: 80px;
+    display: block;
 }
 
 /* 장바구니 합계 및 결제 섹션 스타일 */
@@ -52,4 +57,14 @@
 
 .primary-btn.order-submit {
     display: block;
+}
+
+/* 전역 충돌 방지 (명시적 범위 설정) */
+#main-content .cart-table th,
+#main-content .cart-table td {
+    padding: 15px;
+}
+
+#main-content .scrollable-container {
+    height: 420px;
 }

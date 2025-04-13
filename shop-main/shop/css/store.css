@@ -1,0 +1,115 @@
+/* 부모 컨테이너를 float 기반으로 설정 */
+.row {
+    overflow: hidden; /* 부모 요소가 자식 요소를 감싸도록 설정 */
+}
+
+/* 첫 번째 박스 스타일 */
+.cat_list_box {
+    float: left; /* 자식 요소를 왼쪽으로 정렬 */
+    width: 200px; /* 고정 너비 설정 */
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-top: 30px; /* 첫 번째 박스를 아래로 내리기 */
+    margin-right: 20px; /* 두 박스 사이 간격 */
+}
+
+/* 목록 스타일 */
+.cat_list {
+    list-style: none; /* 기본 리스트 스타일 제거 */
+    padding: 0;
+    margin: 0;
+}
+
+/* 메인 링크 스타일 */
+.main_link {
+    display: block;
+    padding: 10px;
+    text-decoration: none; /* 밑줄 제거 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 14px; /* 글씨 크기 줄이기 */
+}
+
+.main_link:hover {
+    background-color: #ddd; /* 호버 시 배경색 변경 */
+}
+
+/* 서브 카테고리 숨김 설정 */
+.sub_cat_list {
+    display: none; /* 기본적으로 숨김 */
+}
+
+/* 선택된 서브 카테고리 표시 - 모든 텍스트와 체크박스를 가로로 배치 */
+.sub_cat_list.active {
+    display: flex; /* 활성화된 경우 가로 배치 */
+    flex-wrap: wrap; /* 내용이 많을 경우 다음 줄로 넘기기 */
+    gap: 10px; /* 항목 간 간격 추가 */
+}
+
+/* 두 번째 박스 스타일 (크기 고정) */
+#second_box {
+    float: left; /* 두 번째 박스를 첫 번째 박스 오른쪽에 배치 */
+    width: 930px; /* 고정 너비 설정 */
+    min-height: 200px; /* 최소 높이 설정 (항상 일정한 크기를 유지) */
+    max-height: 200px; /* 최대 높이 설정 (항상 일정한 크기를 유지) */
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto; /* 내용이 많을 경우 스크롤 추가 */
+
+}
+
+/* 세 번째 박스 스타일 (두 번째 박스와 동일, 위치 조정 가능) */
+#third_box {
+    position: relative; /* 위치를 조정할 수 있도록 설정 */
+    width: 930px; /* 고정 너비 설정 (두 번째 박스와 동일) */
+    min-height: 300px; /* 최소 높이 설정  */
+    max-height: 300px; /* 최대 높이 설정  */
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto; /* 내용이 많을 경우 스크롤 추가 */
+
+    bottom: 60px; /* 두 번째 박스 아래로 이동 (위치를 직접 조정 가능) */
+    left: 205px;
+}
+
+/* 두 번째 및 세 번째 박스 내부 콘텐츠 정리 - 모든 텍스트와 체크박스를 가로 배치 */
+#second_cat_list,
+#third_cat_list {
+    display: flex; /* 플렉스박스를 사용하여 정렬 (헤더와 분리된 영역에서만 적용) */
+    flex-wrap: wrap; /* 내용이 많을 경우 다음 줄로 넘기기 */
+    gap: 10px; /* 항목 간 간격 추가 */
+}
+
+/* 섹션 스타일링 (두꺼운 글씨 기준으로 줄바꿈) - 모든 텍스트를 가로 배치하도록 수정 */
+.sub_section {
+    display: flex; /* 가로로 배치 */
+    flex-wrap: wrap; /* 항목이 많을 경우 다음 줄로 넘기기 */
+    gap: 10px; /* 항목 간 간격 추가 */
+
+}
+
+/* 서브 아이템 스타일링 (체크박스 포함) - 모든 체크박스와 텍스트를 가로 배치하도록 수정 */
+.sub_item {
+    display: flex; /* 체크박스와 텍스트를 가로로 배치 */
+    align-items: center;
+}
+
+.sub_item input[type='checkbox'] {
+    margin-right: 5px;
+}
+
+.sub_item label {
+    color: #333;
+    font-size: 12px;
+}
+
+.sub_item label:hover {
+    color: #007bff;
+}
+
+/* 헤더 스타일링 (두꺼운 글씨) - 명시적으로 설정하여 네비게이션 바에 영향 방지*/
+h3 {
+    font-size: 14px;
+}
