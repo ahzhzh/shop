@@ -7,11 +7,31 @@ let processor = null;
 let lastAudioTime = Date.now();
 let autoStopTimer;
 let silenceTimeout = null; // 3초 무음 감지를 위한 타이머
+let searchInput = null; // 검색 입력 필드를 위한 전역 변수
+
+// 전역 변수로 현재 재생 중인 오디오 객체 관리
+let currentAudio = null;
+let isUserSpeaking = false; // 사용자가 말하고 있는지 추적
+let pendingCommand = null; // 대기 중인 명령어 저장
 
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
     const voiceSearchBtn = document.getElementById('voice-search-btn');
-    const searchInput = document.querySelector('.header-search input.input');
+    searchInput = document.querySelector('.header-search input.input');
+    
+    // 검색 입력 필드가 없으면 생성
+    if (!searchInput) {
+        console.log('검색 입력 필드를 찾을 수 없습니다. 새로 생성합니다.');
+        const headerSearch = document.querySelector('.header-search');
+        if (headerSearch) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'input';
+            input.placeholder = '검색어를 입력하세요';
+            headerSearch.appendChild(input);
+            searchInput = input;
+        }
+    }
     
     // 이전 페이지에서 음성 인식 상태 확인
     const wasListening = sessionStorage.getItem('voiceRecognitionActive') === 'true';
@@ -115,10 +135,8 @@ function setupAudioProcessing(stream) {
                 if (silenceTimeout) {
                     clearTimeout(silenceTimeout);
                 }
-                silenceTimeout = setTimeout(() => {
-                    // 3초 동안 음성이 없으면 음성 인식 종료
-                    stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
-                }, 3000);
+                // 초기 음성 인식 시작 시에는 3초 타이머를 설정하지 않음
+                // 음성 인식 결과가 오고 오디오 재생이 완료된 후에 타이머가 설정됨
             }
 
             try {
@@ -148,10 +166,8 @@ function setupAudioProcessing(stream) {
     }
     sessionStorage.setItem('voiceRecognitionActive', 'true');
 
-    // 3초 무음 감지 타이머 시작
-    silenceTimeout = setTimeout(() => {
-        stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
-    }, 3000);
+    // 초기 3초 무음 감지 타이머는 제거
+    // 대신 음성 인식 결과가 오고 오디오 재생이 완료된 후에 타이머가 설정됨
 
     autoStopTimer = setInterval(() => {
         if (Date.now() - lastAudioTime > 60000) {
@@ -180,7 +196,12 @@ function startWebSocket() {
 
             if (data.type === 'interim') {
                 console.log('Interim transcript:', data.transcript);
-                searchInput.value = data.transcript;
+                // searchInput이 정의되어 있는지 확인
+                if (searchInput) {
+                    searchInput.value = data.transcript;
+                } else {
+                    console.log('검색 입력 필드를 찾을 수 없습니다. 음성 인식 결과:', data.transcript);
+                }
                 
                 // 중간 결과가 수신되면 3초 타이머 리셋
                 if (silenceTimeout) {
@@ -192,19 +213,52 @@ function startWebSocket() {
                 }, 3000);
             } else if (data.type === 'result') {
                 console.log('Final transcript:', data.transcript);
-                searchInput.value = data.transcript;
+                // searchInput이 정의되어 있는지 확인
+                if (searchInput) {
+                    searchInput.value = data.transcript;
+                } else {
+                    console.log('검색 입력 필드를 찾을 수 없습니다. 음성 인식 결과:', data.transcript);
+                }
                 
                 const text = data.transcript.toLowerCase();
-                handleVoiceCommand(text, data.audio);
                 
-                // 최종 결과가 수신되면 3초 타이머 리셋
-                if (silenceTimeout) {
-                    clearTimeout(silenceTimeout);
+                // 오디오 데이터가 있으면 직접 재생
+                if (data.audio) {
+                    console.log('오디오 데이터 수신됨, 길이:', data.audio.length);
+                    try {
+                        const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+                        audio.onerror = (e) => {
+                            console.error('오디오 재생 오류:', e);
+                        };
+                        await audio.play();
+                        console.log('오디오 재생 성공');
+                        
+                        // 오디오 재생이 완료된 후 3초 타이머 시작
+                        audio.onended = () => {
+                            console.log('오디오 재생 완료, 3초 타이머 시작');
+                            if (silenceTimeout) {
+                                clearTimeout(silenceTimeout);
+                            }
+                            silenceTimeout = setTimeout(() => {
+                                stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
+                            }, 3000);
+                        };
+                    } catch (error) {
+                        console.error('오디오 재생 오류:', error);
+                    }
+                } else {
+                    console.log('오디오 데이터가 없습니다.');
+                    // 오디오 데이터가 없는 경우에도 3초 타이머 시작
+                    if (silenceTimeout) {
+                        clearTimeout(silenceTimeout);
+                    }
+                    silenceTimeout = setTimeout(() => {
+                        stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
+                    }, 3000);
                 }
-                silenceTimeout = setTimeout(() => {
-                    // 3초 동안 새로운 음성이 없으면 음성 인식 종료
-                    stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
-                }, 3000);
+                
+                // 명령어 처리 - 오디오 재생이 완료된 후에 실행됨
+                handleVoiceCommand(text, data.audio);
             }
         } catch (error) {
             console.error('WebSocket message processing error:', error);
@@ -223,59 +277,83 @@ function startWebSocket() {
 async function handleVoiceCommand(text, audioData) {
     const params = getUrlParams();
     
-    // 장바구니 확인 명령어
-    if (text.includes('장바구니') && (text.includes('확인') || text.includes('보여줘') || text.includes('열어줘'))) {
-        const cartIcon = document.querySelector('.fa-shopping-cart').closest('a');
-        if (cartIcon) {
-            if (audioData) {
-                const audio = new Audio(`data:audio/mp3;base64,${audioData}`);
-                audio.onended = () => {
-                    cartIcon.click();
-                };
-                await audio.play();
-            } else {
+    // 명령어 처리를 위한 함수들
+    const commands = {
+        // 장바구니 확인 명령어
+        checkCart: () => {
+            const cartIcon = document.querySelector('.fa-shopping-cart').closest('a');
+            if (cartIcon) {
                 cartIcon.click();
             }
+        },
+        
+        // 장바구니 추가 명령어
+        addToCart: () => {
+            const addToCartBtn = document.getElementById('add-to-cart-btn');
+            if (addToCartBtn) {
+                addToCartBtn.click();
+                console.log('장바구니에 추가됨:', params.name);
+            }
+        },
+        
+        // 뒤로 가기 명령어
+        goBack: () => {
+            window.history.back();
+        },
+        
+        // 종료 명령어
+        exit: () => {
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         }
+    };
+    
+    // 명령어 실행 함수 (오디오 재생 후 실행)
+    const executeCommand = (command) => {
+        if (audioData) {
+            try {
+                const audio = new Audio(`data:audio/mp3;base64,${audioData}`);
+                audio.onerror = (e) => {
+                    console.error('오디오 재생 오류:', e);
+                };
+                audio.play().then(() => {
+                    // 오디오 재생이 완료된 후 명령어 실행
+                    audio.onended = () => {
+                        console.log('오디오 재생 완료, 명령어 실행');
+                        command();
+                    };
+                }).catch(error => {
+                    console.error('오디오 재생 오류:', error);
+                    // 오류 발생 시에도 명령어 실행
+                    command();
+                });
+            } catch (error) {
+                console.error('오디오 재생 오류:', error);
+                // 오류 발생 시에도 명령어 실행
+                command();
+            }
+        } else {
+            // 오디오 데이터가 없는 경우 바로 명령어 실행
+            command();
+        }
+    };
+    
+    // 장바구니 확인 명령어
+    if (text.includes('장바구니') && (text.includes('확인') || text.includes('보여줘') || text.includes('열어줘'))) {
+        executeCommand(commands.checkCart);
     } 
     // 장바구니 추가 명령어
     else if (text.includes('장바구니') || text.includes('담아줘') || text.includes('추가해줘')) {
-        // 현재 페이지의 장바구니 버튼 찾기
-        const addToCartBtn = document.getElementById('add-to-cart-btn');
-        if (addToCartBtn) {
-            addToCartBtn.click();
-            console.log('장바구니에 추가됨:', params.name);
-        }
+        executeCommand(commands.addToCart);
     } 
     // 뒤로 가기 명령어
     else if (text.includes('뒤로') || text.includes('이전')) {
-        if (audioData) {
-            const audio = new Audio(`data:audio/mp3;base64,${audioData}`);
-            audio.onended = () => {
-                window.history.back();
-            };
-            await audio.play();
-        } else {
-            window.history.back();
-        }
+        executeCommand(commands.goBack);
     } 
     // 종료 명령어
     else if (text.includes('꺼 줘') || text.includes('종료') || text.includes('그만')) {
-        if (audioData) {
-            const audio = new Audio(`data:audio/mp3;base64,${audioData}`);
-            audio.onended = () => {
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-            };
-            await audio.play();
-        }
-    }
-
-    // 음성 피드백 재생
-    if (audioData) {
-        const audio = new Audio(`data:audio/mp3;base64,${audioData}`);
-        await audio.play();
+        executeCommand(commands.exit);
     }
 }
 
