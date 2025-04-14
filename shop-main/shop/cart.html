@@ -40,9 +40,7 @@
         <!-- 장바구니 섹션 -->
         <div id="breadcrumb" class="section">
             <div class="container">
-                <div class="row">
-                    
-                </div>
+                <div class="row"></div>
             </div>
         </div>
 
@@ -54,15 +52,7 @@
                         <!-- 상품 목록 박스형태로 고정 -->
                         <div class="cart-table scrollable-container shadow-sm p-3 mb-5 bg-white rounded">
                             <table class="table table-hover">
-                                <thead class="sticky-header">
-                                    <tr>
-                                        <th>상품명</th>
-                                        <th>가격</th>
-                                        <th>수량</th>
-                                        <th>합계</th>
-                                        <th>삭제</th>
-                                    </tr>
-                                </thead>
+                                <thead class="sticky-header"></thead>
                                 <tbody id="cart-items">
                                     <!-- 상품 목록이 없을 경우 기본 메시지 표시 -->
                                     <tr class="empty-cart-message">
@@ -75,17 +65,21 @@
 
                     <!-- 장바구니 합계 -->
                     <div class="col-md-4 cart-summary-container">
-                        <div class="cart-summary shadow-sm p-3 mb-5 bg-white rounded">
-                            <h3>장바구니 합계</h3>
-                            <hr/>
-                            <div class="cart-total mb-3">
+                        <div class="cart-summary shadow-sm p-4 mb-5 bg-light rounded">
+                            <h3 class="cart-summary-title text-center">장바구니 합계</h3>
+                            <hr class="my-3"/>
+                            <div class="cart-total mb-5 d-flex justify-content-between align-items-center">
                                 <strong>총 금액:</strong>
-                                <span id="cart-total">₩0</span>
-                            </div>
-                            <!-- 결제하기 버튼 유지 -->
-                            <a href="checkout.html" class="primary-btn order-submit">결제하기</a>
+                                <span id="cart-total" class="text-primary font-weight-bold">₩0</span>
+                            </div>                            
                         </div>
+                        <!-- 결제하기 버튼 -->
+                        <a href="checkout.html" class="btn btn-primary btn-block order-submit mt-4">
+                            결제하기
+                        </a>
                     </div>
+                    
+
                 </div>
             </div>
         </div>
@@ -101,8 +95,6 @@
     <script src="./js/nouislider.min.js"></script>
     <script src="./js/jquery.zoom.min.js"></script>
     <script src="./js/main.js"></script>
-
-    <!-- cart.js 추가 -->
     <script src="./js/cart.js"></script>
 
 </body>
