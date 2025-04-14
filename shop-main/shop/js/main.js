@@ -83,6 +83,8 @@
   
 	/////////////////////////////////////////
   
+
+	
 	// Product Main img Slick
 	$("#product-main-img").slick({
 	  infinite: true,

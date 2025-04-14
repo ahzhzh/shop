@@ -11,7 +11,7 @@ function parsePrice(priceString) {
 }
 
 // 상품 이름을 일정 글자 수마다 줄바꿈 처리하는 함수
-function wrapName(name, maxLength = 15) {
+function wrapName(name, maxLength = 25) {
     let wrappedName = '';
     for (let i = 0; i < name.length; i += maxLength) {
         wrappedName += name.substring(i, i + maxLength) + '<br>';
