@@ -16,13 +16,11 @@
 .scrollable-container::-webkit-scrollbar {
     width: 8px; /* 스크롤바 너비 */
 }
-
 .scrollable-container::-webkit-scrollbar-thumb {
-    background-color: #c1c1c1; /* 크롬 기본 색상과 유사한 회색 */
+    background-color: #c1c1c1;
 }
-
 .scrollable-container::-webkit-scrollbar-track {
-    background-color: #f1f1f1; /* 트랙 배경색 */
+    background-color: #f1f1f1;
 }
 
 /* 테이블 스타일 */
@@ -30,26 +28,28 @@
 .cart-table td {
     padding: 15px;
     text-align: left;
-    box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
-    vertical-align: middle; /* 모든 셀 내용 가운데 정렬 */
+    box-sizing: border-box;
+    vertical-align: middle; /* 모든 셀 내용 세로 중앙 정렬 */
 }
-
 .cart-table th {
     background-color: #f8f9fa;
     font-weight: bold;
 }
 
+
+
+
 /* 빈 장바구니 메시지 스타일 */
 .empty-cart-message {
     text-align: center;
     color: #999;
-    margin-top: 20px; /* 헤더와 간격 유지 */
+    margin-top: 20px;
 }
 
 /* 상품 이미지 스타일 */
 .product-img img {
     max-width: 80px;
-    height: auto; /* 이미지 비율 유지 */
+    height: auto;
     display: block;
 }
 
@@ -58,42 +58,47 @@
     display: block;
     font-size: 14px;
     color: #333;
-    white-space: normal; /* 줄바꿈 허용 */
-    word-wrap: break-word; /* 긴 단어를 자동 줄바꿈 처리 */
+    white-space: normal;
+    word-wrap: break-word;
 }
 
-/* 수량 입력 박스 스타일 (일관성 유지) */
+/* 수량 입력 박스 스타일 */
 .input-number {
     display: flex;
     align-items: center;
 }
-
 .input-number input[type="number"] {
-    width: 70px; /* 입력 필드 고정 너비 (숫자가 잘리지 않도록 수정) */
-    height: 40px; /* 입력 필드 고정 높이 (버튼과 일관성 유지) */
+    width: 70px;
+    height: 40px;
     text-align: center;
-    font-size: 14px; /* 숫자 크기 조정 */
+    font-size: 14px;
     border-radius: 5px;
-    border: 1px solid #ccc; /* 테두리 추가 */
+    border: 1px solid #ccc;
 }
-
 .input-number .qty-up,
 .input-number .qty-down {
     cursor: pointer;
     font-size: 16px;
-    width: 20px; /* 버튼 너비 고정 (입력 필드와 동일) */
-    height: 20px; /* 버튼 높이 고정 (입력 필드와 동일) */
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ccc; /* 테두리 추가 */
-    background-color: #f8f9fa; /* 버튼 배경색 설정 */
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
 }
+
+.product-price {
+    vertical-align: middle !important;
+    text-align: center;
+    padding-top: 8px; /* 원하는 만큼 px 값 조절 */
+}
+
 
 /* 상품 이름, 가격 등의 텍스트 정렬 (가운데 높이) */
 .product-widget {
     display: flex;
-    align-items: center; /* 세로 가운데 정렬 */
+    align-items: center;
 }
 
 /* 삭제 버튼 스타일 */
@@ -102,37 +107,35 @@
     border: none;
     cursor: pointer;
 }
-
 .delete i.fa-close {
-    color: #dc3545; /* 삭제 아이콘 색상 (빨간색) */
+    color: #dc3545;
 }
-
 .delete:hover i.fa-close {
-    color: #a71d2a; /* 호버 시 삭제 아이콘 색상 변경 (진한 빨간색) */
+    color: #a71d2a;
 }
 
 /* 장바구니 합계 및 결제 섹션 스타일 */
-
-.cart-summary-container { 
-width :30%
+.cart-summary-container {
+    width: 30%;
 }
-.cart-summary h3 {font-size :22 px }
+.cart-summary {
+    margin-bottom: 32px; /* 총 금액과 결제 버튼 사이 공간 */
+}
+.cart-summary h3 {
+    font-size: 22px;
+}
 
 /* 총 금액 스타일 및 크기 확대 */
-
-.cart-total span {font-size: 20px}
-
 .cart-total span {
+    font-size: 20px;
     font-weight: bold;
 }
 
 /* 결제 버튼 스타일 및 간격 조정 */
-.primary-btn.order-submit {
-    padding: 10px 10;
+.btn.order-submit, .primary-btn.order-submit {
+    padding: 10px 10px;
     text-align: center;
-    background-color: #007bff; /* 버튼 배경색  */
-    color: #fff; /* 버튼 텍스트 색상 (흰색) */
-    border-radius: 5px;    
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
 }
-
-
