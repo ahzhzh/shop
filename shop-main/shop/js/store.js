@@ -82,7 +82,7 @@ function getThirdBoxContent(categoryId) {
             <tbody>
                 <!-- 제조사별 -->
                 <tr>
-                    <th>제조사별</th>
+                    <th style="width: 150px;">제조사별</th>
                     <td style="display: flex; gap: 10px;">
                         <div class="sub_item">
                             <input type="checkbox" id="intel">
@@ -183,7 +183,7 @@ function getThirdBoxContent(categoryId) {
                 <tbody>
                     <!-- 제조사별 -->
                     <tr>
-                        <th>제조사별</th>
+                        <th style="width: 150px;">제조사별</th>
                         <td style="display: flex; gap: 10px;">
                             <div class="sub_item">
                                 <input type="checkbox" id="gigabyte">
@@ -360,7 +360,7 @@ function getThirdBoxContent(categoryId) {
             <tbody>
                 <!-- 제조사별 -->
                 <tr>
-                    <th>제조사별</th>
+                    <th style="width: 150px;">제조사별</th>
                     <td style="display: flex; flex-wrap: wrap; gap: 10px;">
                         <div class="sub_item">
                             <input type="checkbox" id="samsung">
@@ -574,7 +574,7 @@ function getThirdBoxContent(categoryId) {
             <tbody>
                 <!-- 제조사별 -->
                 <tr>
-                    <th>제조사별</th>
+                    <th style="width: 150px;">제조사별</th>
                     <td style="display: flex; flex-wrap: wrap; gap: 10px;">
                         <div class="sub_item">
                             <input type="checkbox" id="gigabyte">
@@ -871,7 +871,7 @@ function getThirdBoxContent(categoryId) {
     <tbody>
         <!-- 제조사별 -->
         <tr>
-            <th>제조사별</th>
+            <th style="width: 150px;">제조사별</th>
             <td style="display: flex; flex-wrap: wrap; gap: 10px;">
                 <div class="sub_item">
                     <input type="checkbox" id="samsung">
@@ -1036,7 +1036,7 @@ function getThirdBoxContent(categoryId) {
     <tbody>
         <!-- 제조사별 -->
         <tr>
-            <th>제조사별</th>
+            <th style="width: 150px;">제조사별</th>
             <td style="display: flex; flex-wrap: wrap; gap: 10px;">
                 <div class="sub_item">
                     <input type="checkbox" id="seagate">
