@@ -6,12 +6,13 @@
 /* 첫 번째 박스 스타일 */
 .cat_list_box {
     float: left; /* 자식 요소를 왼쪽으로 정렬 */
-    width: 200px; /* 고정 너비 설정 */
+    width: 150px; /* 고정 너비 설정 */
     border: 1px solid #ddd;
     padding: 10px;
     background-color: #f9f9f9;
     margin-top: 30px; /* 첫 번째 박스를 아래로 내리기 */
-    margin-right: 20px; /* 두 박스 사이 간격 */
+    margin-right: 10px; /* 두 박스 사이 간격 */
+    margin-left: 20px;
 }
 
 /* 목록 스타일 */
@@ -58,6 +59,7 @@
     font-weight: bold;
     margin-bottom: 0px; /* 텍스트와 박스 사이 간격 */
     margin-top: 29px;
+    margin-left: 53px;
 }
 
 #second_box {
@@ -73,7 +75,7 @@
     gap: 0;
     position: relative;
     margin-top: 10px; /* 박스를 아래로 내리는 값 (원하는 만큼 조정) */
-    
+    margin-left: 50px;
 }
 
 
@@ -116,8 +118,9 @@
     border-top: 2px solid #7e7c7c; /* 윗변 테두리만 회색으로 설정 */
     position: relative; /* 자식 요소 위치 기준 설정 */
     bottom: 80px; /* 페이지 상단에서 아래로 이동 (예시) */
-    left: 205px; /* 페이지 좌측에서 205px 오른쪽으로 이동 (예시) */
+    left: 216px; /* 페이지 좌측에서 205px 오른쪽으로 이동 (예시) */
     padding: 20px; /* 내부 여백 추가 */
+    margin-top: 40px;
 }
 
 /* 상세 검색 텍스트 스타일 */
