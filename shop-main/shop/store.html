@@ -1,323 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8"> 
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<html lang="ko">
+<head>
+    <meta charset="utf-8"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>카테고리 검색</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="css/slick.css"/>
+    <link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+    <link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
+    <link type="text/css" rel="stylesheet" href="css/category-search.css"/>
+</head>
+<body>
+    <header></header>
+    
+    <nav></nav>
 
-		<title>TEST</title>
+    <div class="category-search-flex">
+        <aside class="category-sidebar">
+            <div class="category-title">주요 카테고리</div>
+            <ul id="category-list">
+                <li data-category="cpu">CPU</li>
+                <li data-category="cooler">쿨러/튜닝</li>
+                <li data-category="motherboard">메인보드</li>
+                <li data-category="ram">RAM</li>
+                <li data-category="vga">그래픽카드(VGA)</li>
+                <li data-category="ssd">SSD</li>
+                <li data-category="hdd">HDD</li>
+                <li data-category="power">파워</li>
+            </ul>
+        </aside>
 
-		<!-- Google font -->
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+        <main class="category-main">
+            <!-- 인기검색어 제목 -->
+            <div class="popular-keyword-title-wrap">
+                <div class="popular-keyword-title">인기 검색어</div>
+            </div>
+            <!-- 인기검색어 박스 (JS로 채워짐) -->
+            <div id="popular-keywords" class="popular-keyword-box"></div>
 
-		<!-- Bootstrap -->
-		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+            <!-- 상세검색 제목 + 구분선 -->
+            <div class="detail-search-title-wrap">
+                <div class="detail-search-title">상세검색</div>
+            </div>
+            <!-- 상세검색 표 형태 (JS로 채워짐) -->
+            <div class="detail-search-table">
+                <form id="detail-search-form"></form>
+            </div>
 
-		<!-- Slick -->
-		<link type="text/css" rel="stylesheet" href="css/slick.css"/>
-		<link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
-
-		<!-- nouislider -->
-		<link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
-
-		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="css/font-awesome.min.css">
-
-		<!-- Custom stlylesheet -->
-		<link type="text/css" rel="stylesheet" href="css/style.css"/>
-
-		<!-- voice-search.css 추가 -->
-		<link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
-
-        <link type="text/css" rel="stylesheet" href="css/store.css"/>
-
-        </head>
-	<body>
-		
-		<!-- Header Placeholder -->
-		<header></header>
-
-		<!-- Navigation Placeholder -->
-		<nav></nav>
-
-		
-	
-
-        <div class="section">
-            <!-- Container -->
-            <div class="container">
-                <div class="row">
-                    <!-- 첫 번째 카테고리 박스 -->
-                    <div class="cat_list_box">
-                        <div class="nav_head">
-                        </div>
-                       
-<!-- CPU -->
-<div class="main_item" onclick="showSubItems('cpu')">
-    <a href="#" class="main_link">CPU</a>
-    <div id="cpu" class="sub_cat_list" style="display: none;">
-        <div class="sub_item"><label for="core_ultra">코어울트라 시리즈2</label></div>
-        <div class="sub_item"><label for="intel_14">인텔 14세대</label></div>
-        <div class="sub_item"><label for="intel_13_12">인텔 13~12세대</label></div>
-        <div class="sub_item"><label for="intel">인텔</label></div>
-        <div class="sub_item"><label for="ryzen_6">라이젠 6세대</label></div>
-        <div class="sub_item"><label for="ryzen_5_4">라이젠 5~4세대</label></div>
-        <div class="sub_item"><label for="amd">AMD</label></div>
-        <div class="sub_item"><label for="integrated_graphics">내장그래픽 CPU</label></div>
+            <!-- 제품 목록 추가 -->
+            <div class="product-list-title-wrap">
+                <div class="product-list-title">제품 목록</div>
+            </div>
+            <div class="product-list-container" id="product-list-container"></div>
+        </main>
     </div>
-</div>
 
+    <footer></footer>
 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/nouislider.min.js"></script>
+    <script src="js/jquery.zoom.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/voice-recognition.js"></script>
+    <!-- products.js를 category-search.js보다 먼저 연결 -->
+    <script src="js/products.js"></script>
+    <script src="js/category-search.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('navigation.html').then(res => res.text()).then(data => document.querySelector('nav').innerHTML = data);
+        fetch('header.html').then(res => res.text()).then(data => document.querySelector('header').innerHTML = data);
+        fetch('footer.html').then(res => res.text()).then(data => document.querySelector('footer').innerHTML = data);
 
-            <!-- 메인보드 -->
-            <div class="main_item" onclick="showSubItems('motherboard')">
-                <a href="#" class="main_link">메인보드</a>
-                <div id="motherboard" class="sub_cat_list" style="display: none;">
-                    <div class="sub_item"><label for="socket_1851">인텔 1851소켓 지원</label></div>
-                    <div class="sub_item"><label for="socket_1700">인텔 1700소켓 지원</label></div>
-                    <div class="sub_item"><label for="intel_board">인텔용 메인보드</label></div>
-                    <div class="sub_item"><label for="amd_am5">AMD AM5소켓 지원</label></div>
-                    <div class="sub_item"><label for="amd_board">AMD용 메인보드</label></div>
-                    <div class="sub_item"><label for="ddr5_support">DDR5 메모리 지원</label></div>
-                    <div class="sub_item"><label for="wifi_support_board">Wi-Fi지원 메인보드</label></div>
-                    <div class="sub_item"><label for="drmos_power_supply">Dr.MOS 전원부 사용</label></div>
-                    <div class="sub_item"><label for ="pcie5_support_board">PCIe5.0 지원</label></div>
-                </div>
-            </div>
-
-            <!-- RAM -->
-            <div class="main_item" onclick ="showSubItems('ram')">
-                <a href="#" class ="main_link">RAM</a>
-                <div id ="ram" class ="sub_cat_list" style ="display: none;">
-                    <div class ="sub_item"><label for ="pc_ddr5">PC용 DDR5</label></div>
-                    <div class ="sub_item"><label for ="pc_ddr4">PC용 DDR4</label></div>
-                    <div class ="sub_item"><label for ="pc_ddr3">PC용 DDR3</label></div>
-                    <div class ="sub_item"><label for ="laptop_ddr5">노트북용 DDR5</label></div>
-                    <div class ="sub_item"><label for ="laptop_ddr4">노트북용 DDR4</label></div>
-                    <div class ="sub_item"><label for ="laptop_ddr3">노트북용 DDR3</label></div>
-                    <div class ="sub_item"><label for ="server_ram">서버용 RAM</label></div>
-                            </div>
-                        </div>
-
-                        <!-- 그래픽카드 -->
-            <div class="main_item" onclick="showSubItems('graphics')">
-                <a href="#" class="main_link">그래픽카드(VGA)</a>
-                <div id="graphics" class="sub_cat_list" style="display: none;">
-                    <div class="sub_item"><label for="nvidia">NVIDIA 계열</label></div>
-                    <div class="sub_item"><label for="amd">AMD 계열</label></div>
-                    <div class="sub_item"><label for="intel">인텔 계열</label></div>
-                    <div class="sub_item"><label for="short">길이 300mm 미만</label></div>
-                    <div class="sub_item"><label for="pro">전문가용 VGA</label></div>
-                </div>
-            </div>
-
-            <!-- SSD -->
-            <div class="main_item" onclick="showSubItems('ssd')">
-                <a href="#" class="main_link">SSD</a>
-                <div id="ssd" class="sub_cat_list" style="display: none;">
-                    <div class="sub_item"><label for="nvme_all">M.2 NVMe 전체</label></div>
-                    <div class="sub_item"><label for="nvme_5">M.2 NVMe 5.0</label></div>
-                    <div class="sub_item"><label for="nvme_4">M.2 NVMe 4.0</label></div>
-                    <div class="sub_item"><label for="sata_25">2.5인치 SATA</label></div>
-                </div>
-            </div>
-
-            <!-- HDD -->
-            <div class="main_item" onclick="showSubItems('hdd')">
-                <a href="#" class="main_link">HDD</a>
-                <div id="hdd" class="sub_cat_list" style="display: none;">
-                    <div class="sub_item"><label for="pc_hdd">PC용 HDD</label></div>
-                    <div class="sub_item"><label for="nas_hdd">NAS용 HDD</label></div>
-                    <div class="sub_item"><label for= "cctv_hdd">CCTV용 HDD</label></div>
-                </div>
-            </div>
-
-        </div>
-            
-
-            <!-- 두 번째 카테고리 박스 -->
-            <!-- 상세 검색 텍스트 -->
-<span class="second-box-label">인기 카테고리</span>
-<!-- 두 번째 카테고리 박스 -->
-<div class="cat_list_box" id="second_box">
-    <section id="second_cat_list"></section> 
-</div>
-
-            
-            </div>
-            
-                            <!-- 세 번째 박스 -->
-            <div id="third_box" class="content_box">
-                <span class="third-box-label">상세 검색</span>
-                <div id="third_cat_list">
-                    <!-- 세 번째 박스 내용 -->
-                </div>
-            </div>      
-
-
-            <!-- Products tab -->
-<div class="col-md-12">
-    <div class="row">
-        <div class="products-tabs">
-            <!-- 상품 목록 -->
-            <div id="product-list" class="product-list">
-                <!-- 상품 1 -->
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product00.png" alt="갤럭시 GALAX 지포스 RTX 4070 Ti SUPER EX GAMER WHITE OC D6X 16GB">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">갤럭시 GALAX 지포스 RTX 4070 Ti SUPER EX GAMER WHITE OC D6X 16GB</h3>
-                        <p class="product-details">
-                            RTX 4070 Ti SUPER / PCIe4.0x16 / 정격파워750W 이상 / 전원 포트: 16핀(12VHPWR) x1 / 가로(길이): 323mm /
-                            베이스클럭: 2340MHz / 부스트클럭: 2640MHz / OC클럭: 2655MHz / 스트림 프로세서: 8448개 / GDDR6X /
-                            출력단자: HDMI2.1 , DP1.4 / 지원정보: 8K 지원 , HDR 지원 , HDCP 2.3 / 사용전력: 285W / 3팬 / 두께: 60mm /
-                            제로팬(0-dB기술) / 백플레이트 / LED 라이트 / XTREME TUNER / 구성품: VGA지지대, 2x8핀 to 16핀 커넥터 / A/S 3년
-                        </p>
-                        <h4 class="product-price">₩1,915,800</h4>
-                        <button class="add-to-cart-btn" data-id="a" data-name="갤럭시 GALAX 지포스 RTX 4070 Ti SUPER EX GAMER WHITE OC D6X 16GB" data-price="1915800" data-image="./img/product00.png"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                    </div>
-                </div>
-                <!-- 추가 상품은 동일한 구조로 계속 추가 -->
-                 <!-- Products tab -->
-<div class="col-md-12">
-    <div class="row">
-        <div class="products-tabs">
-            <!-- 상품 목록 -->
-            <div id="product-list" class="product-list">
-                <!-- 상품 1 -->
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product06.png" alt="AMD 라이젠7-6세대 9700X (그래니트 릿지)">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">AMD 라이젠7-6세대 9700X (그래니트 릿지)</h3>
-                        <p class="product-details">
-                            AMD(소켓AM5) / 8코어 / 16스레드 / 메모리 규격: DDR5 / 내장그래픽:탑재 / 6세대(Zen5) / TSMC 4nm /
-                            기본 클럭: 3.8GHz / 최대 클럭: 5.5GHz / L2 캐시: 8MB / L3 캐시: 32MB / TDP: 65W / PPT: 88W / 
-                            PCIe5.0 / 5600MHz / AMD 라데온 그래픽 / 기술 지원: SMT(하이퍼스레딩) , AMD Ryzen Master / 
-                            쿨러: 미포함 / 시네벤치R23(싱글): 2260 / 시네벤치R23(멀티): 21436 / 출시가: 359달러(VAT별도)
-                        </p>
-                        <h4 class="product-price">₩474,040</h4>
-                        <button class="add-to-cart-btn" data-id="7" data-name="AMD 라이젠7-6세대 9700X (그래니트 릿지)" data-price="474040" data-image="./img/product06.png"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                    </div>
-                </div>
-
-                <!-- Products tab -->
-<div class="col-md-12">
-    <div class="row">
-        <div class="products-tabs">
-            <!-- 상품 목록 -->
-            <div id="product-list" class="product-list">
-                <!-- 상품 1 -->
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product04.png" alt="MGSI 지포스 RTX 5070 게이밍 트리오 OC D7 12B 트라이프로져4">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">MSI 지포스 RTX 5070 게이밍 트리오 OC D7 12GB 트라이프로져4</h3>
-                        <p class="product-details">
-                            RTX 5070 / PCIe5.0x16 / 정격파워650W 이상 / 전원 포트: 16핀(12V2x6) x1 / 가로(길이): 338mm / 베이스클럭: 2325MHz / 
-                            부스트클럭: 2610MHz / OC클럭: 2625MHz / 스트림 프로세서: 6144개 / GDDR7 / 출력단자: HDMI2.1 , DP2.1 / 
-                            지원정보: 8K 지원 , HDR 지원 , HDCP 2.3 / 사용전력: 250W / 3팬 / 두께: 50mm / 제로팬(0-dB기술) / 백플레이트 / 
-                            DrMOS / LED 라이트 / MYSTIC LIGHT / 구성품: VGA지지대, 2x8핀 to 16핀 커넥터 / A/S 3년
-                        </p>
-                        <h4 class="product-price">₩1,148,960</h4>
-                        <button class="add-to-cart-btn" data-id="e" data-name="MSI 지포스 RTX 5070 게이밍 트리오 OC D7 12GB 트라이프로져4" data-price="1148960" data-image="./img/product04.png"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Products tab -->
-<div class="col-md-12">
-    <div class="row">
-        <div class="products-tabs">
-            <!-- 상품 목록 -->
-            <div id="product-list" class="product-list">
-                <!-- 상품 1 -->
-                <div class="product-item">
-                    <div class="product-img">
-                        <img src="./img/product05.png" alt="인텔 코어 울트라7 시리즈2 265K (애로우레이크)">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">인텔 코어 울트라7 시리즈2 265K (애로우레이크)</h3>
-                        <p class="product-details">
-                            인텔(소켓1851) / P8+E12코어 / 20스레드 / 메모리 규격: DDR5 / 내장그래픽:탑재 / TSMC 3nm /
-                            기본 클럭: 3.9GHz / 최대 클럭: 5.5GHz / L2 캐시: 36MB / L3 캐시: 30MB / PBP-MTP: 125-250W /
-                            PCIe5.0, 4.0 / 6400MHz / 인텔 그래픽스(Xe LPG) / 기술 지원: 인텔 XTU , 인텔 딥러닝부스트 / 
-                            쿨러: 미포함 / 시네벤치R23(싱글): 2304 / 시네벤치R23(멀티): 36309 / 출시가: 394달러(VAT별도)
-                        </p>
-                        <h4 class="product-price">₩539,990</h4>
-                        <button class="add-to-cart-btn" data-id="f" data-name="인텔 코어 울트라7 시리즈2 265K (애로우레이크)" data-price="539990" data-image="./img/product05.png"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-                        
-                         
-
-                        
-
-						
-        		        
-
-		<!-- jQuery Plugins -->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/slick.min.js"></script>
-		<script src="js/nouislider.min.js"></script>
-		<script src="js/jquery.zoom.min.js"></script>
-		<script src="js/main.js"></script>
-        <script src="js/store.js"></script>
-        <script src="js/cart.js"></script>
-
-
-        <!-- Voice Recognition -->
-        <script src="js/voice-recognition.js"></script>
-
-        <!-- Header and Footer Load Script -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // 헤더 로드
-                fetch('header.html')
-                    .then(response => response.text())
-                    .then(data => {
-                        // header 태그 내용을 header.html의 내용 중 header 태그 내부 내용만 추출하여 교체
-                        const tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = data;
-                        const headerContent = tempDiv.querySelector('header').innerHTML;
-                        document.querySelector('header').innerHTML = headerContent;
-                        
-                        // 헤더가 로드된 후 음성 인식 초기화
-                        if (typeof initVoiceRecognition === 'function') {
-                            initVoiceRecognition();
-                        }
-                    })
-                    .catch(error => console.error('헤더 로드 중 오류:', error));
-
-                // 푸터 로드
-                fetch('footer.html')
-                    .then(response => response.text())
-                    .then(data => {
-                        document.querySelector('footer').innerHTML = data;
-                    })
-                    .catch(error => console.error('푸터 로드 중 오류:', error));
-            });
-        </script>
-
-        
-
-	</body>
+        document.getElementById('category-list').addEventListener('click', function(e) {
+            if(e.target.tagName === 'LI') {
+                const cat = e.target.getAttribute('data-category');
+                window.location.href = `store.html?cat=${cat}`;
+            }
+        });
+    });
+    </script>
+</body>
 </html>

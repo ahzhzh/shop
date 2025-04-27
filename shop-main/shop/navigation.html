@@ -1,17 +1,59 @@
-<nav id="navigation">
-    <div class="container">
-        <div id="responsive-nav">
-            <!-- NAV -->
-            <link rel="stylesheet" href="navigation.css">
-            <ul class="main-nav nav navbar-nav">
-                <li><a href="store.html">전체 카테고리</a></li>
-                <li><a href="index.html">PC</a></li>
-                <li><a href="store.html">노트북</a></li>
-                <li><a href="store.html">인기 상품</a></li>                
-            </ul>
-            
-            <!-- /NAV -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>네비게이션 바</title>
+    <link rel="stylesheet" href="css/navigation.css">
+</head>
+<body>
+    <nav id="navigation">
+        <div class="container">
+            <div id="responsive-nav">
+                <ul class="main-nav nav navbar-nav">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" id="categoryMenu">전체 카테고리</a>
+                        <ul class="dropdown-menu" id="categoryDropdown">
+                            <li><a href="store.html?cat=cpu">CPU</a></li>
+                            <li><a href="store.html?cat=cooler">쿨러/튜닝</a></li>
+                            <li><a href="store.html?cat=motherboard">메인보드</a></li>
+                            <li><a href="store.html?cat=ram">RAM</a></li>
+                            <li><a href="store.html?cat=vga">그래픽카드(VGA)</a></li>
+                            <li><a href="store.html?cat=ssd">SSD</a></li>
+                            <li><a href="store.html?cat=hdd">HDD</a></li>
+                            <li><a href="store.html?cat=power">파워</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="index.html">PC</a></li>
+                    <li><a href="store.html">노트북</a></li>
+                    <li><a href="store.html">인기 상품</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const dropdownLi = document.querySelector('.dropdown');
+        const dropdownMenu = document.getElementById('categoryDropdown');
+        const categoryMenu = document.getElementById('categoryMenu');
+
+        // 마우스 오버 시 드롭다운 표시
+        dropdownLi.addEventListener('mouseenter', () => {
+            dropdownMenu.style.display = 'block';
+        });
+
+        // 마우스 떠날 때 드롭다운 숨기기
+        dropdownLi.addEventListener('mouseleave', () => {
+            dropdownMenu.style.display = 'none';
+        });
+
+        // 모바일 터치 대응
+        categoryMenu.addEventListener('click', (e) => {
+            e.preventDefault();
+            dropdownMenu.style.display = 
+                dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+    </script>
+</body>
+</html>
