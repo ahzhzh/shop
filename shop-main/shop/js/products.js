@@ -278,7 +278,6 @@ function renderProducts() {
                         ${badgeHtml}
                     </div>
                     <div class="product-desc">${descHtml}</div>
-                    <button class="product-list-more">보기</button>
                 </div>
                 <div class="product-price-box">
                     <div class="product-price">${product.price}</div>
@@ -290,3 +289,4 @@ function renderProducts() {
 }
 
 document.addEventListener('DOMContentLoaded', renderProducts);
+
