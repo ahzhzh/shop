@@ -57,12 +57,12 @@ body {
 
 /* ---------- 인기검색어 영역 ---------- */
 .popular-keyword-title-wrap {
-  border-bottom: 1.5px solid #ccc;
-  margin-bottom: 12px;
+  border-bottom: 3px solid #666666;
+  margin-bottom: 20px;
   padding-bottom: 8px;
 }
 .popular-keyword-title {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: bold;
   color: #222;
   margin-bottom: 0;
@@ -109,12 +109,12 @@ body {
 
 /* ---------- 상세검색 영역 ---------- */
 .detail-search-title-wrap {
-  border-bottom: 1.5px solid #ccc;
-  margin-bottom: 12px;
+  border-bottom: 3px solid #666666;
+  margin-bottom: 20px;          /*구분선*/
   padding-bottom: 8px;
 }
 .detail-search-title {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: bold;
   color: #222;
   margin-bottom: 0;
@@ -191,23 +191,30 @@ input[type="checkbox"] {
   display: inline-block;
 }
 
-/* ---------- 제품 목록/카드+사양표 ---------- */
-
+/* ---------- 제품 목록 독립 컨테이너 ---------- */
+.product-list-outer {
+  max-width: 1200px;
+  /* 아래로 100px 내림 (원하는 값으로 조절) */
+  margin: 200px auto 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin-left: 310px;
+  position: relative;
+}
 
 .product-list-title-wrap {
-  border-bottom: 1.5px solid #e0e0e0;
-  margin-bottom: 8px;
+  border-bottom: 3px solid #666666;
+  margin-bottom: 20px;
   padding-bottom: 6px;
-  margin-top: 210px;
-  /* 가운데 정렬 및 좌우 길이 조절 */
-  width: 900px;              /* 원하는 좌우 길이로 조절 */
+  margin-top: 0;
+  width: 1200px;              /* 구분선 */
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
 }
 .product-list-title {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: bold;
   color: #222;
   margin-bottom: 0;
@@ -219,12 +226,12 @@ input[type="checkbox"] {
   flex-direction: column;
   gap: 14px;
   margin-bottom: 24px;
-  /* 가운데 정렬 및 좌우 길이 조절 */
-  width: 900px;              /* 원하는 좌우 길이로 조절 */
+  width: 1200px;              /* 좌우 길이 더 길게 */
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
+  position: relative;
 }
 
 .product-list-item {
@@ -239,7 +246,7 @@ input[type="checkbox"] {
   transition: box-shadow 0.18s, border-color 0.18s;
   position: relative;
   min-height: 80px;
-  width: 100%;           /* 가로폭 맞춤 */
+  width: 100%;
   box-sizing: border-box;
 }
 .product-list-item:hover {
@@ -350,4 +357,3 @@ input[type="checkbox"] {
   background: #eafaf3;
   color: #23b46e;
 }
-
