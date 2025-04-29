@@ -262,7 +262,7 @@ function renderProducts() {
     const container = document.getElementById('product-list-container');
     if (!container) return;
     container.innerHTML = '';
-    Object.values(products).forEach(product => {
+    Object.entries(products).forEach(([id, product]) => {
         const descHtml = product.desc.join(" / ");
         const badgeHtml = product.badge
             ? `<span class="product-badge">${product.badge}</span>`
@@ -274,7 +274,9 @@ function renderProducts() {
                 </div>
                 <div class="product-main-info">
                     <div class="product-title">
-                        ${product.name}
+                        <a href="product.html?id=${id}" class="product-link">
+                            ${product.name}
+                        </a>
                         ${badgeHtml}
                     </div>
                     <div class="product-desc">${descHtml}</div>
@@ -289,4 +291,5 @@ function renderProducts() {
 }
 
 document.addEventListener('DOMContentLoaded', renderProducts);
+
 
