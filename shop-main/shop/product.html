@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"> 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>상품 상세 정보</title>
@@ -24,10 +24,8 @@
 
     <!-- Custom stylesheet -->
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
-    
-    <!-- voice-search.css 추가 -->
     <link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
-
+    <!-- 상품 상세 전용 CSS -->
     <link rel="stylesheet" href="css/products-Detail.css">
 </head>
 <body>
@@ -48,22 +46,18 @@
     </div>
 </div>
 
-<!-- SECTION -->
+<!-- SECTION: 상품 상세 정보 -->
 <div class="section">
-    <div class="container">
+    <div class="container detail-product-area">
         <div class="row product-row">
-            <!-- Product main img -->
-            <div id="product-main-img" class="col-md-6">
-                <div class="product-preview">
-                    <img id="product-image" src="" alt="">
-                </div>
+            <!-- 상품 이미지 (박스 없이 이미지에만 스타일 적용) -->
+            <div id="product-main-img" class="col-md-6" style="display:flex;align-items:center;justify-content:center;">
+                <img id="product-image" src="" alt="">
             </div>
-
-            <!-- Product Details -->
+            <!-- 상품 정보 -->
             <div class="col-md-6 product-details">
                 <h2 id="product-name" class="product-name"></h2>
                 <h3 id="product-price" class="product-price"></h3>
-
                 <div class="add-to-cart">
                     <div class="qty-label">
                         수량
@@ -73,13 +67,13 @@
                             <span class="qty-down">-</span>
                         </div>
                     </div>
-                    <!-- 장바구니 추가 버튼 -->
-                    <button id="add-to-cart-btn" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> 장바구니에 추가</button>
+                    <button id="add-to-cart-btn" class="add-to-cart-btn">
+                        <i class="fa fa-shopping-cart"></i> 장바구니에 추가
+                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- Product Specifications Table -->
+        <!-- 상품 사양 표 -->
         <div id="product-specs" class="product-specs"></div>
     </div>
 </div>
@@ -93,10 +87,9 @@
 <script src="./js/slick.min.js"></script>
 <script src="./js/nouislider.min.js"></script>
 <script src="./js/main.js"></script>
-<script src="./js/products-Detail.js"></script> <!-- 상품 상세 정보를 연결 -->
-<script src="./js/cart.js"></script> <!-- cart.js를 연결 -->
-<script src="./js/voice-recognition.js"></script> <!-- 음성 인식 스크립트 추가 -->
-
+<script src="./js/products-Detail.js"></script>
+<script src="./js/cart.js"></script>
+<script src="./js/voice-recognition.js"></script>
 
 </body>
 </html>
