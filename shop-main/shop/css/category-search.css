@@ -195,10 +195,10 @@ input[type="checkbox"] {
 .product-list-outer {
   max-width: 1200px;
   /* 아래로 100px 내림 (원하는 값으로 조절) */
-  margin: 200px auto 0 auto;
+  margin: 140px auto 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
-  margin-left: 310px;
+  margin-left: 337px;
   position: relative;
 }
 
