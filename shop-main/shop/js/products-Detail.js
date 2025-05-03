@@ -1,5 +1,6 @@
-// 상품 데이터 정의
-const products = {
+// --- 카테고리별 상품 객체 ---
+// VGA 상품 /* abcde */
+const vgaProducts = {
     "a": {
         name: "갤럭시 GALAX 지포스 RTX 4070 Ti SUPER EX GAMER WHITE OC D6X 16GB",
         price: "₩1,915,800",
@@ -135,6 +136,11 @@ const products = {
         { 항목: "A/S 보증 기간", 세부사항: "3년 무상 보증" }
            ]
     },
+    // ... VGA 상품 추가
+};
+
+// CPU 상품 /* fghij */
+const cpuProducts = {
     "f": {
     name: "인텔 코어 울트라7 시리즈2 265K (애로우레이크)",
     price: "₩539,990",
@@ -286,16 +292,715 @@ const products = {
         { 항목: "출시가", 세부사항: "$221 (VAT 별도)" }
            ]
     }
+    // ... CPU 상품 추가
 };
 
-// URL에서 id 파라미터 가져오기
-const urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get('id'); // 예시 값은 a~j 중 하나
+//쿨러 상품 /*  */
+const coolerProducts = {
+    "cooler1": {
+    name: "DEEPCOOL AG400",
+    price: "₩21,760",
+    image: "./img/cooler1.png",
+    specs: [
+        { 항목: "쿨러 타입", 세부사항: "공랭, 싱글타워형, 팬 쿨러" },
+        { 항목: "TDP", 세부사항: "220W" },
+        { 항목: "A/S 기간", 세부사항: "1년" },
+        { 항목: "인텔 소켓 호환", 세부사항: "LGA1851, LGA1700, LGA1200, LGA115x" },
+        { 항목: "AMD 소켓 호환", 세부사항: "AM5, AM4" },
+        { 항목: "크기(가로)", 세부사항: "125mm" },
+        { 항목: "크기(세로)", 세부사항: "92mm" },
+        { 항목: "크기(높이)", 세부사항: "150mm" },
+        { 항목: "무게", 세부사항: "614g" },
+        { 항목: "팬 크기", 세부사항: "120mm" },
+        { 항목: "팬 개수", 세부사항: "1개" },
+        { 항목: "팬 두께", 세부사항: "25T" },
+        { 항목: "팬 커넥터", 세부사항: "4핀" },
+        { 항목: "베어링", 세부사항: "Hydro(유체)" },
+        { 항목: "최대 RPM", 세부사항: "2000 RPM" },
+        { 항목: "최대 풍량", 세부사항: "75.89 CFM" },
+        { 항목: "풍압(정압)", 세부사항: "2.53mmH₂O" },
+        { 항목: "최대 팬소음", 세부사항: "31.6dBA" },
+        { 항목: "PWM 지원", 세부사항: "지원" },
+        { 항목: "LED", 세부사항: "non-LED" },
+        { 항목: "구성품/기타", 세부사항: "24년 11월부로 1851소켓 지원 추가" }
+    ]
+},
 
-// 선택된 상품 데이터 가져오기
+"cooler2": {
+    name: "PCCOOLER PALADIN 400",
+    price: "₩24,630",
+    image: "./img/cooler2.png",
+    specs: [
+        { 항목: "쿨러 타입", 세부사항: "공랭, 싱글타워형, 팬 쿨러" },
+        { 항목: "TDP", 세부사항: "200W" },
+        { 항목: "A/S 기간", 세부사항: "3년" },
+        { 항목: "인텔 소켓 호환", 세부사항: "LGA1851, LGA1700, LGA1200, LGA115x" },
+        { 항목: "AMD 소켓 호환", 세부사항: "AM5, AM4" },
+        { 항목: "크기(가로)", 세부사항: "130mm" },
+        { 항목: "크기(세로)", 세부사항: "76mm" },
+        { 항목: "크기(높이)", 세부사항: "157mm" },
+        { 항목: "무게", 세부사항: "700g" },
+        { 항목: "팬 크기", 세부사항: "130mm" },
+        { 항목: "팬 개수", 세부사항: "1개" },
+        { 항목: "팬 두께", 세부사항: "25T" },
+        { 항목: "팬 커넥터", 세부사항: "4핀" },
+        { 항목: "베어링", 세부사항: "Hydraulic(유체)" },
+        { 항목: "최대 RPM", 세부사항: "1600 RPM" },
+        { 항목: "최대 풍량", 세부사항: "81 CFM" },
+        { 항목: "풍압(정압)", 세부사항: "2.18mmH₂O" },
+        { 항목: "최대 팬소음", 세부사항: "28.6dBA" },
+        { 항목: "PWM 지원", 세부사항: "지원" },
+        { 항목: "LED", 세부사항: "non-LED" },
+        { 항목: "구성품/기타", 세부사항: "AM4이탈방지가이드, 24년 11월 AM4 세이프가드 재추가, 12월 AS기간 확대 및 1851소켓지원 추가" }
+    ]
+},
+
+"cooler3": {
+    name: "Thermalright Peerless Assassin 120 SE 서린",
+    price: "₩36,178",
+    image: "./img/cooler3.png",
+    specs: [
+        { 항목: "쿨러 타입", 세부사항: "공랭, 듀얼타워형, 팬 쿨러" },
+        { 항목: "TDP", 세부사항: "260W" },
+        { 항목: "A/S 기간", 세부사항: "3년" },
+        { 항목: "인텔 소켓 호환", 세부사항: "LGA1700, LGA1200, LGA115x" },
+        { 항목: "AMD 소켓 호환", 세부사항: "AM5, AM4" },
+        { 항목: "크기(가로)", 세부사항: "125mm" },
+        { 항목: "크기(세로)", 세부사항: "135mm" },
+        { 항목: "크기(높이)", 세부사항: "155mm" },
+        { 항목: "무게", 세부사항: "850g" },
+        { 항목: "팬 크기", 세부사항: "120mm" },
+        { 항목: "팬 개수", 세부사항: "2개" },
+        { 항목: "팬 두께", 세부사항: "25T" },
+        { 항목: "팬 커넥터", 세부사항: "4핀" },
+        { 항목: "베어링", 세부사항: "S-FDB(유체)" },
+        { 항목: "최대 RPM", 세부사항: "1550 RPM" },
+        { 항목: "최대 풍량", 세부사항: "66.17 CFM" },
+        { 항목: "풍압(정압)", 세부사항: "1.53mmH₂O" },
+        { 항목: "최대 팬소음", 세부사항: "25.6dBA" },
+        { 항목: "PWM 지원", 세부사항: "지원" },
+        { 항목: "LED", 세부사항: "non-LED" },
+        { 항목: "구성품/기타", 세부사항: "써멀컴파운드(주사기형), 열전도율 12.8W/(m·K), 23년 11월 AM5 소켓 호환 추가" }
+    ]
+},
+
+"cooler4": {
+    name: "잘만 Alpha II A36",
+    price: "₩121,800",
+    image: "./img/cooler4.png",
+    specs: [
+        { 항목: "쿨러 타입", 세부사항: "수랭, 팬 쿨러" },
+        { 항목: "TDP", 세부사항: "350W" },
+        { 항목: "A/S 기간", 세부사항: "5년+누수보상" },
+        { 항목: "인텔 소켓 호환", 세부사항: "LGA1851, LGA1700, LGA1200, LGA115x" },
+        { 항목: "AMD 소켓 호환", 세부사항: "AM5, AM4" },
+        { 항목: "라디에이터", 세부사항: "3열, 길이 397mm, 두께 27mm" },
+        { 항목: "호스 길이", 세부사항: "400mm" },
+        { 항목: "팬 크기", 세부사항: "120mm" },
+        { 항목: "팬 개수", 세부사항: "3개" },
+        { 항목: "팬 두께", 세부사항: "25T" },
+        { 항목: "팬 커넥터", 세부사항: "3-4핀" },
+        { 항목: "베어링", 세부사항: "Hydro(유체)" },
+        { 항목: "최대 RPM", 세부사항: "2000 RPM" },
+        { 항목: "최대 풍량", 세부사항: "69.12 CFM" },
+        { 항목: "풍압(정압)", 세부사항: "2.01mmH₂O" },
+        { 항목: "최대 팬소음", 세부사항: "29.7dBA" },
+        { 항목: "작동전압", 세부사항: "팬 12V, LED 5V" },
+        { 항목: "LED", 세부사항: "RGB, LED 라이트, 워터블록/로고 회전, 인디케이터" },
+        { 항목: "LED 시스템", 세부사항: "AURA SYNC, MYSTIC LIGHT, RGB FUSION, POLYCHROME" },
+        { 항목: "PWM 지원", 세부사항: "지원" },
+        { 항목: "구성품/기타", 세부사항: "써멀컴파운드(주사기형), 24년 12월 1851소켓 지원 추가" }
+    ]
+},
+
+"cooler5": {
+    name: "3RSYS Socoool RC1900N 솔더링",
+    price: "₩72,590",
+    image: "./img/cooler5.png",
+    specs: [
+        { 항목: "쿨러 타입", 세부사항: "공랭, 듀얼타워형, 팬 쿨러" },
+        { 항목: "TDP", 세부사항: "280W" },
+        { 항목: "A/S 기간", 세부사항: "3년" },
+        { 항목: "인텔 소켓 호환", 세부사항: "LGA1700, LGA1200, LGA115x" },
+        { 항목: "AMD 소켓 호환", 세부사항: "AM5, AM4" },
+        { 항목: "크기(가로)", 세부사항: "132mm" },
+        { 항목: "크기(세로)", 세부사항: "140mm" },
+        { 항목: "크기(높이)", 세부사항: "157mm" },
+        { 항목: "팬 크기", 세부사항: "130mm, 120mm" },
+        { 항목: "팬 개수", 세부사항: "2개" },
+        { 항목: "팬 두께", 세부사항: "25T, 28T" },
+        { 항목: "팬 커넥터", 세부사항: "4핀" },
+        { 항목: "베어링", 세부사항: "FDB(유체)" },
+        { 항목: "최대 RPM", 세부사항: "1600 RPM, 2200 RPM" },
+        { 항목: "최대 풍량", 세부사항: "85 CFM, 70CFM" },
+        { 항목: "풍압(정압)", 세부사항: "2.0mmH₂O, 3.5mmH₂O" },
+        { 항목: "최대 팬소음", 세부사항: "30dBA" },
+        { 항목: "작동전압", 세부사항: "팬 12V" },
+        { 항목: "PWM 지원", 세부사항: "지원" },
+        { 항목: "LED", 세부사항: "non-LED" },
+        { 항목: "구성품/기타", 세부사항: "써멀컴파운드(주사기형), 열전도율 12.4W/(m·K), 25년 2월 제품 디자인 변경" }
+    ]
+},
+
+}
+
+//메인보드
+const motherboardProducts = {
+    "motherboard1": {
+  name: "ASUS TUF Gaming B850M-PLUS WIFI STCOM",
+  category: "motherboard",
+  price: "₩278,860",
+  image: "./img/motherboard1.png",
+  specs: [
+    { 항목: "소켓/칩셋", 세부사항: "AMD(소켓AM5) / AMD B850" },
+    { 항목: "폼팩터", 세부사항: "M-ATX (24.4 x 24.4cm)" },
+    { 항목: "전원부", 세부사항: "14+2+1페이즈, 페이즈당 80A, Vcore 출력합계 1120A, DrMOS" },
+    { 항목: "메모리", 세부사항: "DDR5, 4슬롯, 최대 192GB, 8000MHz (PC5-64000), XMP, EXPO" },
+    { 항목: "그래픽카드 슬롯", 세부사항: "PCIe5.0 x16 1개" },
+    { 항목: "확장슬롯", 세부사항: "PCIe5.0 x16 1개, PCIe4.0 x16(at x8) 1개, PCIe4.0 x1 1개" },
+    { 항목: "저장장치", 세부사항: "M.2: 3개(PCIe5.0/4.0/NVMe/PCIe 레인공유), SATA3: 4개" },
+    { 항목: "후면단자", 세부사항: "HDMI, DP, USB3.x 20Gbps/10Gbps/5Gbps, USB 2.0, RJ-45, 오디오잭, BIOS플래시백" },
+    { 항목: "USB 포트", 세부사항: "USB A타입: 11개, USB C타입: 1개" },
+    { 항목: "유선랜", 세부사항: "Realtek, 2.5Gbps, RJ-45 1개" },
+    { 항목: "무선/블루투스", 세부사항: "Wi-Fi, 블루투스" },
+    { 항목: "오디오", 세부사항: "Realtek ALC1220P, 7.1채널(8ch)" },
+    { 항목: "내부 I/O", 세부사항: "USB3.0 헤더, USB2.0 헤더, USB3.1 Type C 헤더, CPU추가팬(OPT) 헤더, 펌프전용 헤더, 시스템팬 4핀 3개, 프론트오디오AAFP 헤더, 침입감지 헤더, COM포트 헤더" },
+    { 항목: "특징", 세부사항: "전원부 방열판, M.2 히트싱크, 일체형IO실드, LED라이트, UEFI, AURA SYNC" }
+  ]
+},
+"motherboard2": {
+  name: "GIGABYTE B650M K 제이씨현",
+  category: "motherboard",
+  price: "₩142,830",
+  image: "./img/motherboard2.png",
+  specs: [
+    { 항목: "소켓/칩셋", 세부사항: "AMD(소켓AM5) / AMD B650" },
+    { 항목: "폼팩터", 세부사항: "M-ATX (24.4 x 24.4cm)" },
+    { 항목: "전원부", 세부사항: "8+2+2페이즈, 디지털 VRM, 방열판" },
+    { 항목: "메모리", 세부사항: "DDR5, 4슬롯, 최대 192GB, 8000MHz (PC5-64000), XMP3.0, EXPO" },
+    { 항목: "그래픽카드 슬롯", 세부사항: "PCIe4.0 x16 1개" },
+    { 항목: "확장슬롯", 세부사항: "PCIe4.0 x16 1개, PCIe3.0 x1 1개" },
+    { 항목: "저장장치", 세부사항: "M.2: 2개(PCIe4.0/NVMe), SATA3: 4개" },
+    { 항목: "후면단자", 세부사항: "HDMI, DP, USB3.x 10Gbps/5Gbps, USB 2.0, RJ-45, 오디오잭, PS/2, BIOS플래시백" },
+    { 항목: "USB 포트", 세부사항: "USB A타입: 7개, USB C타입: 1개" },
+    { 항목: "유선랜", 세부사항: "Realtek, 2.5Gbps, RJ-45 1개" },
+    { 항목: "무선/블루투스", 세부사항: "미지원" },
+    { 항목: "오디오", 세부사항: "Realtek, 7.1채널(8ch)" },
+    { 항목: "내부 I/O", 세부사항: "USB3.0/2.0 헤더, USB3.0 Type C 헤더, RGB 12V 4핀 헤더, ARGB 5V 3핀 헤더, 시스템팬 4핀 2개, TPM 헤더, 프론트오디오AAFP 헤더" },
+    { 항목: "특징", 세부사항: "전원부 방열판, M.2 히트싱크, UEFI, 23년 12월 Rev 1.1(전원부, 메모리, ARGB헤더 변경)" }
+  ]
+},
+"motherboard3": {
+  name: "ASUS TUF Gaming B760M-PLUS II 코잇",
+  category: "motherboard",
+  price: "₩182,390",
+  image: "./img/motherboard3.png",
+  specs: [
+    { 항목: "소켓/칩셋", 세부사항: "인텔(소켓1700) / 인텔 B760" },
+    { 항목: "폼팩터", 세부사항: "M-ATX (24.4 x 24.4cm)" },
+    { 항목: "전원부", 세부사항: "12+1+1페이즈, 페이즈당 50A, Vcore 출력합계 600A, DrMOS" },
+    { 항목: "메모리", 세부사항: "DDR5, 4슬롯, 최대 192GB, 7800MHz (PC5-62400), XMP" },
+    { 항목: "그래픽카드 슬롯", 세부사항: "PCIe5.0 x16 1개" },
+    { 항목: "확장슬롯", 세부사항: "PCIe5.0 x16 1개, PCIe4.0 x4 1개, PCIe3.0 x1 1개" },
+    { 항목: "저장장치", 세부사항: "M.2: 3개 (PCIe4.0/NVMe), SATA3: 4개" },
+    { 항목: "후면단자", 세부사항: "HDMI, DP, USB3.x 20Gbps/10Gbps/5Gbps, USB 2.0, RJ-45, S/PDIF, 오디오잭" },
+    { 항목: "USB 포트", 세부사항: "USB A타입: 7개, USB C타입: 1개" },
+    { 항목: "유선랜", 세부사항: "Realtek, 2.5Gbps, RJ-45 1개" },
+    { 항목: "무선/블루투스", 세부사항: "미지원" },
+    { 항목: "오디오", 세부사항: "Realtek, 7.1채널(8ch)" },
+    { 항목: "내부 I/O", 세부사항: "썬더볼트4 헤더, USB4 헤더, USB3.0 헤더, USB2.0 헤더, USB3.1 Type C 헤더, RGB 12V 4핀 헤더, ARGB 5V 3핀 헤더, CPU추가팬(OPT) 헤더, 펌프전용 헤더, 시스템팬 4핀 3개, 디버그LED, 프론트오디오AAFP 헤더, 침입감지 헤더" },
+    { 항목: "특징", 세부사항: "전원부 방열판, DrMOS, M.2 히트싱크, UEFI, PCIe Q-Release, Q-Latch" }
+  ]
+},
+
+"motherboard4": {
+  name: "MSI MAG B760M 박격포 II",
+  category: "motherboard",
+  price: "₩184,970",
+  image: "./img/motherboard4.png",
+  specs: [
+    { 항목: "소켓/칩셋", 세부사항: "인텔(소켓1700) / 인텔 B760" },
+    { 항목: "폼팩터", 세부사항: "M-ATX (24.4 x 24.4cm)" },
+    { 항목: "전원부", 세부사항: "12+1+1페이즈, 페이즈당 75A, Vcore 출력합계 900A, SPS(DrMOS)" },
+    { 항목: "메모리", 세부사항: "DDR5, 4슬롯, 최대 256GB, 7800MHz (PC5-62400), XMP3.0" },
+    { 항목: "그래픽카드 슬롯", 세부사항: "PCIe5.0 x16 1개" },
+    { 항목: "확장슬롯", 세부사항: "PCIe5.0 x16 1개, PCIe3.0 x4 1개" },
+    { 항목: "저장장치", 세부사항: "M.2: 3개 (PCIe4.0/NVMe/SATA), SATA3: 4개" },
+    { 항목: "후면단자", 세부사항: "HDMI, DP, USB3.x 20Gbps/10Gbps, USB 2.0, RJ-45, S/PDIF, 오디오잭" },
+    { 항목: "USB 포트", 세부사항: "USB A타입: 7개, USB C타입: 1개" },
+    { 항목: "유선랜", 세부사항: "Realtek 8125BG, 2.5Gbps, RJ-45 1개" },
+    { 항목: "무선/블루투스", 세부사항: "미지원" },
+    { 항목: "오디오", 세부사항: "Realtek ALC897, 7.1채널(8ch)" },
+    { 항목: "내부 I/O", 세부사항: "USB3.0 헤더, USB2.0 헤더, USB3.1 Type C 헤더, RGB 12V 4핀 헤더, ARGB 5V 3핀 헤더, 펌프전용 헤더, 시스템팬 4핀 4개, TPM 헤더, 디버그LED, 프론트오디오AAFP 헤더" },
+    { 항목: "특징", 세부사항: "전원부 방열판, SPS(DrMOS), M.2 히트싱크, UEFI" }
+  ]
+},
+
+"motherboard5": {
+  name: "ASRock B650M Pro X3D 에즈윈",
+  category: "motherboard",
+  price: "₩193,670",
+  image: "./img/motherboard5.png",
+  specs: [
+    { 항목: "소켓/칩셋", 세부사항: "AMD(소켓AM5) / AMD B650" },
+    { 항목: "폼팩터", 세부사항: "M-ATX (24.4 x 24.4cm)" },
+    { 항목: "전원부", 세부사항: "8+2+1페이즈, DrMOS, 전원부 방열판" },
+    { 항목: "메모리", 세부사항: "DDR5, 4슬롯, 최대 256GB, 8000MHz (PC5-64000), EXPO" },
+    { 항목: "그래픽카드 슬롯", 세부사항: "PCIe5.0 x16 1개" },
+    { 항목: "확장슬롯", 세부사항: "PCIe5.0 x16 1개, PCIe4.0 x4 1개" },
+    { 항목: "저장장치", 세부사항: "M.2: 3개 (PCIe5.0/4.0/NVMe/PCIe 레인공유), SATA3: 4개" },
+    { 항목: "후면단자", 세부사항: "HDMI, DP, USB3.x 10Gbps/5Gbps, USB 2.0, RJ-45, 오디오잭, BIOS플래시백" },
+    { 항목: "USB 포트", 세부사항: "USB A타입: 7개, USB C타입: 1개" },
+    { 항목: "유선랜", 세부사항: "Dragon RTL8125BG, 2.5Gbps, RJ-45 1개" },
+    { 항목: "무선/블루투스", 세부사항: "M.2 Key-E(모듈별매)" },
+    { 항목: "오디오", 세부사항: "Realtek ALC897, 7.1채널(8ch)" },
+    { 항목: "내부 I/O", 세부사항: "USB3.0 헤더, USB2.0 헤더, USB3.2 Type C 헤더, USB3.0 Type C 헤더, RGB 12V 4핀 헤더, ARGB 5V 3핀 헤더, CPU추가팬(OPT) 헤더, 시스템팬 4핀 3개, TPM 헤더, 프론트오디오AAFP 헤더" },
+    { 항목: "특징", 세부사항: "전원부 방열판, M.2 히트싱크, 일체형IO실드, LED라이트, UEFI, 23년 11월 지원메모리 속도 및 용량 192GB로 확장" }
+  ]
+}
+
+
+
+
+}
+//ram
+const ramProducts = {
+    "ram1": {
+  name: "삼성전자 DDR5-5600 (16GB)",
+  category: "ram",
+  price: "₩74,650",
+  image: "./img/ram1.png",
+  specs: [
+    { 항목: "용도", 세부사항: "데스크탑용" },
+    { 항목: "메모리 타입", 세부사항: "DDR5" },
+    { 항목: "동작클럭", 세부사항: "5600MHz (PC5-44800)" },
+    { 항목: "램개수", 세부사항: "1개" },
+    { 항목: "히트싱크", 세부사항: "미포함" },
+    { 항목: "모듈제조사", 세부사항: "삼성전자" }
+  ]
+},
+
+"ram2": {
+  name: "TeamGroup DDR5-5600 CL46 Elite 서린 (16GB)",
+  category: "ram",
+  price: "₩63,450",
+  image: "./img/ram2.png",
+  specs: [
+    { 항목: "용도", 세부사항: "데스크탑용" },
+    { 항목: "메모리 타입", 세부사항: "DDR5" },
+    { 항목: "동작클럭", 세부사항: "5600MHz (PC5-44800)" },
+    { 항목: "램타이밍", 세부사항: "CL46-46-46-90" },
+    { 항목: "전압", 세부사항: "1.10V" },
+    { 항목: "램개수", 세부사항: "1개" },
+    { 항목: "온다이ECC", 세부사항: "지원" },
+    { 항목: "히트싱크", 세부사항: "미포함" },
+    { 항목: "높이", 세부사항: "32mm" }
+  ]
+},
+
+"ram3": {
+  name: "ESSENCORE KLEVV DDR5-5600 CL46 파인인포 (16GB)",
+  category: "ram",
+  price: "₩125,230",
+  image: "./img/ram3.png",
+  specs: [
+    { 항목: "용도", 세부사항: "데스크탑용" },
+    { 항목: "메모리 타입", 세부사항: "DDR5" },
+    { 항목: "동작클럭", 세부사항: "5600MHz (PC5-44800)" },
+    { 항목: "램타이밍", 세부사항: "CL46-46-46-90" },
+    { 항목: "전압", 세부사항: "1.10V" },
+    { 항목: "램개수", 세부사항: "1개" },
+    { 항목: "온다이ECC", 세부사항: "지원" },
+    { 항목: "히트싱크", 세부사항: "미포함" },
+    { 항목: "높이", 세부사항: "31.25mm" },
+    { 항목: "모듈제조사", 세부사항: "SK하이닉스" },
+    { 항목: "특징", 세부사항: "A다이 언락" }
+  ]
+},
+
+"ram4": {
+  name: "마이크론 Crucial DDR4-3200 CL22 대원씨티에스 (16GB)",
+  category: "ram",
+  price: "₩38,000",
+  image: "./img/ram4.png",
+  specs: [
+    { 항목: "용도", 세부사항: "데스크탑용" },
+    { 항목: "메모리 타입", 세부사항: "DDR4" },
+    { 항목: "동작클럭", 세부사항: "3200MHz (PC4-25600)" },
+    { 항목: "램타이밍", 세부사항: "CL22" },
+    { 항목: "전압", 세부사항: "1.20V" },
+    { 항목: "램개수", 세부사항: "1개" },
+    { 항목: "히트싱크", 세부사항: "미포함" }
+  ]
+},
+
+"ram5": {
+  name: "G.SKILL DDR5-6000 CL32 TRIDENT Z5 NEO RGB J 패키지",
+  category: "ram",
+  price: "₩363,940",
+  image: "./img/ram5.png",
+  specs: [
+    { 항목: "용도", 세부사항: "데스크탑용" },
+    { 항목: "메모리 타입", 세부사항: "DDR5" },
+    { 항목: "동작클럭", 세부사항: "6000MHz (PC5-48000)" },
+    { 항목: "램타이밍", 세부사항: "CL32-38-38-96" },
+    { 항목: "전압", 세부사항: "1.40V" },
+    { 항목: "램개수", 세부사항: "2개" },
+    { 항목: "LED 라이트", 세부사항: "지원(RGB)" },
+    { 항목: "EXPO", 세부사항: "지원" },
+    { 항목: "온다이ECC", 세부사항: "지원" },
+    { 항목: "히트싱크", 세부사항: "방열판(블랙)" },
+    { 항목: "LED 시스템", 세부사항: "AURA SYNC, MYSTIC LIGHT, RGB FUSION, POLYCHROME" },
+    { 항목: "높이", 세부사항: "44mm" }
+  ]
+}
+    
+}
+//ssd
+const ssdProducts = {
+    "ssd1": {
+  name: "삼성전자 980 M.2 NVMe (1TB)",
+  category: "ssd",
+  price: "₩119,890",
+  image: "./img/ssd1.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "M.2 (2280)" },
+    { 항목: "인터페이스", 세부사항: "PCIe3.0x4 (32GT/s)" },
+    { 항목: "NAND 타입", 세부사항: "TLC(토글)" },
+    { 항목: "컨트롤러", 세부사항: "삼성 Pablo" },
+    { 항목: "순차읽기", 세부사항: "3,100MB/s" },
+    { 항목: "순차쓰기", 세부사항: "2,600MB/s" },
+    { 항목: "읽기IOPS", 세부사항: "400K" },
+    { 항목: "쓰기IOPS", 세부사항: "470K" },
+    { 항목: "지원기능", 세부사항: "TRIM, GC, SLC캐싱, S.M.A.R.T, DEVSLP, HMB, AES 암호화, 전용 S/W" },
+    { 항목: "내구성", 세부사항: "MTBF: 150만시간, TBW: 300TB" },
+    { 항목: "A/S기간", 세부사항: "5년, 제한보증" },
+    { 항목: "방열판", 세부사항: "미포함" },
+    { 항목: "두께/무게", 세부사항: "2.38mm / 8g" }
+  ]
+},
+
+"ssd2": {
+  name: "SK하이닉스 Platinum P41 M.2 NVMe (1TB)",
+  category: "ssd",
+  price: "₩147,870",
+  image: "./img/ssd2.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "M.2 (2280)" },
+    { 항목: "인터페이스", 세부사항: "PCIe4.0x4 (64GT/s)" },
+    { 항목: "NAND 타입", 세부사항: "TLC(토글)" },
+    { 항목: "DRAM", 세부사항: "DDR4 1GB 탑재" },
+    { 항목: "컨트롤러", 세부사항: "SK하이닉스 Aries" },
+    { 항목: "순차읽기", 세부사항: "7,000MB/s" },
+    { 항목: "순차쓰기", 세부사항: "6,500MB/s" },
+    { 항목: "읽기IOPS", 세부사항: "1,400K" },
+    { 항목: "쓰기IOPS", 세부사항: "1,300K" },
+    { 항목: "지원기능", 세부사항: "TRIM, GC, SLC캐싱, S.M.A.R.T, DEVSLP, AES 암호화, 전용 S/W" },
+    { 항목: "내구성", 세부사항: "MTBF: 150만시간, TBW: 750TB" },
+    { 항목: "PS5 호환", 세부사항: "지원" },
+    { 항목: "A/S기간", 세부사항: "5년, 제한보증" },
+    { 항목: "방열판", 세부사항: "미포함" },
+    { 항목: "두께/무게", 세부사항: "2.38mm / 7g" }
+  ]
+},
+
+"ssd3": {
+  name: "Western Digital WD BLACK SN850X M.2 NVMe (1TB)",
+  category: "ssd",
+  price: "₩129,930",
+  image: "./img/ssd3.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "M.2 (2280)" },
+    { 항목: "인터페이스", 세부사항: "PCIe4.0x4 (64GT/s)" },
+    { 항목: "NAND 타입", 세부사항: "TLC" },
+    { 항목: "DRAM", 세부사항: "DDR4 2GB 탑재" },
+    { 항목: "컨트롤러", 세부사항: "WD" },
+    { 항목: "순차읽기", 세부사항: "7,300MB/s" },
+    { 항목: "순차쓰기", 세부사항: "6,600MB/s" },
+    { 항목: "읽기IOPS", 세부사항: "1,200K" },
+    { 항목: "쓰기IOPS", 세부사항: "1,100K" },
+    { 항목: "지원기능", 세부사항: "TRIM, SLC캐싱, S.M.A.R.T, 전용 S/W" },
+    { 항목: "내구성", 세부사항: "TBW: 1,200TB" },
+    { 항목: "PS5 호환", 세부사항: "지원" },
+    { 항목: "A/S기간", 세부사항: "5년, 제한보증" },
+    { 항목: "방열판", 세부사항: "미포함" },
+    { 항목: "두께/무게", 세부사항: "2.38mm / 7.5g" }
+  ]
+},
+
+"ssd4": {
+  name: "솔리다임 P44 Pro M.2 NVMe 벌크",
+  category: "ssd",
+  price: "₩121,600",
+  image: "./img/ssd4.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "M.2 (2280)" },
+    { 항목: "인터페이스", 세부사항: "PCIe4.0x4 (64GT/s)" },
+    { 항목: "NAND 타입", 세부사항: "TLC(토글)" },
+    { 항목: "DRAM", 세부사항: "DDR4 2GB 탑재" },
+    { 항목: "컨트롤러", 세부사항: "SK하이닉스 Aries" },
+    { 항목: "순차읽기", 세부사항: "7,000MB/s" },
+    { 항목: "순차쓰기", 세부사항: "6,500MB/s" },
+    { 항목: "읽기IOPS", 세부사항: "1,400K" },
+    { 항목: "쓰기IOPS", 세부사항: "1,300K" },
+    { 항목: "지원기능", 세부사항: "TRIM, SLC캐싱, S.M.A.R.T, AES 암호화" },
+    { 항목: "내구성", 세부사항: "MTBF: 160만시간, TBW: 1,200TB" },
+    { 항목: "PS5 호환", 세부사항: "지원" },
+    { 항목: "A/S기간", 세부사항: "3년, 제한보증" },
+    { 항목: "방열판", 세부사항: "미포함" },
+    { 항목: "두께/무게", 세부사항: "2.38mm / 7g" }
+  ]
+},
+
+"ssd5": {
+  name: "ESSENCORE KLEVV CRAS C910 M.2 NVMe (1TB)",
+  category: "ssd",
+  price: "",
+  image: "./img/ssd5.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "M.2 (2280)" },
+    { 항목: "인터페이스", 세부사항: "PCIe4.0x4 (64GT/s)" },
+    { 항목: "NAND 타입", 세부사항: "TLC" },
+    { 항목: "컨트롤러", 세부사항: "InnoGrit IG5220" },
+    { 항목: "순차읽기", 세부사항: "5,000MB/s" },
+    { 항목: "순차쓰기", 세부사항: "4,800MB/s" },
+    { 항목: "읽기IOPS", 세부사항: "620K" },
+    { 항목: "쓰기IOPS", 세부사항: "615K" },
+    { 항목: "지원기능", 세부사항: "TRIM, SLC캐싱, S.M.A.R.T, ECC, HMB, AES 암호화, 전용 S/W" },
+    { 항목: "내구성", 세부사항: "TBW: 700TB" },
+    { 항목: "A/S기간", 세부사항: "5년, 제한보증" },
+    { 항목: "방열판", 세부사항: "포함" },
+    { 항목: "두께/무게", 세부사항: "3.4mm / 10g" }
+  ]
+}
+
+}
+//hdd
+const hddProducts = {
+    "hdd1": {
+  name: "Seagate BarraCuda 5400/256M (8TB)",
+  category: "hdd",
+  price: "₩199,260",
+  image: "./img/hdd1.png",
+  specs: [
+    { 항목: "용도", 세부사항: "HDD (PC용)" },
+    { 항목: "폼팩터", 세부사항: "8.9cm(3.5인치)" },
+    { 항목: "용량", 세부사항: "8TB" },
+    { 항목: "인터페이스", 세부사항: "SATA3(6Gb/s)" },
+    { 항목: "회전속도", 세부사항: "5,400RPM" },
+    { 항목: "버퍼/캐시", 세부사항: "256MB" },
+    { 항목: "최대전송속도", 세부사항: "190MB/s" },
+    { 항목: "기록방식", 세부사항: "SMR(PMR)" },
+    { 항목: "두께", 세부사항: "26.11mm" },
+    { 항목: "소음(유휴/탐색)", 세부사항: "23/25dB" },
+    { 항목: "A/S 정보", 세부사항: "2년" },
+    { 항목: "특징", 세부사항: "다층캐싱(MTC)" },
+    { 항목: "무게", 세부사항: "630g" }
+  ]
+},
+
+"hdd2": {
+  name: "Western Digital WD Blue 5400/256M (6TB)",
+  category: "hdd",
+  price: "₩186,190",
+  image: "./img/hdd2.png",
+  specs: [
+    { 항목: "용도", 세부사항: "HDD (PC용)" },
+    { 항목: "폼팩터", 세부사항: "8.9cm(3.5인치)" },
+    { 항목: "용량", 세부사항: "6TB" },
+    { 항목: "인터페이스", 세부사항: "SATA3(6Gb/s)" },
+    { 항목: "회전속도", 세부사항: "5,400RPM" },
+    { 항목: "버퍼/캐시", 세부사항: "256MB" },
+    { 항목: "최대전송속도", 세부사항: "180MB/s" },
+    { 항목: "기록방식", 세부사항: "CMR(PMR)" },
+    { 항목: "두께", 세부사항: "26.1mm" },
+    { 항목: "소음(유휴/탐색)", 세부사항: "23/27dB" },
+    { 항목: "A/S 정보", 세부사항: "2년" },
+    { 항목: "특징", 세부사항: "NoTouch 램프로드 기술" }
+  ]
+},
+
+"hdd3": {
+  name: "Seagate BarraCuda 7200/256M (2TB)",
+  category: "hdd",
+  price: "₩85,310",
+  image: "./img/hdd3.png",
+  specs: [
+    { 항목: "용도", 세부사항: "HDD (PC용)" },
+    { 항목: "폼팩터", 세부사항: "8.9cm(3.5인치)" },
+    { 항목: "용량", 세부사항: "2TB" },
+    { 항목: "인터페이스", 세부사항: "SATA3 (6Gb/s)" },
+    { 항목: "회전속도", 세부사항: "7,200RPM" },
+    { 항목: "버퍼/캐시", 세부사항: "256MB" },
+    { 항목: "최대전송속도", 세부사항: "220MB/s" },
+    { 항목: "기록방식", 세부사항: "SMR(PMR)" },
+    { 항목: "두께", 세부사항: "20.2mm" },
+    { 항목: "A/S 정보", 세부사항: "2년" },
+    { 항목: "특징", 세부사항: "다층캐싱(MTC)" },
+    { 항목: "무게", 세부사항: "최대 490g" }
+  ]
+},
+
+"hdd4": {
+  name: "Western Digital WD Blue 5640/256M (8TB)",
+  category: "hdd",
+  price: "₩195,070",
+  image: "./img/hdd4.png",
+  specs: [
+    { 항목: "용도", 세부사항: "HDD (PC용)" },
+    { 항목: "폼팩터", 세부사항: "8.9cm(3.5인치)" },
+    { 항목: "용량", 세부사항: "8TB" },
+    { 항목: "인터페이스", 세부사항: "SATA3(6Gb/s)" },
+    { 항목: "회전속도", 세부사항: "5,640RPM" },
+    { 항목: "버퍼/캐시", 세부사항: "256MB" },
+    { 항목: "최대전송속도", 세부사항: "215MB/s" },
+    { 항목: "기록방식", 세부사항: "CMR(PMR)" },
+    { 항목: "두께", 세부사항: "26.1mm" },
+    { 항목: "소음(유휴/탐색)", 세부사항: "24/28dB" },
+    { 항목: "A/S 정보", 세부사항: "2년" }
+  ]
+},
+
+"hdd5": {
+  name: "Seagate IronWolf 5400/256M (8TB)",
+  category: "hdd",
+  price: "₩326,540",
+  image: "./img/hdd5.png",
+  specs: [
+    { 항목: "용도", 세부사항: "HDD (NAS용)" },
+    { 항목: "폼팩터", 세부사항: "8.9cm(3.5인치)" },
+    { 항목: "용량", 세부사항: "8TB" },
+    { 항목: "인터페이스", 세부사항: "SATA3 (6Gb/s)" },
+    { 항목: "회전속도", 세부사항: "5,400RPM" },
+    { 항목: "버퍼/캐시", 세부사항: "256MB" },
+    { 항목: "최대전송속도", 세부사항: "202MB/s" },
+    { 항목: "기록방식", 세부사항: "CMR(PMR)" },
+    { 항목: "두께", 세부사항: "26.11mm" },
+    { 항목: "RV센서", 세부사항: "지원" },
+    { 항목: "S.M.A.R.T", 세부사항: "지원" },
+    { 항목: "사용보증", 세부사항: "100만시간" },
+    { 항목: "소음(유휴/탐색)", 세부사항: "25/26dB" },
+    { 항목: "A/S 정보", 세부사항: "3년, 데이터 복구 3년" },
+    { 항목: "무게", 세부사항: "630g" }
+  ]
+}
+    
+}
+//power
+const powerProducts = {
+    "power1": {
+  name: "마이크로닉스 Classic II 풀체인지 700W 80PLUS브론즈 ATX3.1",
+  category: "power",
+  price: "₩83,560",
+  image: "./img/power1.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "ATX 파워" },
+    { 항목: "정격출력", 세부사항: "700W" },
+    { 항목: "효율/인증", 세부사항: "80 PLUS 브론즈, ETA BRONZE, LAMBDA STANDARD" },
+    { 항목: "케이블 연결", 세부사항: "케이블일체형" },
+    { 항목: "전압변동", 세부사항: "±0.3%" },
+    { 항목: "+12V", 세부사항: "싱글레일, 가용률 100%" },
+    { 항목: "PFC/역률", 세부사항: "액티브PFC, PF(역률): 99%" },
+    { 항목: "팬/크기", 세부사항: "120mm 팬, 깊이 140mm" },
+    { 항목: "A/S 기간", 세부사항: "무상 7년" },
+    { 항목: "커넥터", 세부사항: "메인전원 24핀(20+4), 보조전원 8+4+4핀 1개, PCIe 16핀(12+4) 12V2x6 1개, PCIe 8핀(6+2) 2개, SATA 6개, IDE 4핀 4개" },
+    { 항목: "부가기능", 세부사항: "팬리스모드, 자동 팬 조절, 대기전력 1W 미만, 플랫케이블" }
+  ]
+},
+
+"power2": {
+  name: "잘만 GigaMax III 850W 80PLUS브론즈 모듈러 ATX3.1",
+  category: "power",
+  price: "₩91,220",
+  image: "./img/power2.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "ATX 파워" },
+    { 항목: "정격출력", 세부사항: "850W" },
+    { 항목: "효율/인증", 세부사항: "80 PLUS 브론즈, ETA SILVER, LAMBDA STANDARD++" },
+    { 항목: "케이블 연결", 세부사항: "세미모듈러" },
+    { 항목: "+12V", 세부사항: "싱글레일, 가용률 100%" },
+    { 항목: "PFC/역률", 세부사항: "액티브PFC, PF(역률): 99%" },
+    { 항목: "팬/크기", 세부사항: "120mm 팬, 깊이 140mm" },
+    { 항목: "A/S 기간", 세부사항: "무상 7년" },
+    { 항목: "커넥터", 세부사항: "메인전원 24핀, 보조전원 8+4+4핀 1개, PCIe 16핀(12+4) 12V2x6 1개, PCIe 8핀(6+2) 4개, SATA 6개, IDE 4핀 3개" },
+    { 항목: "부가기능", 세부사항: "대기전력 1W 미만, 플랫케이블" }
+  ]
+},
+
+"power3": {
+  name: "darkFlash 퍼펙트모스트 850W 80PLUS골드 풀모듈러 ATX3.1 블랙",
+  category: "power",
+  price: "₩110,600",
+  image: "./img/power3.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "ATX 파워" },
+    { 항목: "정격출력", 세부사항: "850W" },
+    { 항목: "효율/인증", 세부사항: "80 PLUS 골드" },
+    { 항목: "케이블 연결", 세부사항: "풀모듈러" },
+    { 항목: "+12V", 세부사항: "싱글레일, 가용률 100%" },
+    { 항목: "PFC/역률", 세부사항: "액티브PFC, PF(역률): 99%" },
+    { 항목: "팬/크기", 세부사항: "120mm 팬, 깊이 140mm" },
+    { 항목: "A/S 기간", 세부사항: "무상 10년" },
+    { 항목: "커넥터", 세부사항: "메인전원 24핀(20+4), 보조전원 8핀(4+4) 2개, PCIe 16핀(12+4) 12V2x6 1개, PCIe 8핀(6+2) 3개, SATA 7개, IDE 4핀 5개" },
+    { 항목: "부가기능", 세부사항: "팬리스모드, 자동 팬 조절, 대기전력 1W 미만" }
+  ]
+},
+
+"power4": {
+  name: "시소닉 NEW FOCUS V4 GX-1000 GOLD 풀모듈러 ATX3.1",
+  category: "power",
+  price: "₩244,980",
+  image: "./img/power4.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "ATX 파워" },
+    { 항목: "정격출력", 세부사항: "1000W" },
+    { 항목: "효율/인증", 세부사항: "80 PLUS 골드, ETA GOLD, LAMBDA A-" },
+    { 항목: "케이블 연결", 세부사항: "풀모듈러" },
+    { 항목: "+12V", 세부사항: "싱글레일, 가용률 99%" },
+    { 항목: "PFC/역률", 세부사항: "액티브PFC, PF(역률): 99%" },
+    { 항목: "팬/크기", 세부사항: "135mm 팬, 깊이 140mm" },
+    { 항목: "A/S 기간", 세부사항: "무상 10년" },
+    { 항목: "커넥터", 세부사항: "메인전원 24핀(20+4), 보조전원 8핀(4+4) 2개, PCIe 16핀(12+4) 12V2x6 1개, PCIe 8핀(6+2) 3개, SATA 8개, IDE 4핀 3개" },
+    { 항목: "부가기능", 세부사항: "팬리스모드, 자동 팬 조절, 대기전력 1W 미만" }
+  ]
+},
+
+"power5": {
+  name: "마이크로닉스 Classic II 850W 80PLUS골드 풀모듈러 ATX3.1",
+  category: "power",
+  price: "₩168,960",
+  image: "./img/power5.png",
+  specs: [
+    { 항목: "폼팩터", 세부사항: "ATX 파워" },
+    { 항목: "정격출력", 세부사항: "850W" },
+    { 항목: "효율/인증", 세부사항: "80 PLUS 골드" },
+    { 항목: "케이블 연결", 세부사항: "풀모듈러" },
+    { 항목: "+12V", 세부사항: "싱글레일" },
+    { 항목: "PFC/역률", 세부사항: "액티브PFC, PF(역률): 99%" },
+    { 항목: "팬/크기", 세부사항: "120mm 팬, 깊이 140mm" },
+    { 항목: "A/S 기간", 세부사항: "무상 10년" },
+    { 항목: "커넥터", 세부사항: "메인전원 24핀(20+4), 보조전원 8+4+4핀 1개, PCIe 16핀(12+4) 12V2x6 1개, PCIe 8핀(6+2) 2개, SATA 8개, IDE 4핀 4개, FDD 1개" },
+    { 항목: "부가기능", 세부사항: "팬리스모드, 자동 팬 조절, 대기전력 1W 미만, 플랫케이블" }
+  ]
+}
+
+
+}
+
+// --- 모든 상품을 하나로 합침 ---
+const products = Object.assign({}, vgaProducts, cpuProducts, coolerProducts, 
+    motherboardProducts, ramProducts, ssdProducts, hddProducts, powerProducts);
+
+
+
+// 필요하면 다른 카테고리도 추가: Object.assign({}, vgaProducts, cpuProducts, ramProducts, ...);
+
+// --- 상세페이지/공통 조회 예시 ---
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('id'); // 예: a, b, j 등
 const product = products[productId];
 
-// 데이터 렌더링
+// --- 상세페이지 렌더링 ---
 if (product) {
     // 이미지 렌더링
     const productImage = document.getElementById("product-image");
@@ -309,54 +1014,57 @@ if (product) {
     // 상세 정보 표 렌더링
     const specsContainer = document.getElementById("product-specs");
     const table = document.createElement("table");
-    
     product.specs.forEach(spec => {
         const row = document.createElement("tr");
         row.innerHTML = `<td>${spec.항목}</td><td>${spec.세부사항}</td>`;
         table.appendChild(row);
     });
-
     specsContainer.appendChild(table);
 } else {
     // 상품 데이터가 없을 경우 처리
     document.body.innerHTML = "<h2>상품 정보를 찾을 수 없습니다.</h2>";
 }
 
-// 수량 조정 기능
+// --- 수량 조정 기능 ---
 const quantityInput = document.getElementById("quantity-input");
+if (quantityInput) {
+    const qtyUp = document.querySelector(".qty-up");
+    const qtyDown = document.querySelector(".qty-down");
 
-document.querySelector(".qty-up").addEventListener("click", () => {
-    quantityInput.value = parseInt(quantityInput.value) + 1;
-});
-
-document.querySelector(".qty-down").addEventListener("click", () => {
-    if (parseInt(quantityInput.value) > 1) {
-        quantityInput.value = parseInt(quantityInput.value) - 1;
+    if (qtyUp) {
+        qtyUp.addEventListener("click", () => {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        });
     }
-});
+    if (qtyDown) {
+        qtyDown.addEventListener("click", () => {
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+    }
+}
 
-// 장바구니 추가 버튼 클릭 이벤트
-document.getElementById("add-to-cart-btn").addEventListener("click", () => {
-    const quantity = parseInt(quantityInput.value);
+// --- 장바구니 추가 버튼 클릭 이벤트 ---
+const addToCartBtn = document.getElementById("add-to-cart-btn");
+if (addToCartBtn && quantityInput) {
+    addToCartBtn.addEventListener("click", () => {
+        const quantity = parseInt(quantityInput.value);
+        // cart.js의 addToCart 함수 호출
+        addToCart(productId, product.name, product.price, product.image, quantity);
+    });
+}
 
-    // cart.js의 addToCart 함수 호출
-    addToCart(productId, product.name, product.price, product.image);
-
-});
-
-// 음성 인식 버튼 클릭 이벤트 추가
+// --- 음성 인식 및 헤더/푸터 로드 ---
 document.addEventListener('DOMContentLoaded', function() {
     // 헤더 로드 후 음성 인식 버튼 찾기
     fetch('header.html')
         .then(response => response.text())
         .then(data => {
-            // header 태그 내용을 header.html의 내용 중 header 태그 내부 내용만 추출하여 교체
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = data;
             const headerContent = tempDiv.querySelector('header').innerHTML;
             document.querySelector('header').innerHTML = headerContent;
-            
-            // 헤더가 로드된 후 음성 인식 초기화
             if (typeof initVoiceRecognition === 'function') {
                 initVoiceRecognition();
             }

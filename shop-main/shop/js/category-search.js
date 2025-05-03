@@ -44,7 +44,6 @@ const CATEGORY_DATA = {
     ]
   },
   
-
   vga: {
     keywords: [
       'NVIDIA 계열', 'AMD 계열', '인텔 계열', '길이 300mm 미만', '외장 그래픽', 'VGA 지지대/쿨러'
@@ -78,7 +77,7 @@ const CATEGORY_DATA = {
         '360~', '350~359', '340~349', '330~339', '320~329'
       ]}
     ]
-  }  ,
+  },
 
   cooler: {
     keywords: [
@@ -132,7 +131,6 @@ const CATEGORY_DATA = {
   },
   
 
-
   ssd: {
     keywords: ['M.2 NVMe 전체', 'M.2 NVMe 5.0', 'M.2 NVMe 3.0', '2.5인치 SATA', 'M.2 SATA', 'PS5 / UMPC용', 'OS 설치용','SSD / HDD 주변기기'],
     options: [
@@ -160,7 +158,6 @@ const CATEGORY_DATA = {
     ]
   },
   
-
 
   hdd: {
     keywords: ['PC용 HDD', 'NAS용 HDD', 'CCTV용 HDD', '노트북용 HDD', '기업용 HDD', 'SSD / HDD 복사기', 'SSD / HDD 주변기기'],
