@@ -210,11 +210,15 @@ const CATEGORY_DATA = {
 };
 
 let currentCategory = 'cpu';
+let selectedFilters = {};
 
+// 인기검색어 렌더링 함수
 function renderPopularKeywords(category) {
   const box = document.getElementById('popular-keywords');
+  if (!box) return;
+  
   box.innerHTML = '';
-  (CATEGORY_DATA[category].keywords || []).forEach(kw => {
+  (CATEGORY_DATA[category]?.keywords || []).forEach(kw => {
     const span = document.createElement('span');
     span.className = 'popular-keyword';
     span.textContent = kw;
@@ -222,58 +226,79 @@ function renderPopularKeywords(category) {
   });
 }
 
+// 체크박스 변경 핸들러
+function handleFilterChange(optionName, value, isChecked) {
+  if (!selectedFilters[optionName]) {
+    selectedFilters[optionName] = [];
+  }
+  
+  if (isChecked) {
+    selectedFilters[optionName].push(value);
+  } else {
+    selectedFilters[optionName] = selectedFilters[optionName].filter(v => v !== value);
+  }
+  
+  renderProducts(currentCategory, selectedFilters);
+}
+
+// 상세검색 옵션 렌더링 함수
 function renderDetailOptions(category) {
   const form = document.getElementById('detail-search-form');
   form.innerHTML = '';
-  const options = CATEGORY_DATA[category].options || [];
+  const options = CATEGORY_DATA[category]?.options || [];
+  
   if (!options.length) {
     form.innerHTML = '<div style="color:#888;font-size:15px;">상세검색 옵션이 없습니다.</div>';
     return;
   }
+
   options.forEach(opt => {
     const row = document.createElement('div');
     row.className = 'detail-search-row';
+    
     const label = document.createElement('div');
     label.className = 'detail-search-label';
     label.textContent = opt.label;
     row.appendChild(label);
+
     const choices = document.createElement('div');
     choices.className = 'detail-search-options';
+    
     opt.choices.forEach(choice => {
       const id = `${opt.name}_${choice.replace(/\s/g,'')}`;
       const labelSet = document.createElement('label');
       labelSet.className = 'checkbox-set';
+      
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.id = id;
       cb.name = opt.name;
       cb.value = choice;
-      // 한 라벨(옵션 그룹) 안에서는 하나만 선택 가능(라디오처럼)
+      
       cb.addEventListener('change', function() {
-        if (cb.checked) {
-          document.querySelectorAll(`input[name="${opt.name}"]`).forEach(other => {
-            if (other !== cb) other.checked = false;
-          });
-        }
+        handleFilterChange(opt.name, choice, this.checked);
       });
+      
       const span = document.createElement('span');
       span.textContent = choice;
       span.title = choice;
+      
       labelSet.appendChild(cb);
       labelSet.appendChild(span);
       choices.appendChild(labelSet);
     });
+    
     row.appendChild(choices);
     form.appendChild(row);
   });
 }
 
+// 카테고리 클릭 핸들러 및 초기화
 document.addEventListener('DOMContentLoaded', function() {
   const params = new URLSearchParams(window.location.search);
   const urlCategory = params.get('cat');
   currentCategory = (urlCategory && CATEGORY_DATA[urlCategory]) ? urlCategory : 'cpu';
 
-  // 좌측 카테고리 메뉴 활성화 및 클릭 이벤트
   const list = document.getElementById('category-list');
   Array.from(list.children).forEach(li => {
     const category = li.getAttribute('data-category');
@@ -283,11 +308,22 @@ document.addEventListener('DOMContentLoaded', function() {
       Array.from(list.children).forEach(x => x.classList.remove('active'));
       li.classList.add('active');
       currentCategory = category;
+      selectedFilters = {}; // 필터 초기화
+
+      // URL에 cat 파라미터 반영 (중요!)
+      if (history.pushState) {
+        history.pushState(null, '', `?cat=${currentCategory}`);
+      }
+
       renderPopularKeywords(currentCategory);
       renderDetailOptions(currentCategory);
+      renderProducts(currentCategory, selectedFilters);
     });
   });
 
+  // 초기 렌더링
   renderPopularKeywords(currentCategory);
   renderDetailOptions(currentCategory);
+  renderProducts(currentCategory, selectedFilters);
 });
+

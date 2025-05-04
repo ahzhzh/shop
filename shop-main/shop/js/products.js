@@ -988,65 +988,58 @@ const categoryMap = {
     power: powerProducts
 };
 
-// 상품 렌더링 함수 수정
-function renderProducts(filterCategory) {
-    const container = document.getElementById('product-list-container');
-    if (!container) return;
-    container.innerHTML = '';
-    if (!filterCategory || !categoryMap[filterCategory]) return;
+function renderProducts(filterCategory, filters = {}) {
+  const container = document.getElementById('product-list-container');
+  if (!container) return;
+  container.innerHTML = '';
 
-    // 선택한 카테고리의 상품만 렌더링
-    Object.entries(categoryMap[filterCategory]).forEach(([id, product]) => {
-        const descHtml = product.desc.join(" / ");
-        const html = `
-            <div class="product-list-item">
-                <div class="product-image">
-                    <img src="${product.image}" alt="${product.name}">
-                </div>
-                <div class="product-main-info">
-                    <div class="product-title">
-                        <a href="product.html?id=${id}" class="product-link">
-                            ${product.name}
-                        </a>
-                    </div>
-                    <div class="product-desc">${descHtml}</div>
-                </div>
-                <div class="product-price-box">
-                    <div class="product-price">${product.price}</div>
-                </div>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-    });
+  if (!categoryMap[filterCategory]) return;
+
+  const allProducts = Object.entries(categoryMap[filterCategory]);
+  
+  // 1. 모든 필터 값을 하나의 배열로 추출 (중복 제거)
+  const allFilterValues = Object.values(filters)
+    .flat()
+    .map(v => v.toLowerCase());
+
+  // 2. 상품 필터링
+  const filteredProducts = allProducts.filter(([id, product]) => {
+    if (allFilterValues.length === 0) return true;
+
+    // 3. 상품 정보 문자열화 (이름 + 설명)
+    const productInfo = [
+      product.name, 
+      ...product.desc
+    ].join(' ').toLowerCase();
+
+    // 4. 모든 필터 값이 상품 정보에 포함되는지 확인 (AND 조건)
+    return allFilterValues.every(filterValue => 
+      productInfo.includes(filterValue)
+    );
+  });
+
+  // 5. 필터링된 상품 렌더링
+  filteredProducts.forEach(([id, product]) => {
+    const descHtml = product.desc.join(" / ");
+    const html = `
+      <div class="product-list-item">
+        <div class="product-image">
+          <img src="${product.image}" alt="${product.name}">
+        </div>
+        <div class="product-main-info">
+          <div class="product-title">
+            <a href="product.html?id=${id}" class="product-link">
+              ${product.name}
+            </a>
+          </div>
+          <div class="product-desc">${descHtml}</div>
+        </div>
+        <div class="product-price-box">
+          <div class="product-price">${product.price}</div>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  });
 }
 
-// URL에서 카테고리 추출 함수
-function getCategoryFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('cat');
-}
-
-// 페이지 로드 시 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. URL에서 카테고리 읽어오기
-    const initialCategory = getCategoryFromURL();
-    
-    // 2. 초기 카테고리 렌더링
-    if (initialCategory) {
-        renderProducts(initialCategory);
-    }
-
-    // 3. 카테고리 클릭 이벤트 핸들러
-    const categoryList = document.getElementById('category-list');
-    if (categoryList) {
-        categoryList.addEventListener('click', function(e) {
-            if (e.target.tagName === 'LI') {
-                const cat = e.target.getAttribute('data-category');
-                if (history.pushState) {
-                    history.pushState(null, '', `?cat=${cat}`);
-                }
-                renderProducts(cat);
-            }
-        });
-    }
-});
