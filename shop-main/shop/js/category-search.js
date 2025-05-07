@@ -1,11 +1,9 @@
 const CATEGORY_DATA = {
   cpu: {
-    keywords: [
-      '코어울트라 시리즈2', '인텔 14세대', '인텔 13~12세대', '인텔', '라이젠 6세대', '라이젠 5~4세대', 'AMD', '내장그래픽 CPU', '서버용 CPU', '중고 CPU'
-    ],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: ['인텔', 'AMD'] },
-      { label: '코드 네임', name: 'codename', choices: ['애로우레이크', '그래나이트 릿지', '라파엘', '버미어'] },
+      { label: '코드 네임', name: 'codename', choices: ['애로우레이크', '랩터레이크 리프레시', '그래나이트 릿지', '라파엘', '버미어'] },
       { label: 'CPU 시리즈', name: 'series', choices: ['코어울트라', '코어i9', '코어i7', '라이젠 9', '라이젠 7'] },
       { label: 'CPU 종류', name: 'type', choices: ['코어 울트라9', '코어 울트라7', '코어i9', '라이젠9', '스레드리퍼'] },
       { label: '소켓 구분', name: 'socket', choices: ['인텔(소켓1851)', '인텔(소켓1700)', 'AMD(소켓AM5)', 'AMD(소켓AM4)'] },
@@ -16,9 +14,7 @@ const CATEGORY_DATA = {
   },
 
   ram: {
-    keywords: [
-      'PC용 DDR5', 'PC용 DDR4', 'PC용 DDR3','노트북용 DDR5', '노트북용 DDR4', '노트북용 DDR3','서버용 RAM', '중고 RAM'
-    ],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: [
         '삼성전자', 'ESSENCORE', 'TeamGroup', '마이크론', 'G.SKILL', 'SK하이닉스', 'PATRIOT', 'ADATA', '아이티젠', 'CORSAIR'
@@ -45,9 +41,7 @@ const CATEGORY_DATA = {
   },
   
   vga: {
-    keywords: [
-      'NVIDIA 계열', 'AMD 계열', '인텔 계열', '길이 300mm 미만', '외장 그래픽', 'VGA 지지대/쿨러'
-    ],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: [
         'GIGABYTE', 'MSI', '갤럭시', '이엠텍', 'PALIT', 'PowerColor', 'ZOTAC', 'ASRock', 'ASUS', 'COLORFUL'
@@ -80,9 +74,7 @@ const CATEGORY_DATA = {
   },
 
   cooler: {
-    keywords: [
-      'CPU 수랭쿨러', 'CPU 공랭쿨러', '쿨링팬', '그래픽카드 쿨러', 'RAM 쿨러', '방열판', '써멀패드', '튜닝 용품'
-    ],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: ['잘만', 'JIUSHARK', '3RSYS', 'DEEPCOOL', 'darkFlash', 'Thermalright', 'ARCTIC', 'PCCOOLER', '발키리', '쿨러마스터'] },
       { label: '제품 종류', name: 'type', choices: ['CPU 쿨러', '써멀컴파운드(그리스)', '시스템 쿨러', 'M.2 SSD 쿨러', 'RAM 쿨러'] },
@@ -95,9 +87,8 @@ const CATEGORY_DATA = {
     ]
   },
   
-
   motherboard: {
-    keywords: ['인텔 1851 소켓 지원', '인텔용 메인보드', 'AMD AM5소켓 지원', 'AMD용 메인보드', 'DD5 메모리 지원', 'C타입 모니터 출력', '임베디드 보드'],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: [
         'GIGABYTE', 'ASUS', 'MSI', 'ASRock', 'BIOSTAR'
@@ -130,9 +121,8 @@ const CATEGORY_DATA = {
     ]
   },
   
-
   ssd: {
-    keywords: ['M.2 NVMe 전체', 'M.2 NVMe 5.0', 'M.2 NVMe 3.0', '2.5인치 SATA', 'M.2 SATA', 'PS5 / UMPC용', 'OS 설치용','SSD / HDD 주변기기'],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: [
         '삼성전자', 'SK하이닉스', '솔리다임', '마이크론', 'ESSENCORE', '키오시아', 'Seagate', 'CORSAIR', 'COLORFUL'
@@ -158,9 +148,8 @@ const CATEGORY_DATA = {
     ]
   },
   
-
   hdd: {
-    keywords: ['PC용 HDD', 'NAS용 HDD', 'CCTV용 HDD', '노트북용 HDD', '기업용 HDD', 'SSD / HDD 복사기', 'SSD / HDD 주변기기'],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: [
         'Seagate', 'Western Digital', '도시바', 'Synology', 'Sebap'
@@ -180,9 +169,8 @@ const CATEGORY_DATA = {
     ]
   },
   
-
   power: {
-    keywords: ['ATX 3.x 파워', 'M-ATX 3.x 파워', '모듈러 파워', '80 PLUS 인증 파워', '1000W 이상 파워', 'UPS'],
+    
     options: [
       { label: '제조사별', name: 'maker', choices: [
         '마이크로닉스', 'darkFlash', 'SuperFlower', '시소닉', '잘만'

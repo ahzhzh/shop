@@ -3,6 +3,7 @@
 const vgaProducts = {
     "a": {
         name: "갤럭시 GALAX 지포스 RTX 4070 Ti SUPER EX GAMER WHITE OC D6X 16GB",
+        category: "vga",
         price: "₩1,915,800",
         image: "./img/product00.png",
         specs: [
@@ -29,6 +30,7 @@ const vgaProducts = {
     },
     "b": {
         name: "이엠텍 지포스 RTX 5070 MIRACLE WHITE D7 12GB",
+        category: "vga",
         price: "₩1,044,000",
         image: "./img/product01.png",
         specs: [
@@ -56,6 +58,7 @@ const vgaProducts = {
     },
     "c": {
     name: "MSI 지포스 RTX 5080 뱅가드 SOC D7 16GB 하이퍼프로져",
+    category: "vga",
     price: "₩2,293,200",
     image: "./img/product02.png",
     specs: [
@@ -83,6 +86,7 @@ const vgaProducts = {
     },
     "d": {
     name: "갤럭시 GALAX 지포스 RTX 5070 EX GAMER WHITE OC D7 12GB",
+    category: "vga",
     price: "₩1,099,900",
     image: "./img/product03.png",
     specs: [
@@ -110,6 +114,7 @@ const vgaProducts = {
     },
     "e": {
     name: "MSI 지포스 RTX 5070 게이밍 트리오 OC D7 12GB 트라이프로져4",
+    category: "vga",
     price: "₩1,148,960",
     image: "./img/product04.png",
     specs: [
@@ -143,6 +148,7 @@ const vgaProducts = {
 const cpuProducts = {
     "f": {
     name: "인텔 코어 울트라7 시리즈2 265K (애로우레이크)",
+    category: "cpu",
     price: "₩539,990",
     image: "./img/product05.png",
     specs: [    
@@ -167,7 +173,8 @@ const cpuProducts = {
     },
     "g": {
     name: "AMD 라이젠7-6세대 9700X (그래니트 릿지)",
-    price: "₩539,990",
+    category: "cpu",
+    price: "₩474,040",
     image: "./img/product06.png",
     specs: [
         { 항목: "소켓", 세부사항: "AM5" },
@@ -193,84 +200,60 @@ const cpuProducts = {
     },
     "h": {
     name: "AMD 라이젠7-6세대 9800X3D (그래니트 릿지)",
-    price: "₩539,990",
+    category: "cpu",
+    price: "₩795,990",
     image: "./img/product07.png",
     specs: [
         { 항목: "소켓", 세부사항: "AM5" },
         { 항목: "코어 및 스레드", 세부사항: "8코어 / 16스레드" },
-        { 항목: "메모리 규격", 세부사항: "DDR5" },
-        { 항목: "내장 그래픽", 세부사항: "탑재 (AMD 라데온 그래픽)" },
-        { 항목: "아키텍처", 세부사항: "Zen 5" },
+        { 항목: "아키텍처", 세부사항: "Zen 5 (6세대)" },
         { 항목: "제조 공정", 세부사항: "TSMC 4nm" },
-        { 항목: "기본 클럭", 세부사항: "3.8GHz" },
-        { 항목: "최대 클럭", 세부사항: "5.5GHz" },
+        { 항목: "기본 클럭", 세부사항: "4.7GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.2GHz" },
         { 항목: "L2 캐시", 세부사항: "8MB" },
-        { 항목: "L3 캐시", 세부사항: "32MB" },
-        { 항목: "TDP", 세부사항: "65W" },
-        { 항목: "PPT", 세부사항: "88W" },
+        { 항목: "L3 캐시", 세부사항: "96MB (3D V-Cache)" },
+        { 항목: "TDP", 세부사항: "120W" },
+        { 항목: "PPT", 세부사항: "162W" },
         { 항목: "PCIe 지원", 세부사항: "PCIe 5.0" },
-        { 항목: "메모리 속도", 세부사항: "5600MHz" },
-        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), AMD Ryzen Master" },
+        { 항목: "메모리 규격", 세부사항: "DDR5 (최대 5600MHz)" },
+        { 항목: "내장 그래픽", 세부사항: "AMD 라데온 그래픽 (Vega 기반)" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), AMD Ryzen Master, AMD 3D V-Cache" },
         { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
-        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2260점" },
-        { 항목: "시네벤치 R23 (멀티)", 세부사항: "21436점" },
-        { 항목: "출시가", 세부사항: "$359 (VAT 별도)" }
-           ]
-    },
-    "h": {
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2073점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "23334점" },
+        { 항목: "출시가", 세부사항: "$479 (VAT 별도)" }
+    ]
+},
+
+    "i": {
     name: "인텔 코어i7-14세대 14700K (랩터레이크 리프레시)",
+    category: "cpu",
     price: "₩552,890",
     image: "./img/product08.png",
     specs: [
-        { 항목: "소켓", 세부사항: "AM5" },
-        { 항목: "코어 및 스레드", 세부사항: "8코어 / 16스레드" },
-        { 항목: "메모리 규격", 세부사항: "DDR5" },
-        { 항목: "내장 그래픽", 세부사항: "탑재 (AMD 라데온 그래픽)" },
-        { 항목: "아키텍처", 세부사항: "Zen 5" },
-        { 항목: "제조 공정", 세부사항: "TSMC 4nm" },
-        { 항목: "기본 클럭", 세부사항: "3.8GHz" },
-        { 항목: "최대 클럭", 세부사항: "5.5GHz" },
-        { 항목: "L2 캐시", 세부사항: "8MB" },
-        { 항목: "L3 캐시", 세부사항: "32MB" },
-        { 항목: "TDP", 세부사항: "65W" },
-        { 항목: "PPT", 세부사항: "88W" },
-        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0" },
-        { 항목: "메모리 속도", 세부사항: "5600MHz" },
-        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), AMD Ryzen Master" },
-        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
-        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2260점" },
-        { 항목: "시네벤치 R23 (멀티)", 세부사항: "21436점" },
-        { 항목: "출시가", 세부사항: "$359 (VAT 별도)" }
-           ]
-    },
-    "i": {
-    name: "인텔 코어i7-14세대 14700K (랩터레이크 리프레시)",
-    price: "₩552,890",
-    image: "./img/product09.png",
-    specs: [
-        { 항목: "소켓", 세부사항: "AM5" },
-        { 항목: "코어 및 스레드", 세부사항: "8코어 / 16스레드" },
-        { 항목: "메모리 규격", 세부사항: "DDR5" },
-        { 항목: "내장 그래픽", 세부사항: "탑재 (AMD 라데온 그래픽)" },
-        { 항목: "아키텍처", 세부사항: "Zen 5" },
-        { 항목: "제조 공정", 세부사항: "TSMC 4nm" },
-        { 항목: "기본 클럭", 세부사항: "3.8GHz" },
-        { 항목: "최대 클럭", 세부사항: "5.5GHz" },
-        { 항목: "L2 캐시", 세부사항: "8MB" },
-        { 항목: "L3 캐시", 세부사항: "32MB" },
-        { 항목: "TDP", 세부사항: "65W" },
-        { 항목: "PPT", 세부사항: "88W" },
-        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0" },
-        { 항목: "메모리 속도", 세부사항: "5600MHz" },
-        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), AMD Ryzen Master" },
-        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
-        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2260점" },
-        { 항목: "시네벤치 R23 (멀티)", 세부사항: "21436점" },
-        { 항목: "출시가", 세부사항: "$359 (VAT 별도)" }
-           ]
-    },
+        { 항목: "소켓", 세부사항: "LGA1700" },
+        { 항목: "코어 및 스레드", 세부사항: "P코어 8개 + E코어 12개 (총 20코어) / 28스레드" },
+        { 항목: "아키텍처", 세부사항: "Raptor Lake Refresh (14세대)" },
+        { 항목: "제조 공정", 세부사항: "Intel 7 (10nm)" },
+        { 항목: "기본 클럭", 세부사항: "3.4GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.6GHz" },
+        { 항목: "L2 캐시", 세부사항: "28MB" },
+        { 항목: "L3 캐시", 세부사항: "33MB" },
+        { 항목: "PBP / MTP", 세부사항: "125W / 253W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 규격", 세부사항: "DDR5, DDR4 (최대 5600MHz, 3200MHz)" },
+        { 항목: "최대 메모리 용량", 세부사항: "192GB" },
+        { 항목: "내장 그래픽", 세부사항: "Intel UHD 770" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), 인텔 XTU, 인텔 퀵싱크, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "미포함 (수랭/고성능 공랭 권장)" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2069점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "34818점" },
+        { 항목: "출시가", 세부사항: "$409 (VAT 별도)" }
+    ]
+},    
     "j": {
     name: "인텔 코어 울트라5 시리즈2 225F (애로우레이크)",
+    category: "cpu",
     price: "₩326,990",
     image: "./img/product09.png",
     specs: [
@@ -291,7 +274,253 @@ const cpuProducts = {
         { 항목: "쿨러 포함 여부", 세부사항: "인텔 기본쿨러 포함" },
         { 항목: "출시가", 세부사항: "$221 (VAT 별도)" }
            ]
-    }
+    },
+    "cpu1": {
+    name: "인텔 코어i5-14세대 14400F (랩터레이크 리프레시)",
+    category: "cpu",
+    price: "₩185,060",
+    image: "./img/cpu1.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1700" },
+        { 항목: "코어 및 스레드", 세부사항: "P6+E4코어 / 12+4스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5, DDR4" },
+        { 항목: "내장 그래픽", 세부사항: "미탑재" },
+        { 항목: "아키텍처", 세부사항: "10nm(인텔7)" },
+        { 항목: "기본 클럭", 세부사항: "2.5GHz" },
+        { 항목: "최대 클럭", 세부사항: "4.7GHz" },
+        { 항목: "L2 캐시", 세부사항: "9.5MB" },
+        { 항목: "L3 캐시", 세부사항: "20MB" },
+        { 항목: "PBP-MTP", 세부사항: "65-148W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "4800, 3200MHz" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "인텔 기본쿨러 포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "1790점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "17804점" }
+    ]
+},
+"cpu2": {
+    name: "인텔 코어i5-14세대 14600KF (랩터레이크 리프레시)",
+    category: "cpu",
+    price: "₩276,240",
+    image: "./img/cpu2.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1700" },
+        { 항목: "코어 및 스레드", 세부사항: "P6+E8코어 / 12+8스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5, DDR4" },
+        { 항목: "내장 그래픽", 세부사항: "미탑재" },
+        { 항목: "아키텍처", 세부사항: "10nm(인텔7)" },
+        { 항목: "기본 클럭", 세부사항: "3.5GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.3GHz" },
+        { 항목: "L2 캐시", 세부사항: "20MB" },
+        { 항목: "L3 캐시", 세부사항: "24MB" },
+        { 항목: "PBP-MTP", 세부사항: "125-181W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "5600, 3200MHz" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), 인텔 XTU, 인텔 퀵싱크, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2054점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "24086점" }
+    ]
+},
+"cpu3": {
+    name: "인텔 코어 울트라9 시리즈2 285K (애로우레이크)",
+    category: "cpu",
+    price: "₩907,850",
+    image: "./img/cpu3.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1851" },
+        { 항목: "코어 및 스레드", 세부사항: "P8+E16코어 / 24스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5" },
+        { 항목: "내장 그래픽", 세부사항: "탑재 (인텔 그래픽스 Xe LPG)" },
+        { 항목: "아키텍처", 세부사항: "TSMC 3nm" },
+        { 항목: "기본 클럭", 세부사항: "3.7GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.7GHz" },
+        { 항목: "L2 캐시", 세부사항: "40MB" },
+        { 항목: "L3 캐시", 세부사항: "36MB" },
+        { 항목: "PBP-MTP", 세부사항: "125-250W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "6400MHz" },
+        { 항목: "기술 지원", 세부사항: "인텔 XTU, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2320점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "41558점" },
+        { 항목: "출시가", 세부사항: "589달러(VAT별도)" }
+    ]
+},
+"cpu4": {
+    name: "인텔 코어i5-14세대 14600K (랩터레이크 리프레시)",
+    category: "cpu",
+    price: "₩332,390",
+    image: "./img/cpu4.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1700" },
+        { 항목: "코어 및 스레드", 세부사항: "P6+E8코어 / 12+8스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5, DDR4" },
+        { 항목: "내장 그래픽", 세부사항: "탑재 (인텔 UHD 770)" },
+        { 항목: "아키텍처", 세부사항: "10nm(인텔7)" },
+        { 항목: "기본 클럭", 세부사항: "3.5GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.3GHz" },
+        { 항목: "L2 캐시", 세부사항: "20MB" },
+        { 항목: "L3 캐시", 세부사항: "24MB" },
+        { 항목: "PBP-MTP", 세부사항: "125-181W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "5600, 3200MHz" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), 인텔 XTU, 인텔 퀵싱크, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2069점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "25159점" },
+        { 항목: "출시가", 세부사항: "319달러 (VAT별도)" }
+    ]
+},
+"cpu5": {
+    name: "인텔 코어 울트라7 시리즈2 265KF (애로우레이크)",
+    category: "cpu",
+    price: "₩445,160",
+    image: "./img/cpu5.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1851" },
+        { 항목: "코어 및 스레드", 세부사항: "P8+E12코어 / 20스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5" },
+        { 항목: "내장 그래픽", 세부사항: "미탑재" },
+        { 항목: "아키텍처", 세부사항: "TSMC 3nm" },
+        { 항목: "기본 클럭", 세부사항: "3.9GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.5GHz" },
+        { 항목: "L2 캐시", 세부사항: "36MB" },
+        { 항목: "L3 캐시", 세부사항: "30MB" },
+        { 항목: "PBP-MTP", 세부사항: "125-250W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "6400MHz" },
+        { 항목: "기술 지원", 세부사항: "인텔 XTU, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2309점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "37278점" },
+        { 항목: "출시가", 세부사항: "379달러(VAT별도)" }
+    ]
+},
+"cpu6": {
+    name: "인텔 코어i7-14세대 14700F (랩터레이크 리프레시)",
+    category: "cpu",
+    price: "₩440,840",
+    image: "./img/cpu6.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1700" },
+        { 항목: "코어 및 스레드", 세부사항: "P8+E12코어 / 16+12스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5, DDR4" },
+        { 항목: "내장 그래픽", 세부사항: "미탑재" },
+        { 항목: "아키텍처", 세부사항: "10nm(인텔7)" },
+        { 항목: "기본 클럭", 세부사항: "2.1GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.4GHz" },
+        { 항목: "L2 캐시", 세부사항: "28MB" },
+        { 항목: "L3 캐시", 세부사항: "33MB" },
+        { 항목: "PBP-MTP", 세부사항: "65-219W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "5600, 3200MHz" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), 인텔 XTU, 인텔 퀵싱크, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "인텔 기본쿨러 포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2091점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "32090점" },
+        { 항목: "출시가", 세부사항: "359달러 (VAT별도)" }
+    ]
+},
+"cpu7": {
+    name: "인텔 코어i7-14세대 14700KF (랩터레이크 리프레시)",
+    category: "cpu",
+    price: "₩471,360",
+    image: "./img/cpu7.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1700" },
+        { 항목: "코어 및 스레드", 세부사항: "P8+E12코어 / 16+12스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5, DDR4" },
+        { 항목: "내장 그래픽", 세부사항: "미탑재" },
+        { 항목: "아키텍처", 세부사항: "10nm(인텔7)" },
+        { 항목: "기본 클럭", 세부사항: "3.4GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.6GHz" },
+        { 항목: "L2 캐시", 세부사항: "28MB" },
+        { 항목: "L3 캐시", 세부사항: "33MB" },
+        { 항목: "PBP-MTP", 세부사항: "125-253W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "5600, 3200MHz" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), 인텔 XTU, 인텔 퀵싱크, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2145점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "35218점" },
+        { 항목: "출시가", 세부사항: "384달러 (VAT별도)" }
+    ]
+},
+"cpu8": {
+    name: "인텔 코어i5-13세대 13400F (랩터레이크)",
+    category: "cpu",
+    price: "₩188,640",
+    image: "./img/cpu8.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1700" },
+        { 항목: "코어 및 스레드", 세부사항: "P6+E4코어 / 12+4스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5, DDR4" },
+        { 항목: "내장 그래픽", 세부사항: "미탑재" },
+        { 항목: "아키텍처", 세부사항: "10nm(인텔7)" },
+        { 항목: "기본 클럭", 세부사항: "2.5GHz" },
+        { 항목: "최대 클럭", 세부사항: "4.6GHz" },
+        { 항목: "L2 캐시", 세부사항: "9.5MB" },
+        { 항목: "L3 캐시", 세부사항: "20MB" },
+        { 항목: "PBP-MTP", 세부사항: "65-148W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "4800, 3200MHz" },
+        { 항목: "기술 지원", 세부사항: "SMT(하이퍼스레딩), 인텔 XTU, 인텔 퀵싱크, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "인텔 기본쿨러 포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "1789점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "14621점" },
+        { 항목: "출시가", 세부사항: "196달러 (VAT별도)" }
+    ]
+},
+"cpu9": {
+    name: "인텔 코어 울트라5 시리즈2 235 (애로우레이크)",
+    category: "cpu",
+    price: "₩379,650",
+    image: "./img/cpu9.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1851" },
+        { 항목: "코어 및 스레드", 세부사항: "P6+E8코어 / 14스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5" },
+        { 항목: "내장 그래픽", 세부사항: "탑재 (인텔 그래픽스 Xe LPG)" },
+        { 항목: "아키텍처", 세부사항: "TSMC 3nm" },
+        { 항목: "기본 클럭", 세부사항: "3.4GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.0GHz" },
+        { 항목: "L2 캐시", 세부사항: "26MB" },
+        { 항목: "L3 캐시", 세부사항: "24MB" },
+        { 항목: "PBP-MTP", 세부사항: "65-121W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "6400MHz" },
+        { 항목: "기술 지원", 세부사항: "인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "인텔 기본쿨러 포함" },
+        { 항목: "출시가", 세부사항: "247달러(VAT별도)" }
+    ]
+},
+"cpu10": {
+    name: "인텔 코어 울트라5 시리즈2 245K (애로우레이크)",
+    category: "cpu",
+    price: "₩411,060",
+    image: "./img/cpu10.png",
+    specs: [
+        { 항목: "소켓", 세부사항: "소켓1851" },
+        { 항목: "코어 및 스레드", 세부사항: "P6+E8코어 / 14스레드" },
+        { 항목: "메모리 규격", 세부사항: "DDR5" },
+        { 항목: "내장 그래픽", 세부사항: "탑재 (인텔 그래픽스 Xe LPG)" },
+        { 항목: "아키텍처", 세부사항: "TSMC 3nm" },
+        { 항목: "기본 클럭", 세부사항: "4.2GHz" },
+        { 항목: "최대 클럭", 세부사항: "5.2GHz" },
+        { 항목: "L2 캐시", 세부사항: "26MB" },
+        { 항목: "L3 캐시", 세부사항: "24MB" },
+        { 항목: "PBP-MTP", 세부사항: "125-159W" },
+        { 항목: "PCIe 지원", 세부사항: "PCIe 5.0, 4.0" },
+        { 항목: "메모리 속도", 세부사항: "6400MHz" },
+        { 항목: "기술 지원", 세부사항: "인텔 XTU, 인텔 딥러닝부스트" },
+        { 항목: "쿨러 포함 여부", 세부사항: "미포함" },
+        { 항목: "시네벤치 R23 (싱글)", 세부사항: "2114점" },
+        { 항목: "시네벤치 R23 (멀티)", 세부사항: "24935점" },
+        { 항목: "출시가", 세부사항: "309달러(VAT별도)" }
+    ]
+}   
     // ... CPU 상품 추가
 };
 
@@ -299,6 +528,7 @@ const cpuProducts = {
 const coolerProducts = {
     "cooler1": {
     name: "DEEPCOOL AG400",
+    category: "cooler",
     price: "₩21,760",
     image: "./img/cooler1.png",
     specs: [
@@ -328,6 +558,7 @@ const coolerProducts = {
 
 "cooler2": {
     name: "PCCOOLER PALADIN 400",
+    category: "cooler",
     price: "₩24,630",
     image: "./img/cooler2.png",
     specs: [
@@ -357,6 +588,7 @@ const coolerProducts = {
 
 "cooler3": {
     name: "Thermalright Peerless Assassin 120 SE 서린",
+    category: "cooler",
     price: "₩36,178",
     image: "./img/cooler3.png",
     specs: [
@@ -386,6 +618,7 @@ const coolerProducts = {
 
 "cooler4": {
     name: "잘만 Alpha II A36",
+    category: "cooler",
     price: "₩121,800",
     image: "./img/cooler4.png",
     specs: [
@@ -415,6 +648,7 @@ const coolerProducts = {
 
 "cooler5": {
     name: "3RSYS Socoool RC1900N 솔더링",
+    category: "cooler",
     price: "₩72,590",
     image: "./img/cooler5.png",
     specs: [
@@ -987,21 +1221,18 @@ const powerProducts = {
 
 }
 
-// --- 모든 상품을 하나로 합침 ---
-const products = Object.assign({}, vgaProducts, cpuProducts, coolerProducts, 
+document.addEventListener('DOMContentLoaded', function() {
+  // --- 모든 상품을 하나로 합침 ---
+  const products = Object.assign({}, vgaProducts, cpuProducts, coolerProducts, 
     motherboardProducts, ramProducts, ssdProducts, hddProducts, powerProducts);
 
+  // --- 상품 ID 파라미터 가져오기 ---
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('id'); 
+  const product = products[productId];
 
-
-// 필요하면 다른 카테고리도 추가: Object.assign({}, vgaProducts, cpuProducts, ramProducts, ...);
-
-// --- 상세페이지/공통 조회 예시 ---
-const urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get('id'); // 예: a, b, j 등
-const product = products[productId];
-
-// --- 상세페이지 렌더링 ---
-if (product) {
+  // --- 상세페이지 렌더링 ---
+  if (product) {
     // 이미지 렌더링
     const productImage = document.getElementById("product-image");
     productImage.src = product.image;
@@ -1020,62 +1251,58 @@ if (product) {
         table.appendChild(row);
     });
     specsContainer.appendChild(table);
-} else {
+  } else {
     // 상품 데이터가 없을 경우 처리
     document.body.innerHTML = "<h2>상품 정보를 찾을 수 없습니다.</h2>";
-}
+    return; // 더 이상 실행 불필요
+  }
 
-// --- 수량 조정 기능 ---
-const quantityInput = document.getElementById("quantity-input");
-if (quantityInput) {
-    const qtyUp = document.querySelector(".qty-up");
-    const qtyDown = document.querySelector(".qty-down");
+  // --- 헤더/푸터 로드 ---
+  fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data;
+        const headerContent = tempDiv.querySelector('header').innerHTML;
+        document.querySelector('header').innerHTML = headerContent;
+        if (typeof initVoiceRecognition === 'function') {
+            initVoiceRecognition();
+        }
+    })
+    .catch(error => console.error('헤더 로드 중 오류:', error));
 
-    if (qtyUp) {
-        qtyUp.addEventListener("click", () => {
-            quantityInput.value = parseInt(quantityInput.value) + 1;
-        });
-    }
-    if (qtyDown) {
-        qtyDown.addEventListener("click", () => {
-            if (parseInt(quantityInput.value) > 1) {
-                quantityInput.value = parseInt(quantityInput.value) - 1;
-            }
-        });
-    }
-}
+  fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+        document.querySelector('footer').innerHTML = data;
+    })
+    .catch(error => console.error('푸터 로드 중 오류:', error));
 
-// --- 장바구니 추가 버튼 클릭 이벤트 ---
-const addToCartBtn = document.getElementById("add-to-cart-btn");
-if (addToCartBtn && quantityInput) {
+  // --- 장바구니 추가 버튼 이벤트 ---
+  const addToCartBtn = document.getElementById("add-to-cart-btn");
+  const quantityInput = document.getElementById("quantity-input");
+  if (addToCartBtn && quantityInput) {
     addToCartBtn.addEventListener("click", () => {
-        const quantity = parseInt(quantityInput.value);
-        // cart.js의 addToCart 함수 호출
-        addToCart(productId, product.name, product.price, product.image, quantity);
+        const quantity = Math.max(1, parseInt(quantityInput.value) || 1);
+        addToCart(
+            productId, 
+            product.name, 
+            product.price, 
+            product.image, 
+            quantity
+        );
     });
-}
+  }
 
-// --- 음성 인식 및 헤더/푸터 로드 ---
-document.addEventListener('DOMContentLoaded', function() {
-    // 헤더 로드 후 음성 인식 버튼 찾기
-    fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = data;
-            const headerContent = tempDiv.querySelector('header').innerHTML;
-            document.querySelector('header').innerHTML = headerContent;
-            if (typeof initVoiceRecognition === 'function') {
-                initVoiceRecognition();
-            }
-        })
-        .catch(error => console.error('헤더 로드 중 오류:', error));
-
-    // 푸터 로드
-    fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.querySelector('footer').innerHTML = data;
-        })
-        .catch(error => console.error('푸터 로드 중 오류:', error));
+  // --- 다른 상품 찾아보기 버튼 이벤트 ---
+  const goToCategoryBtn = document.getElementById("go-to-category-btn");
+  if (goToCategoryBtn && product.category) {
+    goToCategoryBtn.addEventListener("click", () => {
+        window.location.href = `store.html?cat=${product.category}`;
+    });
+  }
 });
+
+
+
+
