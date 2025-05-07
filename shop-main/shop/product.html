@@ -27,6 +27,26 @@
     <link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
     <!-- 상품 상세 전용 CSS -->
     <link rel="stylesheet" href="css/products-Detail.css">
+    <style>
+        .product-divider {
+            border: none;
+            border-top: 2.5px solid #007bff;
+            margin: 40px 0 32px 0;
+            width: 100%;
+            max-width: 1170px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .product-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #007bff;
+            text-align: left;
+            margin: 0 auto 18px auto;
+            max-width: 1170px;
+            letter-spacing: 1px;
+        }
+    </style>
 </head>
 <body>
 
@@ -50,10 +70,11 @@
 <div class="section">
     <div class="container detail-product-area">
         <div class="row product-row">
-            <!-- 상품 이미지 (박스 없이 이미지에만 스타일 적용) -->
-            <div id="product-main-img" class="col-md-6" style="display:flex;align-items:center;justify-content:center;">
+            <!-- 상품 이미지 -->
+            <div id="product-main-img" class="col-md-6">
                 <img id="product-image" src="" alt="">
             </div>
+            
             <!-- 상품 정보 -->
             <div class="col-md-6 product-details">
                 <h2 id="product-name" class="product-name"></h2>
@@ -67,14 +88,31 @@
                             <span class="qty-down">-</span>
                         </div>
                     </div>
-                    <button id="add-to-cart-btn" class="add-to-cart-btn">
-                        <i class="fa fa-shopping-cart"></i> 장바구니에 추가
-                    </button>
                 </div>
             </div>
+            
+            <!-- 우측 상단 버튼 영역 -->
+            <div class="product-actions-fixed">
+                <button id="add-to-cart-btn" class="add-to-cart-btn">
+                    <i class="fa fa-shopping-cart"></i> 장바구니에 추가
+                </button>
+                <button id="go-to-category-btn" class="btn-category-search">
+                    <i class="fa fa-search"></i> 다른 상품 찾아보기
+                </button>
+            </div>
         </div>
+
+     
+
         <!-- 상품 사양 표 -->
-        <div id="product-specs" class="product-specs"></div>
+        <div class="product-specs-outer" style="position: relative; max-width: 1170px; margin: 0 auto 40px auto;">
+            <div class="product-specs-title-abs">상세 정보</div>
+            <div id="product-specs" class="product-specs">
+              <table>
+      <!-- 사양 표 내용이 여기에 들어갑니다 -->
+    </table>
+  </div>
+  
     </div>
 </div>
 
