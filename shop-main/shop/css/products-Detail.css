@@ -1,178 +1,244 @@
-.detail-product-area .product-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 56px;
-    margin-bottom: 32px;
-    align-items: flex-start;
-    margin-left: -70px;   /* ← 여기서 좌우 위치 조절 */
-    margin-right: 0;
-    /* transform: translateX(40px); ← 더 미세하게 조절하고 싶으면 이 줄 사용 */
-  }
-  
+.product-row {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 28px 24px;
+  margin-bottom: 30px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  position: relative;
+}
 
-  
-  .detail-product-area .product-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 56px;
-    margin-bottom: 32px;
-    align-items: flex-start;
-  }
-  
-  .detail-product-area #product-main-img {
-    flex: 0 0 420px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .detail-product-area #product-image {
-    width: 400px;
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 1px 4px rgba(30,40,60,0.07);
-    object-fit: contain;
-    background: #f6f8fa;
-    display: block;
-  }
-  
-  .detail-product-area .product-details {
-    flex: 1 1 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    padding-top: 16px;
-  }
-  
-  .detail-product-area .product-name {
-    font-size: 26px;
-    font-weight: bold;
-    color: #222;
-    margin: 0 0 15px 0;
-    line-height: 1.4;
-    word-break: keep-all;
-  }
-  
-  .detail-product-area .product-price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #e23d3d;
-    margin: 0 0 18px 0;
-    letter-spacing: -1px;
-  }
-  
-  .detail-product-area .add-to-cart {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .detail-product-area .qty-label {
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 10px;
-    display: inline-block;
-  }
-  .detail-product-area .input-number {
-    display: flex;
-    align-items: center;
-    border: 1px solid #e4e4e4;
-    border-radius: 4px;
-    background: #fafbfc;
-    width: auto;
-  }
-  .detail-product-area .input-number input[type="number"],
-  .detail-product-area #quantity-input {
-    width: 48px;
-    border: none;
-    font-size: 15px;
-    text-align: center;
-    padding: 4px 0;
-    background: transparent;
-    outline: none;
-  }
-  .detail-product-area .qty-up,
-  .detail-product-area .qty-down {
-    width: 22px;   /* 더 짧게 */
-    height: 22px;
-    line-height: 22px;
-    font-size: 15px;
-    padding: 0;
-    text-align: center;
-    cursor: pointer;
-    color: #23b46e;
-    background: #f4f4f4;
-    border: none;
-    user-select: none;
-    transition: background 0.13s;
-  }
-  .detail-product-area .qty-up:hover,
-  .detail-product-area .qty-down:hover {
-    background: #eafaf3;
-  }
-  .detail-product-area .add-to-cart-btn {
-    display: block;
-    border: none;
-    height: 44px;
-    padding: 0 32px;
-    background-color: #23b46e;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 44px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 10px;
-    transition: background 0.15s;
-  }
-  .detail-product-area .add-to-cart-btn:hover {
-    background: #179c5a;
-  }
-  
-  
-  
-  /* 제품 상세정보 타이틀과 구분선 */
-  .detail-product-area .detail-section-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #222;
-    margin: 34px 0 18px 0;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e0e0e0;
-    letter-spacing: 1px;
-  }
-  
-  /* 상품 사양 테이블 */
-  .detail-product-area .product-specs {
-    display: flex;
-    justify-content: center;
-    margin-top: 36px;
-    margin-bottom: 0;
-    padding: 0;
-  }
-  .detail-product-area .product-specs table {
-    width: 98%;
-    max-width: 1150px;
-    border-collapse: collapse;
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(30,40,60,0.04);
-    margin-top: 20px;
-  }
-  .detail-product-area .product-specs th,
-  .detail-product-area .product-specs td {
-    padding: 12px 14px;
-    text-align: left;
-    border-bottom: 1px solid #E4E7ED;
-    font-size: 15px;
-    color: #444;
-  }
-  .detail-product-area .product-specs th {
-    background: #f9f9f9;
-    font-weight: bold;
-    width: 170px;
-    color: #23b46e;
-  }
-  .detail-product-area .product-specs tr:hover {
-    background-color: #f7f7f7;
-  }
-  
+/* 상품 이미지 영역 */
+#product-main-img {
+  flex: 0 0 200px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: -35px;
+}
+
+#product-image {
+  width: 180px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 5px;
+  border: 1px solid #eee;
+}
+
+/* 상품 정보 영역 */
+.product-details {
+  flex: 1 1 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.product-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.product-price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0 0 20px 0;
+}
+
+.add-to-cart {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 15px;
+}
+
+/* 수량 및 버튼 영역 */
+.qty-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: #555;
+}
+
+.input-number {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background: #fafbfc;
+  width: 90px;
+  min-width: 0;
+  margin-left: 0;
+  height: auto;
+  padding: 0 4px;
+}
+
+.input-number input[type="number"] {
+  width: 70px;
+  height: 40px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  outline: none;
+  box-shadow: none;
+}
+
+.input-number .qty-up,
+.input-number .qty-down {
+  cursor: pointer;
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+}
+
+/* =========================== */
+
+/* 우측 상단 버튼 영역 */
+.product-actions-fixed {
+  position: absolute;
+  top: 105px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: 2;
+}
+
+.add-to-cart-btn {
+  min-width: 178px;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.btn-category-search {
+  border: none;
+  cursor: pointer;
+  min-width: 150px;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.add-to-cart-btn:hover, .btn-category-search:hover {
+  background: #f5f5f5;
+  border: 1.5px solid #007bff;
+}
+
+.add-to-cart-btn i, .btn-category-search i {
+  font-size: 18px;
+}
+
+/* 상품 사양 박스 바깥쪽 좌측 상단 텍스트 */
+.product-specs-outer {
+  position: relative;
+  max-width: 1170px;
+  margin: 0 auto 40px auto;
+}
+
+.product-specs-title-abs {
+  position: absolute;
+  top: -32px;
+  left: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 1px;
+  background: none;
+  z-index: 2;
+  padding-left: 2px;
+}
+
+/* 상품 사양 표 */
+.product-specs {
+  background: #fff;
+  border-top: 2px solid #666666;
+  padding: 28px 24px;
+  margin-bottom: 40px;
+  margin-top: 100px;
+  overflow: hidden;
+  max-width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.product-specs table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* 셀 너비 고정 */
+}
+
+.product-specs th, .product-specs td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  font-size: 15px;
+}
+
+/* 항상 2열 구조로 고정, 열 너비도 고정 */
+.product-specs th {
+  width: 25%;
+  min-width: 120px;
+  max-width: 240px;
+  font-weight: 600;
+  color: #333;
+  background: #f9f9f9;
+  word-break: keep-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-specs td {
+  width: 75%;
+  min-width: 200px;
+  max-width: 800px;
+  word-break: break-all;
+  overflow: visible;        /* 잘리지 않도록 */
+  /* text-overflow: ellipsis;  제거 */
+  /* white-space: nowrap;      제거 */
+  padding-left: 4px;        /* th와 더 가까이 */
+  padding-right: 6px;
+}
+
+/* 표 hover 등 기존 스타일 유지 */
+.product-specs tr:hover td,
+.product-specs tr:hover th {
+  background: #f3f7fa;
+  transition: background 0.2s;
+}
