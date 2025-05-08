@@ -3,12 +3,14 @@ const CATEGORY_DATA = {
     
     options: [
       { label: '제조사별', name: 'maker', choices: ['인텔', 'AMD'] },
-      { label: '코드 네임', name: 'codename', choices: ['애로우레이크', '랩터레이크 리프레시', '그래나이트 릿지', '라파엘', '버미어'] },
-      { label: 'CPU 시리즈', name: 'series', choices: ['코어울트라', '코어i9', '코어i7', '라이젠 9', '라이젠 7'] },
-      { label: 'CPU 종류', name: 'type', choices: ['코어 울트라9', '코어 울트라7', '코어i9', '라이젠9', '스레드리퍼'] },
-      { label: '소켓 구분', name: 'socket', choices: ['인텔(소켓1851)', '인텔(소켓1700)', 'AMD(소켓AM5)', 'AMD(소켓AM4)'] },
+      { label: '코드 네임', name: 'codename', choices: ['애로우레이크', '랩터레이크', '그래니트 릿지', '라파엘', '버미어'] },
+      { label: 'CPU 시리즈', name: 'series', choices: ['코어 울트라', '코어 14세대', '코어 13세대', '코어 12세대', '라이젠 9000', '라이젠 8000', '라이젠 7000','라이젠 5000',  ] },
+      { label: 'CPU 종류', name: 'type', choices: ['코어 울트라9', '코어 울트라7', '코어 울트라5', '코어i9', '코어i7', '라이젠9', '라이젠7', '라이젠5'] },
+      { label: '소켓 구분', name: 'socket', choices: ['(소켓1851)', '(소켓1700)', '(소켓AM5)', '(소켓AM4)'] },
       { label: '코어 수', name: 'core', choices: ['24코어', '16코어', '12코어', '8코어', '6코어'] },
       { label: '스레드 수', name: 'thread', choices: ['32스레드', '24스레드', '16스레드', '12스레드', '8스레드'] },
+      { label: 'L2 캐시', name: 'thread', choices: ['96MB', '64MB', '40MB', '36MB', '32MB', '28MB', '26MB', '24MB', '22MB', '20MB',   ] },
+      { label: 'L3 캐시', name: "thread", choices: ['20MB', '24MB', '30MB', '32MB', '33MB', '36MB', '64MB', '96MB', '128MB']},      
       { label: '내장그래픽', name: 'igpu', choices: ['탑재', '미탑재'] }
     ]
   },
@@ -200,6 +202,8 @@ const CATEGORY_DATA = {
 let currentCategory = 'cpu';
 let selectedFilters = {};
 
+
+
 // 인기검색어 렌더링 함수
 function renderPopularKeywords(category) {
   const box = document.getElementById('popular-keywords');
@@ -298,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
       currentCategory = category;
       selectedFilters = {}; // 필터 초기화
 
-      // URL에 cat 파라미터 반영 (중요!)
+      // URL에 cat 파라미터 반영
       if (history.pushState) {
         history.pushState(null, '', `?cat=${currentCategory}`);
       }
