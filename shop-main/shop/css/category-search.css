@@ -21,6 +21,7 @@ body {
   margin-top: 33px;
   border-radius: 10px 0 0 10px;
   height: fit-content;
+  margin-left: 10px;  
 }
 
 .category-title {
@@ -61,7 +62,7 @@ body {
 .detail-search-title-wrap {
   border-bottom: 2px solid #666666;
   margin-bottom: 20px;          /*구분선*/
-  padding-bottom: 8px;
+  padding-bottom: 8px; 
 }
 .detail-search-title {
   font-size: 19px;
@@ -98,6 +99,7 @@ body {
   font-weight: 500;
   background: #f8f9fa;
   border-right: 1px solid #e0e0e0;
+  
 }
 
 .detail-search-options {
@@ -115,8 +117,6 @@ body {
   height: 32px;
   font-size: 13px;
   white-space: nowrap;
-  min-width: 0;
-  max-width: 140px;
   width: 140px;
   box-sizing: border-box;
 }
@@ -143,12 +143,10 @@ input[type="checkbox"] {
 
 /* ---------- 제품 목록 독립 컨테이너 ---------- */
 .product-list-outer {
-  max-width: 1200px;
-  /* 아래로 100px 내림 (원하는 값으로 조절) */
-  margin: 10px auto 0 auto;
+  max-width: 1235px;                
+  margin: 10px auto 0 auto;       
   padding: 0 20px;
   box-sizing: border-box;
-  margin-left: 311px;
   position: relative;
 }
 
@@ -176,7 +174,7 @@ input[type="checkbox"] {
   flex-direction: column;
   gap: 14px;
   margin-bottom: 24px;
-  width: 1200px;              /* 좌우 길이 더 길게 */
+  width: 1200px;         
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
