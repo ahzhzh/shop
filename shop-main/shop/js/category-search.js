@@ -199,14 +199,12 @@ const CATEGORY_DATA = {
 
 let currentCategory = 'cpu';
 let selectedFilters = {};
-
-
+let currentSort = 'popularity'; // 기본 정렬 인기순
 
 // 인기검색어 렌더링 함수
 function renderPopularKeywords(category) {
   const box = document.getElementById('popular-keywords');
   if (!box) return;
-  
   box.innerHTML = '';
   (CATEGORY_DATA[category]?.keywords || []).forEach(kw => {
     const span = document.createElement('span');
@@ -214,6 +212,7 @@ function renderPopularKeywords(category) {
     span.textContent = kw;
     box.appendChild(span);
   });
+  
 }
 
 // 체크박스 변경 핸들러
@@ -221,14 +220,12 @@ function handleFilterChange(optionName, value, isChecked) {
   if (!selectedFilters[optionName]) {
     selectedFilters[optionName] = [];
   }
-  
   if (isChecked) {
     selectedFilters[optionName].push(value);
   } else {
     selectedFilters[optionName] = selectedFilters[optionName].filter(v => v !== value);
   }
-  
-  renderProducts(currentCategory, selectedFilters);
+  renderProducts(currentCategory, selectedFilters, currentSort);
 }
 
 // 상세검색 옵션 렌더링 함수
@@ -236,54 +233,131 @@ function renderDetailOptions(category) {
   const form = document.getElementById('detail-search-form');
   form.innerHTML = '';
   const options = CATEGORY_DATA[category]?.options || [];
-  
   if (!options.length) {
     form.innerHTML = '<div style="color:#888;font-size:15px;">상세검색 옵션이 없습니다.</div>';
     return;
   }
-
   options.forEach(opt => {
     const row = document.createElement('div');
     row.className = 'detail-search-row';
-    
     const label = document.createElement('div');
     label.className = 'detail-search-label';
     label.textContent = opt.label;
     row.appendChild(label);
-
     const choices = document.createElement('div');
     choices.className = 'detail-search-options';
-    
     opt.choices.forEach(choice => {
       const id = `${opt.name}_${choice.replace(/\s/g,'')}`;
       const labelSet = document.createElement('label');
       labelSet.className = 'checkbox-set';
-      
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.id = id;
       cb.name = opt.name;
       cb.value = choice;
-      
       cb.addEventListener('change', function() {
         handleFilterChange(opt.name, choice, this.checked);
       });
-      
       const span = document.createElement('span');
       span.textContent = choice;
       span.title = choice;
-      
       labelSet.appendChild(cb);
       labelSet.appendChild(span);
       choices.appendChild(labelSet);
     });
-    
     row.appendChild(choices);
     form.appendChild(row);
   });
 }
 
-// 카테고리 클릭 핸들러 및 초기화
+// 가격 문자열을 숫자로 변환 (예: "₩539,990" → 539990)
+function getPrice(priceStr) {
+  return parseInt(String(priceStr).replace(/[^\d]/g, ''), 10) || 0;
+}
+
+// 정렬 함수
+function sortProducts(productList, sortType) {
+  const sorted = [...productList];
+  if (sortType === 'price-asc') {
+    sorted.sort((a, b) => getPrice(a.price) - getPrice(b.price));
+  } else if (sortType === 'price-desc') {
+    sorted.sort((a, b) => getPrice(b.price) - getPrice(a.price));
+  } else if (sortType === 'popularity') {
+    sorted.sort((a, b) => (a.popularity || 9999) - (b.popularity || 9999));
+  } else if (sortType === 'new') {
+    // new가 작을수록 최신 (1번이 최신, 30번이 가장 오래됨)
+    sorted.sort((a, b) => (a.new || 9999) - (b.new || 9999));
+  }
+  return sorted;
+}
+
+// 정렬 버튼 active 표시 함수
+function setActiveSortButton(sortType) {
+  document.querySelectorAll('.product-sort-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-sort') === sortType);
+  });
+}
+
+// 상품 렌더링 함수 (상품 id를 링크에 사용)
+function renderProducts(category, filters = {}, sortType = 'popularity') {
+  const container = document.getElementById('product-list-container');
+  if (!container) return;
+
+  // categoryMap에서 현재 카테고리 상품 객체의 [id, product] 쌍 배열 생성
+  const productsObj = categoryMap[category];
+  if (!productsObj) {
+    container.innerHTML = '<div class="no-result">상품 데이터가 없습니다.</div>';
+    return;
+  }
+  let productList = Object.entries(productsObj); // [ [id, product], ... ]
+
+  // 필터 적용
+  Object.keys(filters).forEach(optionName => {
+    const selected = filters[optionName];
+    if (selected && selected.length) {
+      productList = productList.filter(([id, product]) =>
+        selected.some(val => (product.desc || []).some(spec => spec.includes(val)))
+      );
+    }
+  });
+
+  // 정렬 적용
+  productList = sortProducts(
+    productList.map(([id, product]) => ({ id, ...product })),
+    sortType
+  ).map(product => [product.id, product]); // 다시 [id, product] 쌍으로
+
+  // 렌더링
+  container.innerHTML = '';
+  if (!productList.length) {
+    container.innerHTML = '<div class="no-result">검색 결과가 없습니다.</div>';
+    return;
+  }
+  productList.forEach(([id, product]) => {
+    const descHtml = product.desc.join(' / ');
+    const html = `
+      <div class="product-list-item">
+        <div class="product-image">
+          <a href="product.html?id=${id}">
+            <img src="${product.image}" alt="${product.name}">
+          </a>
+        </div>
+        <div class="product-main-info">
+          <div class="product-title">
+            <a href="product.html?id=${id}" class="product-link">${product.name}</a>
+          </div>
+          <div class="product-desc">${descHtml}</div>
+        </div>
+        <div class="product-price-box">
+          <div class="product-price">${product.price}</div>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+// 카테고리 클릭 및 초기화
 document.addEventListener('DOMContentLoaded', function() {
   const params = new URLSearchParams(window.location.search);
   const urlCategory = params.get('cat');
@@ -298,22 +372,37 @@ document.addEventListener('DOMContentLoaded', function() {
       Array.from(list.children).forEach(x => x.classList.remove('active'));
       li.classList.add('active');
       currentCategory = category;
-      selectedFilters = {}; // 필터 초기화
+      selectedFilters = {};
+      currentSort = 'popularity';
 
-      // URL에 cat 파라미터 반영
       if (history.pushState) {
         history.pushState(null, '', `?cat=${currentCategory}`);
       }
 
       renderPopularKeywords(currentCategory);
       renderDetailOptions(currentCategory);
-      renderProducts(currentCategory, selectedFilters);
+      setActiveSortButton(currentSort); // 카테고리 클릭 시 active 적용
+      renderProducts(currentCategory, selectedFilters, currentSort);
+    });
+  });
+
+  // 정렬 버튼 이벤트 등록
+  document.querySelectorAll('.product-sort-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      currentSort = this.getAttribute('data-sort');
+      setActiveSortButton(currentSort); // 정렬 버튼 클릭 시 active 적용
+      renderProducts(currentCategory, selectedFilters, currentSort);
     });
   });
 
   // 초기 렌더링
   renderPopularKeywords(currentCategory);
   renderDetailOptions(currentCategory);
-  renderProducts(currentCategory, selectedFilters);
+  setActiveSortButton(currentSort); // 최초 진입시 active 적용
+  renderProducts(currentCategory, selectedFilters, currentSort);
 });
+
+
+
+
 

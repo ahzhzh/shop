@@ -1372,7 +1372,7 @@ const ssdProducts = {
 "ssd5": {
   name: "ESSENCORE KLEVV CRAS C910 M.2 NVMe (1TB)",
   category: "ssd",
-  price: "",
+  price: "₩85,090",
   image: "./img/ssd5.png",
   specs: [
     { 항목: "폼팩터", 세부사항: "M.2 (2280)" },
