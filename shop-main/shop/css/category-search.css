@@ -313,3 +313,41 @@ input[type="checkbox"] {
   background: #eafaf3;
   color: #23b46e;
 }
+
+
+/*낮은 가격순, 높은 가격순, 인기순, 신상품순*/
+.product-sort-bar {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  justify-content: flex-start;  /* 왼쪽 정렬 */
+}
+
+.product-sort-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0 18px;
+  margin: 0;
+  outline: none;
+  box-shadow: none;
+  position: relative;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+}
+
+.product-sort-btn.active {
+  color: #111;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.product-sort-btn:focus {
+  outline: none;
+}
