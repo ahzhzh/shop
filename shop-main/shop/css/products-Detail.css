@@ -1,7 +1,7 @@
 .product-row {
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 0.1px solid #d4d4d4; 
   padding: 28px 24px;
   margin-bottom: 30px;
   display: flex;
