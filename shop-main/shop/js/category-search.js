@@ -9,7 +9,8 @@ const CATEGORY_DATA = {
       { label: '소켓 구분', name: 'socket', choices: ['(소켓1851)', '(소켓1700)', '(소켓AM5)', '(소켓AM4)'] },
       { label: '코어 수', name: 'core', choices: ['24코어', '20코어', '14코어', '10코어', '8 코어', '6 코어'] },
       { label: '스레드 수', name: 'thread', choices: ['32스레드', '28스레드', '20스레드', '16스레드', '12스레드'] },
-      { label: '내장그래픽', name: 'igpu', choices: ['탑재', '미탑재'] }
+      { label: '내장그래픽', name: 'igpu', choices: ['탑재', '미탑재'] },
+      { label: '가격대', name: '111', choices: ['가격검색추가', '주말전에는 끝낼 예정'] }
     ]
   },
 
@@ -44,32 +45,23 @@ const CATEGORY_DATA = {
     
     options: [
       { label: '제조사별', name: 'maker', choices: [
-        'GIGABYTE', 'MSI', '갤럭시', '이엠텍', 'PALIT', 'PowerColor', 'ZOTAC', 'ASRock', 'ASUS', 'COLORFUL'
+        'GIGABYTE', 'MSI', '갤럭시', '이엠텍', 'ZOTAC', 'ASUS', 
       ]},
       { label: 'NVIDIA 칩셋', name: 'nvidia_chipset', choices: [
-        'RTX 5090', 'RTX 5080', 'RTX 5070 Ti', 'RTX 5070', 'RTX 5060 Ti'
-      ]},
-      { label: 'AMD 칩셋', name: 'amd_chipset', choices: [
-        'RX 9070 XT', 'RX 9070', 'RX 7800 XT', 'RX 7700 XT', 'RX 7600'
-      ]},
-      { label: '인텔 칩셋', name: 'intel_chipset', choices: [
-        'ARC B580', 'ARC B570', 'ARC A770', 'ARC A750', 'ARC A380'
+        'RTX 5090', 'RTX 5080', 'RTX 5070', 'RTX 5060', 'RTX 4090', 'RTX 4080 S', 'RTX 4080', 'RTX 4070 Ti S', 'RTX 4070 Ti', 'RTX 4070 Super', 'RTX 4070', 'RTX 4060 Ti', 'RTX 4060'
       ]},
       { label: '메모리 용량', name: 'vram', choices: [
         '24GB', '16GB', '12GB', '8GB', '6GB'
       ]},
       { label: '출력단자', name: 'output', choices: [
-        'HDMI2.1', 'HDMI2.0', 'HDMI', 'DP2.1', 'DP2.0'
-      ]},
-      { label: '권장 파워용량', name: 'power', choices: [
-        '450W 이상', '550W 이상', '650W 이상', '750W 이상', '850W 이상'
-      ]},
+        'HDMI2.1', 'DP2.1', 'DP1.4'
+      ]},      
       { label: '팬 개수', name: 'fan_count', choices: [
         '4팬', '3팬', '2팬', '1팬', '블로워팬'
       ]},
-      { label: '가로(길이)', name: 'length', choices: [
-        '360~', '350~359', '340~349', '330~339', '320~329'
-      ]}
+      { label: '가격대', name: '111', choices: [
+        '가격검색추가', '주말전에는 끝낼 예정'
+      ]},
     ]
   },
 
@@ -212,7 +204,6 @@ function renderPopularKeywords(category) {
     span.textContent = kw;
     box.appendChild(span);
   });
-  
 }
 
 // 체크박스 변경 핸들러
@@ -285,7 +276,6 @@ function sortProducts(productList, sortType) {
   } else if (sortType === 'popularity') {
     sorted.sort((a, b) => (a.popularity || 9999) - (b.popularity || 9999));
   } else if (sortType === 'new') {
-    // new가 작을수록 최신 (1번이 최신, 30번이 가장 오래됨)
     sorted.sort((a, b) => (a.new || 9999) - (b.new || 9999));
   }
   return sorted;
@@ -311,12 +301,17 @@ function renderProducts(category, filters = {}, sortType = 'popularity') {
   }
   let productList = Object.entries(productsObj); // [ [id, product], ... ]
 
-  // 필터 적용
+  // 필터 적용 (상품명(name)과 상세(desc) 모두에 대해 체크)
   Object.keys(filters).forEach(optionName => {
     const selected = filters[optionName];
     if (selected && selected.length) {
       productList = productList.filter(([id, product]) =>
-        selected.some(val => (product.desc || []).some(spec => spec.includes(val)))
+        selected.some(val => {
+          // 상품명 또는 상세정보에 필터값이 포함되면 통과
+          const nameMatch = product.name && product.name.includes(val);
+          const descMatch = (product.desc || []).some(spec => spec.includes(val));
+          return nameMatch || descMatch;
+        })
       );
     }
   });
