@@ -1,5 +1,3 @@
-// js/products.js
-
 // 카테고리별 상품 객체 분리
 const vgaProducts = {
     "a": {
@@ -142,7 +140,7 @@ const cpuProducts = {
     category: "cpu",
     price: "₩539,990",
     popularity: 3,
-    new: 4,
+    new: 5,
     image: "./img/product05.png",
     desc: [
         "인텔(소켓1851)",
@@ -170,7 +168,7 @@ const cpuProducts = {
         category: "cpu",
         price: "₩474,040",
         popularity: 9,
-        new: 2,
+        new: 3,
         image: "./img/product06.png",
         desc: [
             "AMD(소켓AM5)",
@@ -198,7 +196,7 @@ const cpuProducts = {
     "h": {
         name: "AMD 라이젠7-6세대 9800X3D (그래니트 릿지)",
         category: "cpu",
-        price: "₩539,990",
+        price: "₩795,990",
         popularity: 1,
         new: 1,
         image: "./img/product07.png",
@@ -230,7 +228,7 @@ const cpuProducts = {
     "category": "cpu",
     "price": "₩552,890",
     popularity: 10,
-    new: 8,
+    new: 9,
     "image": "./img/product08.png",
     "desc": [
         "인텔(소켓1700)",
@@ -259,7 +257,7 @@ const cpuProducts = {
         category: "cpu",
         price: "₩326,990",
         popularity: 21,
-        new: 12,
+        new: 13,
         image: "./img/product09.png",
         desc: [
             "인텔(소켓1851)",
@@ -286,7 +284,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩185,060",
             popularity: 13,
-            new: 10,
+            new: 11,
             "image": "./img/cpu1.png",
             "desc": [
               "인텔(소켓1700)",
@@ -313,7 +311,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩276,240",
             popularity: 6,
-            new: 9,
+            new: 10,
             "image": "./img/cpu2.png",
             "desc": [
               "인텔(소켓1700)",
@@ -340,7 +338,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩907,850",
             popularity: 8,
-            new: 3,
+            new: 4,
             "image": "./img/cpu3.png",
             "desc": [
               "인텔(소켓1851)",
@@ -369,7 +367,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩332,390",
             popularity: 15,
-            new: 11,
+            new: 12,
             "image": "./img/cpu4.png",
             "desc": [
               "인텔(소켓1700)",
@@ -398,7 +396,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩445,160",
             popularity: 11,
-            new: 5,
+            new: 6,
             "image": "./img/cpu5.png",
             "desc": [
               "인텔(소켓1851)",
@@ -426,7 +424,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩440,840",
             popularity: 18,
-            new: 7,
+            new: 8,
             "image": "./img/cpu6.png",
             "desc": [
               "인텔(소켓1700)",
@@ -454,7 +452,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩471,360",
             popularity: 16,
-            new: 6,
+            new: 7,
             "image": "./img/cpu7.png",
             "desc": [
               "인텔(소켓1700)",
@@ -482,7 +480,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩188,640",
             popularity: 22,
-            new: 20,
+            new: 21,
             "image": "./img/cpu8.png",
             "desc": [
               "인텔(소켓1700)",
@@ -510,7 +508,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩379,650",
             popularity: 23,
-            new: 13,
+            new: 14,
             "image": "./img/cpu9.png",
             "desc": [
               "인텔(소켓1851)",
@@ -537,7 +535,7 @@ const cpuProducts = {
             "category": "cpu",
             "price": "₩411,060",
             popularity: 24,
-            new: 14,
+            new: 15,
             "image": "./img/cpu10.png",
             "desc": [
               "인텔(소켓1851)",
@@ -566,7 +564,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩1,149,000",
               popularity: 7,
-              new: 15,
+              new: 16,
               "image": "./img/cpu11.png",
               "desc": [
                 "AMD(소켓AM5)",
@@ -593,7 +591,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩350,660",
               popularity: 17,
-              new: 22,
+              new: 23,
               "image": "./img/cpu12.png",
               "desc": [
                 "AMD(소켓AM5)",
@@ -622,7 +620,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩209,520",
               popularity: 2,
-              new: 23,
+              new: 24,
               "image": "./img/cpu13.png",
               "desc": [
                 "AMD(소켓AM5)",
@@ -652,7 +650,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩279,000",
               popularity: 25,
-              new: 21,
+              new: 22,
               "image": "./img/cpu14.png",
               "desc": [
                 "AMD(소켓AM5)",
@@ -681,7 +679,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩596,000",
               popularity: 19,
-              new: 19,
+              new: 20,
               "image": "./img/cpu15.png",
               "desc": [
                 "AMD(소켓AM5)",
@@ -710,7 +708,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩122,640",
               popularity: 4,
-              new: 28,
+              new: 29,
               "image": "./img/cpu16.png",
               "desc": [
                 "AMD(소켓AM4)",
@@ -739,7 +737,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩211,940",
               popularity: 12,
-              new: 27,
+              new: 28,
               "image": "./img/cpu17.png",
               "desc": [
                 "AMD(소켓AM4)",
@@ -768,7 +766,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩559,000",
               popularity: 20,
-              new: 26,
+              new: 27,
               "image": "./img/cpu18.png",
               "desc": [
                 "AMD(소켓AM4)",
@@ -797,7 +795,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩480,800",
               popularity: 26,
-              new: 25,
+              new: 26,
               "image": "./img/cpu19.png",
               "desc": [
                 "AMD(소켓AM4)",
@@ -825,7 +823,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩887,460",
               popularity: 14,
-              new: 16,
+              new: 17,
               "image": "./img/cpu20.png",
               "desc": [
                 "AMD(소켓AM5)",
@@ -852,7 +850,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩720,120",
               popularity: 27,
-              new: 19,
+              new: 20,
               "image": "./img/cpu21.png",
               "desc": [
                 "인텔(소켓1700)",
@@ -879,7 +877,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩599,200",
               popularity: 28,
-              new: 29,
+              new: 30,
               "image": "./img/cpu22.png",
               "desc": [
                 "인텔(소켓1700)",
@@ -906,7 +904,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩644,000",
               popularity: 29,
-              new: 30,
+              new: 31,
               "image": "./img/cpu23.png",
               "desc": [
                 "인텔(소켓1700)",
@@ -931,7 +929,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩880,770",
               popularity: 24,
-              new: 17,
+              new: 18,
               "image": "./img/cpu24.png",
               "desc": [
                 "인텔(소켓1700)",
@@ -958,7 +956,7 @@ const cpuProducts = {
               "category": "cpu",
               "price": "₩846,050",
               popularity: 30,
-              new: 18,
+              new: 19,
               "image": "./img/cpu25.png",
               "desc": [
                 "인텔(소켓1700)",
@@ -979,7 +977,35 @@ const cpuProducts = {
                 "시네벤치R23(멀티): 38753",
                 "출시가: 564달러 (VAT별도)"
               ]
+            },
+            "cpu26": {
+              "name": "인텔 코어 울트라9 시리즈2 285 (애로우레이크)",
+              "category": "cpu",
+              "price": "₩852,160",              
+              popularity: 31,
+              new: 3,
+              "image": "./img/cpu26.png",
+              "desc": [
+                "인텔(소켓1851)",
+                "P8+E16코어",
+                "24스레드",
+                "메모리 규격: DDR5",
+                "내장그래픽:탑재",
+                "TSMC 3nm",
+                "기본 클럭: 2.5GHz",
+                "최대 클럭: 5.6GHz",
+                "L2 캐시: 40MB",
+                "L3 캐시: 36MB",
+                "PBP-MTP: 65-182W",
+                "PCIe5.0, 4.0",
+                "6400MHz",
+                "인텔 그래픽스(Xe LPG)",
+                "기술 지원: 인텔 딥러닝부스트",
+                "쿨러: 인텔 기본쿨러 포함",
+                "출시가: 549달러(VAT별도)"
+              ]
             }
+
 
 };         
  
