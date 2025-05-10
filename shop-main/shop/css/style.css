@@ -93,7 +93,7 @@ ul, ol {
 .primary-btn {
   display: inline-block;
   padding: 12px 30px;
-  background-color: #D10024;
+  background-color: #0063B2;
   border: none;
   border-radius: 40px;
   color: #FFF;
@@ -1338,7 +1338,7 @@ textarea.input {
 
 .order-summary .order-col .order-total {
   font-size: 24px;
-  color: #D10024;
+  color: #0063B2;
 }
 
 .order-details .payment-method {
