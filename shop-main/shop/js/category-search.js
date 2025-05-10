@@ -15,11 +15,12 @@ const CATEGORY_DATA = {
 
 vga: {
   options: [
-    { label: '제조사별', name: 'maker', choices: ['GIGABYTE', 'MSI', '갤럭시', '이엠텍', 'ZOTAC', 'ASUS'] },
-    { label: 'NVIDIA 칩셋', name: 'nvidia_chipset', choices: ['RTX 5090', 'RTX 5080', 'RTX 5070', 'RTX 5060', 'RTX 4090', 'RTX 4080 S', 'RTX 4080', 'RTX 4070 Ti S', 'RTX 4070 Ti', 'RTX 4070 Super', 'RTX 4070', 'RTX 4060 Ti', 'RTX 4060'] },
-    { label: '메모리 용량', name: 'vram', choices: ['24GB', '16GB', '12GB', '8GB', '6GB'] },
+    { label: '제조사별', name: 'maker', choices: ['MSI', '이엠텍', 'GIGABYTE', '갤럭시', 'ZOTAC', 'ASUS'] },
+    { label: 'NVIDIA 칩셋', name: 'nvidia_chipset', choices: ['RTX 5090', 'RTX 5080', 'RTX 5070', 'RTX 5060', 'RTX 4090', 'RTX 4080', 'RTX 4070', 'RTX 4060' ]},
+    { label: '메모리 용량', name: 'vram', choices: ['32GB','24GB', '16GB', '12GB', '8GB'] },
     { label: '출력단자', name: 'output', choices: ['HDMI2.1', 'DP2.1', 'DP1.4'] },
-    { label: '팬 개수', name: 'fan_count', choices: ['4팬', '3팬', '2팬', '1팬'] },
+    { label: '인터페이스', name: 'interface', choices: ['PCIe5.0x16','PCIe5.0','PCIe4.0']},
+    { label: '팬 개수', name: 'fan_count', choices: ['4팬', '3팬', '2팬'] },
     { label: '가격대', name: 'price', choices: [] }
   ]
 },
