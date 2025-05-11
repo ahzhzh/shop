@@ -302,34 +302,33 @@ const vgaProducts = {
     ]
 },
 "vga6": {
-    name: "PALIT 지포스 RTX 5080 GAMINGPRO D7 16GB 이엠텍",
-    category: "vga",
-    price: "₩1,791,070",
-    popularity: 10,
-    new: 5,
-        chipset: "RTX 5080",
-    image: "./img/vga6.png",
-    desc: [
-        "PALIT 지포스 RTX 5080 GAMINGPRO D7 16GB 이엠텍",
-        "NVIDIA RTX 5080",
-        "PCIe5.0x16",
-        "정격파워850W 이상",
-        "가로(길이): 331.9mm",
+    "name": "이엠텍 지포스 RTX 5080 MIRACLE WHITE D7 16GB",
+    "category": "vga",
+    "price": "₩1,987,920",
+    "popularity": 10,
+    "new": 5,
+    "chipset": "RTX 5080",
+    "image": "./img/vga6.png",
+    "desc": [
+        "이엠텍 지포스 RTX 5080 MIRACLE WHITE D7 16GB",
+        "PCIe5.0x16 인터페이스",
+        "정격파워 850W 이상 요구",
+        "16핀(12V2x6) 전원 포트",
+        "가로 길이: 348mm",
         "베이스클럭: 2295MHz",
         "부스트클럭: 2617MHz",
         "스트림 프로세서: 10752개",
-        "GDDR7",
+        "GDDR7 메모리 적용",
         "출력단자: HDMI2.1, DP2.1",
-        "지원정보: 8K 지원, HDR 지원, HDCP 2.3",
-        "사용전력: 360W",
-        "3팬",
-        "두께: 60mm",
-        "제로팬(0-dB기술)",
-        "백플레이트",
-        "LED 라이트",
-        "ThunderMaster",
-        "구성품: 3x8핀 to 16핀 커넥터",
-        "A/S 3년"
+        "최대 360W 전력 소모",
+        "3팬 쿨링 시스템",
+        "62mm 두께 방열판",
+        "제로팬(0-dB) 기술 적용",
+        "강화 백플레이트 장착",
+        "DrMOS 전원부 구성",
+        "화이트 LED 라이트링",
+        "구성품: VGA지지대, 3x8핀 to 16핀 커넥터",
+        "3년 A/S 보증"
     ]
 },
 "vga7": {
@@ -1006,6 +1005,39 @@ const vgaProducts = {
         "A/S 4년"
     ]
 },
+"vga29": {
+    name: "ZOTAC GAMING 지포스 RTX 5070 AMP White D7 12GB",
+    category: "vga",
+    price: "₩985,790",
+    popularity: 12.5, 
+    new: 6.5,       
+    chipset: "RTX 5070",
+    image: "./img/vga29.png",
+    desc: [
+        "RTX 5070",
+        "PCIe5.0x16",
+        "정격파워650W 이상",
+        "전원 포트: 16핀(12V2x6) x1",
+        "가로(길이): 304.4mm",
+        "베이스클럭: 2325MHz",
+        "부스트클럭: 2587MHz",
+        "스트림 프로세서: 6144개",
+        "GDDR7",
+        "출력단자: HDMI2.1 , DP2.1",
+        "지원정보: 8K 지원 , HDR 지원 , HDCP 2.3",
+        "사용전력: 250W",
+        "전원부: 9+3페이즈",
+        "3팬",
+        "두께: 41.6mm",
+        "제로팬(0-dB기술)",
+        "백플레이트",
+        "SPECTRA",
+        "구성품: VGA지지대, 2x8핀 to 16핀 커넥터",
+        "A/S 3년"
+    ]
+}
+
+
 
 
 };
@@ -1880,8 +1912,7 @@ const cpuProducts = {
                 "쿨러: 인텔 기본쿨러 포함",
                 "출시가: 549달러(VAT별도)"
               ]
-            }
-
+            },
 
 };         
  

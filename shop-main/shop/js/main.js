@@ -17,6 +17,8 @@
 	  loadComponent("nav", "navigation.html"); // 네비게이션 로드
 	  loadComponent("footer", "footer.html"); // 푸터 로드
 	});
+
+	
   
 	/////////////////////////////////////////
   
