@@ -299,7 +299,13 @@ textarea.input {
 .section-title {
   position: relative;
   margin-bottom: 30px;
-  margin-top: 80px;
+  margin-top: 100px;
+}
+
+.section-title-vga {
+  position: relative;
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 .section-title .title {
@@ -720,46 +726,101 @@ textarea.input {
 	04 -> 배너
 ===========================================================*/
 
-
-/* 메인 배너 섹션 */
 .section-main-banner {
-  padding: 50px 0; /* 상하 여백을 줄임 */
-  margin-bottom: -300px; /* 섹션 하단 여백 제거 */
+  padding: 50px 0;
+  margin-bottom: 0; /* 수정 */
+  position: relative;
 }
 
-/* 슬라이더 컨테이너 */
 .branding-banner-container {
   width: 100%;
-  max-width: 1150px; /* 배너 전체의 최대 너비 */
-  margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 중앙 정렬 */
-  overflow: hidden; /* 슬라이더가 튀어나오지 않게 설정 */
+  max-width: 1280px;
+  margin: 0 auto;
+  overflow: hidden;
   position: relative;
+  padding: 0 60px;
+  height: 400px; /* 추가 */
 }
 
-/* 슬라이더 트랙 */
 .banner-slider {
-  display: flex; /* 배너들을 가로로 나열 */
-  transition: transform 0.5s ease-in-out; /* 부드러운 이동 효과 */
+  display: flex;
+  height: 100%; /* 추가 */
 }
 
-/* 개별 배너 */
 .branding-banner {
-  flex: 0 0 auto; /* 크기를 고정하지 않고 유연하게 설정 */
-  width: 100%; /* 한 번에 하나씩 보이도록 설정 (전체 너비 사용) */
+  flex: 0 0 100%;
+  width: 100%;
+  height: 400px;
   box-sizing: border-box;
-  padding: 0; /* 간격 제거 */
+  padding: 0;
 }
 
-/* 이미지 스타일 */
+.banner-link {
+  display: block;
+  height: 100%;
+}
+
 .banner-content {
   position: relative;
-  height: 70%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
 }
 
 .banner-img {
-  width: 100%; /* 이미지가 배너의 전체 너비를 차지하도록 설정 */
-  height: 90%; /* 높이는 비율에 따라 자동 조정 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
+
+.banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+}
+
+.banner-arrow-left { left: 230px; }
+.banner-arrow-right { right: 230px; }
+
+.banner-arrow:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.banner-indicator {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  background: rgba(0,0,0,0.55);
+  padding: 5px 14px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  z-index: 2;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  min-width: 48px;
+  text-align: center;
+  display: none;
+}
+
+.branding-banner.active .banner-indicator {
+  display: block;
+}
+
 
 
 
