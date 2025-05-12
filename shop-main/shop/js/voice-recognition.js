@@ -14,6 +14,9 @@ let currentAudio = null;
 let isUserSpeaking = false; // 사용자가 말하고 있는지 추적
 let pendingCommand = null; // 대기 중인 명령어 저장
 
+let silenceTimer = null;
+const SILENCE_TIMEOUT = 3000; // 3초
+
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
     const voiceSearchBtn = document.getElementById('voice-search-btn');
@@ -71,38 +74,41 @@ function getUrlParams() {
 
 // 음성 인식 시작
 async function startListening() {
-    try {
-        // 마이크 접근 권한 요청 알림이 이미 표시되었는지 확인
-        const hasShownAlert = localStorage.getItem('hasShownMicAlert');
-        if (!hasShownAlert) {
-            alert('마이크 접근 권한이 필요합니다. 권한을 허용해주세요.');
-            localStorage.setItem('hasShownMicAlert', 'true');
-        }
-        
-        // 마이크 권한 상태 확인
-        const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
-        
-        if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                audio: {
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    sampleRate: 48000,
-                    channelCount: 1
-                }
-            });
-            
-            if (!stream) {
-                throw new Error('마이크 스트림을 가져올 수 없습니다.');
+    if (!isListening) {
+        isListening = true;
+        try {
+            // 마이크 접근 권한 요청 알림이 이미 표시되었는지 확인
+            const hasShownAlert = localStorage.getItem('hasShownMicAlert');
+            if (!hasShownAlert) {
+                alert('마이크 접근 권한이 필요합니다. 권한을 허용해주세요.');
+                localStorage.setItem('hasShownMicAlert', 'true');
             }
             
-            setupAudioProcessing(stream);
-        } else {
-            throw new Error('마이크 접근이 거부되었습니다. 브라우저 설정에서 마이크 권한을 허용해주세요.');
+            // 마이크 권한 상태 확인
+            const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+            
+            if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        sampleRate: 48000,
+                        channelCount: 1
+                    }
+                });
+                
+                if (!stream) {
+                    throw new Error('마이크 스트림을 가져올 수 없습니다.');
+                }
+                
+                setupAudioProcessing(stream);
+            } else {
+                throw new Error('마이크 접근이 거부되었습니다. 브라우저 설정에서 마이크 권한을 허용해주세요.');
+            }
+        } catch (error) {
+            console.error('마이크 접근 오류:', error);
+            alert('마이크 접근에 실패했습니다. 다음을 확인해주세요:\n1. 마이크가 연결되어 있는지\n2. 브라우저 설정에서 마이크 권한이 허용되어 있는지\n3. 다른 앱이 마이크를 사용 중이지 않은지');
         }
-    } catch (error) {
-        console.error('마이크 접근 오류:', error);
-        alert('마이크 접근에 실패했습니다. 다음을 확인해주세요:\n1. 마이크가 연결되어 있는지\n2. 브라우저 설정에서 마이크 권한이 허용되어 있는지\n3. 다른 앱이 마이크를 사용 중이지 않은지');
     }
 }
 
@@ -159,7 +165,6 @@ function setupAudioProcessing(stream) {
 
     console.log('오디오 처리 시작됨');
     startWebSocket();
-    isListening = true;
     const voiceSearchBtn = document.getElementById('voice-search-btn');
     if (voiceSearchBtn) {
         voiceSearchBtn.classList.add('listening');
@@ -233,7 +238,7 @@ function startWebSocket() {
                         await audio.play();
                         console.log('오디오 재생 성공');
                         
-                        // 오디오 재생이 완료된 후 3초 타이머 시작
+                        // 오디오 재생이 완료된 후에만 3초 타이머 시작
                         audio.onended = () => {
                             console.log('오디오 재생 완료, 3초 타이머 시작');
                             if (silenceTimeout) {
@@ -258,7 +263,7 @@ function startWebSocket() {
                 }
                 
                 // 명령어 처리 - 오디오 재생이 완료된 후에 실행됨
-                handleVoiceCommand(text, data.audio);
+                handleVoiceCommand(text);
             }
         } catch (error) {
             console.error('WebSocket message processing error:', error);
@@ -274,86 +279,104 @@ function startWebSocket() {
     };
 }
 
-async function handleVoiceCommand(text, audioData) {
-    const params = getUrlParams();
-    
-    // 명령어 처리를 위한 함수들
-    const commands = {
-        // 장바구니 확인 명령어
-        checkCart: () => {
-            const cartIcon = document.querySelector('.fa-shopping-cart').closest('a');
-            if (cartIcon) {
-                cartIcon.click();
-            }
-        },
-        
-        // 장바구니 추가 명령어
-        addToCart: () => {
-            const addToCartBtn = document.getElementById('add-to-cart-btn');
-            if (addToCartBtn) {
-                addToCartBtn.click();
-                console.log('장바구니에 추가됨:', params.name);
-            }
-        },
-        
-        // 뒤로 가기 명령어
-        goBack: () => {
-            window.history.back();
-        },
-        
-        // 종료 명령어
-        exit: () => {
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
+// 음성 명령어 처리 함수
+function handleVoiceCommand(text) {
+    text = text.toLowerCase();
+    console.log('처리할 명령어:', text);
+
+    // AI 응답 중에는 무음 감지 타이머를 일시 중지
+    if (silenceTimeout) {
+        clearTimeout(silenceTimeout);
+    }
+
+    // [음성 명령어로 상세검색 체크박스 체크]
+    if (text.includes('보여 줘') || text.includes('체크해 줘') || text.includes('선택해 줘')) {
+        if (window.checkFilterByVoice) {
+            window.checkFilterByVoice(text);
         }
-    };
-    
-    // 명령어 실행 함수 (오디오 재생 후 실행)
-    const executeCommand = (command) => {
-        if (audioData) {
-            try {
-                const audio = new Audio(`data:audio/mp3;base64,${audioData}`);
-                audio.onerror = (e) => {
-                    console.error('오디오 재생 오류:', e);
-                };
-                audio.play().then(() => {
-                    // 오디오 재생이 완료된 후 명령어 실행
-                    audio.onended = () => {
-                        console.log('오디오 재생 완료, 명령어 실행');
-                        command();
-                    };
-                }).catch(error => {
-                    console.error('오디오 재생 오류:', error);
-                    // 오류 발생 시에도 명령어 실행
-                    command();
-                });
-            } catch (error) {
-                console.error('오디오 재생 오류:', error);
-                // 오류 발생 시에도 명령어 실행
-                command();
+    }
+
+    // 음성 인식 종료 명령어
+    if (text.includes('음성인식') && (text.includes('꺼') || text.includes('종료') || text.includes('중지'))) {
+        if (isListening) {
+            isListening = false;
+            recognition.stop();
+            if (silenceTimer) {
+                clearTimeout(silenceTimer);
             }
+            console.log('음성 인식 종료됨');
+        }
+        return;
+    }
+
+    // 전체 카테고리 관련 명령어
+    if (text.includes('전체') && text.includes('카테고리')) {
+        const categoryMenu = document.getElementById('categoryMenu');
+        if (categoryMenu) {
+            categoryMenu.click();
         } else {
-            // 오디오 데이터가 없는 경우 바로 명령어 실행
-            command();
+            window.location.href = 'store.html';
         }
-    };
-    
-    // 장바구니 확인 명령어
-    if (text.includes('장바구니') && (text.includes('확인') || text.includes('보여줘') || text.includes('열어줘'))) {
-        executeCommand(commands.checkCart);
-    } 
-    // 장바구니 추가 명령어
-    else if (text.includes('장바구니') || text.includes('담아줘') || text.includes('추가해줘')) {
-        executeCommand(commands.addToCart);
-    } 
-    // 뒤로 가기 명령어
-    else if (text.includes('뒤로') || text.includes('이전')) {
-        executeCommand(commands.goBack);
-    } 
-    // 종료 명령어
-    else if (text.includes('꺼 줘') || text.includes('종료') || text.includes('그만')) {
-        executeCommand(commands.exit);
+    }
+
+    // 장바구니 관련 명령어
+    if (text.includes('장바구니')) {
+        if (text.includes('확인') || text.includes('보여 줘') || text.includes('열어 줘')) {
+            console.log('장바구니 페이지로 이동');
+            window.location.href = 'cart.html';
+        }
+    }
+
+    // 카테고리 이동 명령어
+    if (text.includes('카테고리')) {
+        if (text.includes('cpu')) {
+            window.location.href = 'store.html?cat=cpu';
+        } else if (text.includes('그래픽카드') || text.includes('vga')) {
+            window.location.href = 'store.html?cat=vga';
+        } else if (text.includes('메인보드')) {
+            window.location.href = 'store.html?cat=motherboard';
+        } else if (text.includes('램') || text.includes('ram')) {
+            window.location.href = 'store.html?cat=ram';
+        } else if (text.includes('쿨러')) {
+            window.location.href = 'store.html?cat=cooler';
+        } else if (text.includes('ssd')) {
+            window.location.href = 'store.html?cat=ssd';
+        } else if (text.includes('hdd')) {
+            window.location.href = 'store.html?cat=hdd';
+        } else if (text.includes('파워')) {
+            window.location.href = 'store.html?cat=power';
+        }
+    }
+
+    // 스크롤 관련 명령어
+    if (text.includes('스크롤') || text.includes('이동')) {
+        if (text.includes('위로')) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (text.includes('아래로')) {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        } else if (text.includes('그래픽카드')) {
+            const section = document.getElementById('vga-section');
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+        } else if (text.includes('cpu')) {
+            const section = document.getElementById('cpu-section');
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // 상품 검색
+    if (text.includes('검색') || text.includes('찾아줘')) {
+        const searchQuery = text.replace(/검색|찾아줘/g, '').trim();
+        if (searchQuery) {
+            window.location.href = `store.html?search=${encodeURIComponent(searchQuery)}`;
+        }
+    }
+
+    // 이전 페이지로 이동하는 명령어
+    if (text.includes('이전') || text.includes('뒤로')) {
+        if (text.includes('페이지') || text.includes('가') || text.includes('가줘')) {
+            console.log('이전 페이지로 이동');
+            window.history.back();
+        }
     }
 }
 

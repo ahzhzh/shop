@@ -52,7 +52,7 @@ function showSubItems(categoryId) {
 
     // 세 번째 박스 내용 업데이트
     const thirdBoxContent = getThirdBoxContent(categoryId);
-    const thirdBox = document.querySelector('#third_cat_list');
+    const thirdBox = document.querySelector('#detail-search-form');
     thirdBox.innerHTML = thirdBoxContent;
 }
 
@@ -69,9 +69,6 @@ document.querySelectorAll('.category-item').forEach(item => {
         showSubItems(this.id);
     });
 });
-
-
-
 
 // 세 번째 박스 내용 생성 함수
 function getThirdBoxContent(categoryId) {
@@ -1192,4 +1189,18 @@ function getThirdBoxContent(categoryId) {
 
     }
 }
-    
+
+// [음성 명령어로 상세검색 체크박스 체크 함수]
+function checkFilterByVoice(text) {
+    const normalizedText = text.replace(/\s/g, '').toLowerCase();
+    document.querySelectorAll('#detail-search-form input[type="checkbox"]').forEach(cb => {
+        const label = cb.nextElementSibling;
+        if (!label) return;
+        const labelText = label.textContent.replace(/\s/g, '').toLowerCase();
+        if (normalizedText.includes(labelText)) {
+            cb.checked = true;
+        }
+    });
+}
+window.checkFilterByVoice = checkFilterByVoice;
+
