@@ -2319,70 +2319,107 @@ document.addEventListener('DOMContentLoaded', function() {
     productImage.src = product.image;
     productImage.alt = product.name;
 
-    // 이름 및 가격 렌더링
+    // 이름 및 가격 렌더링 (가격 숫자만 추출)
     document.getElementById("product-name").textContent = product.name;
-    document.getElementById("product-price").textContent = product.price;
+    const priceValue = parseInt(product.price.replace(/[^0-9]/g, '')); // 가격에서 숫자만 추출
+    document.getElementById("product-price").textContent = priceValue.toLocaleString() + '원';
+
+    // 합계 계산을 위한 전역 변수
+    window.currentProductPrice = priceValue;
 
     // 상세 정보 표 렌더링
     const specsContainer = document.getElementById("product-specs");
-    const table = document.createElement("table");
-    product.specs.forEach(spec => {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td>${spec.항목}</td><td>${spec.세부사항}</td>`;
-        table.appendChild(row);
+    if (specsContainer) {
+      const table = document.createElement("table");
+      product.specs.forEach(spec => {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td>${spec.항목}</td><td>${spec.세부사항}</td>`;
+          table.appendChild(row);
+      });
+      specsContainer.appendChild(table);
+    }
+
+    // --- 합계 계산 기능 (중복 이벤트 핸들러 문제 해결) ---
+    const qtyInput = document.getElementById('quantity-input');
+    const totalElem = document.getElementById('total-price');
+
+    // 기존 +/- 버튼 요소 교체 (이벤트 리스너 제거)
+    const qtyUp = document.querySelector('.qty-up');
+    const qtyDown = document.querySelector('.qty-down');
+    let newQtyUp = qtyUp;
+    let newQtyDown = qtyDown;
+    if (qtyUp && qtyDown) {
+      newQtyUp = qtyUp.cloneNode(true);
+      newQtyDown = qtyDown.cloneNode(true);
+      qtyUp.parentNode.replaceChild(newQtyUp, qtyUp);
+      qtyDown.parentNode.replaceChild(newQtyDown, qtyDown);
+    }
+
+    // 합계 업데이트 함수
+    function updateTotal() {
+      const qty = parseInt(qtyInput.value) || 1;
+      const total = window.currentProductPrice * qty;
+      totalElem.textContent = total.toLocaleString() + '원';
+    }
+
+    // 새로 생성된 +/- 버튼에 이벤트 리스너 등록
+    newQtyUp.addEventListener('click', function() {
+      qtyInput.value = parseInt(qtyInput.value) + 1;
+      updateTotal();
     });
-    specsContainer.appendChild(table);
+    newQtyDown.addEventListener('click', function() {
+      if (parseInt(qtyInput.value) > 1) {
+        qtyInput.value = parseInt(qtyInput.value) - 1;
+        updateTotal();
+      }
+    });
+
+    // 입력 필드 이벤트
+    qtyInput.addEventListener('input', updateTotal);
+
+    // 초기 합계 표시
+    updateTotal();
+
+    // --- 장바구니 추가 버튼 연동 ---
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', function() {
+        // 수량, 이름, 가격, 이미지 정보 전달
+        addToCart(
+          productId,
+          product.name,
+          product.price, // 원래 price 문자열 (ex. "32,500원")
+          product.image,
+          qtyInput.value
+        );
+      });
+    }
+
+    // --- 다른 상품 찾아보기 버튼 (카테고리별 이동) ---
+    const goToCategoryBtn = document.getElementById('go-to-category-btn');
+    if (goToCategoryBtn) {
+      goToCategoryBtn.addEventListener('click', function() {
+        // 상품의 category 값이 있을 경우 해당 카테고리로 이동
+        if (product.category) {
+          // store.html?cat=카테고리명 으로 이동
+          window.location.href = `store.html?cat=${encodeURIComponent(product.category)}`;
+        } else {
+          // 카테고리 정보가 없을 때 예외 처리
+          alert('카테고리 정보가 없습니다.');
+        }
+      });
+    }
+
   } else {
     // 상품 데이터가 없을 경우 처리
     document.body.innerHTML = "<h2>상품 정보를 찾을 수 없습니다.</h2>";
-    return; // 더 이상 실행 불필요
-  }
-
-  // --- 헤더/푸터 로드 ---
-  fetch('header.html')
-    .then(response => response.text())
-    .then(data => {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = data;
-        const headerContent = tempDiv.querySelector('header').innerHTML;
-        document.querySelector('header').innerHTML = headerContent;
-        if (typeof initVoiceRecognition === 'function') {
-            initVoiceRecognition();
-        }
-    })
-    .catch(error => console.error('헤더 로드 중 오류:', error));
-
-  fetch('footer.html')
-    .then(response => response.text())
-    .then(data => {
-        document.querySelector('footer').innerHTML = data;
-    })
-    .catch(error => console.error('푸터 로드 중 오류:', error));
-
-  // --- 장바구니 추가 버튼 이벤트 ---
-  const addToCartBtn = document.getElementById("add-to-cart-btn");
-  const quantityInput = document.getElementById("quantity-input");
-  if (addToCartBtn && quantityInput) {
-    addToCartBtn.addEventListener("click", () => {
-        const quantity = Math.max(1, parseInt(quantityInput.value) || 1);
-        addToCart(
-            productId, 
-            product.name, 
-            product.price, 
-            product.image, 
-            quantity
-        );
-    });
-  }
-
-  // --- 다른 상품 찾아보기 버튼 이벤트 ---
-  const goToCategoryBtn = document.getElementById("go-to-category-btn");
-  if (goToCategoryBtn && product.category) {
-    goToCategoryBtn.addEventListener("click", () => {
-        window.location.href = `store.html?cat=${product.category}`;
-    });
   }
 });
+
+
+
+
+
 
 
 
