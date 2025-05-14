@@ -17,6 +17,9 @@ let pendingCommand = null; // 대기 중인 명령어 저장
 let silenceTimer = null;
 const SILENCE_TIMEOUT = 3000; // 3초
 
+// 전역 변수로 현재 표시된 제품 목록 저장
+let currentDisplayedProducts = [];
+
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
     const voiceSearchBtn = document.getElementById('voice-search-btn');
@@ -213,8 +216,10 @@ function startWebSocket() {
                     clearTimeout(silenceTimeout);
                 }
                 silenceTimeout = setTimeout(() => {
-                    // 3초 동안 새로운 중간 결과가 없으면 음성 인식 종료
-                    stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
+                    // 3초 동안 추가 음성이 없으면 최종 결과로 처리
+                    if (data.transcript) {
+                        handleVoiceCommand(data.transcript.toLowerCase());
+                    }
                 }, 3000);
             } else if (data.type === 'result') {
                 console.log('Final transcript:', data.transcript);
@@ -238,31 +243,31 @@ function startWebSocket() {
                         await audio.play();
                         console.log('오디오 재생 성공');
                         
-                        // 오디오 재생이 완료된 후에만 3초 타이머 시작
+                        // 오디오 재생이 완료된 후 5초 타이머 시작
                         audio.onended = () => {
-                            console.log('오디오 재생 완료, 3초 타이머 시작');
+                            console.log('오디오 재생 완료, 5초 타이머 시작');
                             if (silenceTimeout) {
                                 clearTimeout(silenceTimeout);
                             }
                             silenceTimeout = setTimeout(() => {
-                                stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
-                            }, 3000);
+                                stopListening('5초 동안 음성이 감지되지 않아 종료합니다.');
+                            }, 5000);
                         };
                     } catch (error) {
                         console.error('오디오 재생 오류:', error);
                     }
                 } else {
                     console.log('오디오 데이터가 없습니다.');
-                    // 오디오 데이터가 없는 경우에도 3초 타이머 시작
+                    // 오디오 데이터가 없는 경우에도 5초 타이머 시작
                     if (silenceTimeout) {
                         clearTimeout(silenceTimeout);
                     }
                     silenceTimeout = setTimeout(() => {
-                        stopListening('3초 동안 음성이 감지되지 않아 종료합니다.');
-                    }, 3000);
+                        stopListening('5초 동안 음성이 감지되지 않아 종료합니다.');
+                    }, 5000);
                 }
                 
-                // 명령어 처리 - 오디오 재생이 완료된 후에 실행됨
+                // 명령어 처리
                 handleVoiceCommand(text);
             }
         } catch (error) {
@@ -289,10 +294,58 @@ function handleVoiceCommand(text) {
         clearTimeout(silenceTimeout);
     }
 
+    // 상품 검색 및 상세 페이지 이동
+    if (text.includes('상품') || text.includes('제품') || text.includes('정보')) {
+        const productName = text.replace(/상품|제품|정보|보여줘|보여주세요|찾아줘|검색해줘|페이지|로|가줘|이동해줘/g, '').trim();
+        
+        if (productName) {
+            console.log('검색할 상품명:', productName);
+            
+            // 모든 카테고리의 상품을 검색
+            const allProducts = {
+                ...vgaProducts,
+                ...cpuProducts,
+                ...motherboardProducts,
+                ...ramProducts,
+                ...coolerProducts,
+                ...ssdProducts,
+                ...hddProducts,
+                ...powerProducts
+            };
+
+            // 상품명으로 검색
+            const foundProduct = Object.entries(allProducts).find(([_, product]) => 
+                product.name.toLowerCase().includes(productName.toLowerCase())
+            );
+
+            if (foundProduct) {
+                const [productId, product] = foundProduct;
+                const utterance = new SpeechSynthesisUtterance(`${product.name} 상품 페이지로 이동합니다.`);
+                utterance.lang = 'ko-KR';
+                speechSynthesis.speak(utterance);
+                window.location.href = `product.html?id=${productId}`;
+            } else {
+                const utterance = new SpeechSynthesisUtterance('해당 상품을 찾을 수 없습니다. 정확한 상품명을 말씀해 주세요.');
+                utterance.lang = 'ko-KR';
+                speechSynthesis.speak(utterance);
+            }
+        }
+    }
+
     // [음성 명령어로 상세검색 체크박스 체크]
     if (text.includes('보여 줘') || text.includes('체크해 줘') || text.includes('선택해 줘')) {
         if (window.checkFilterByVoice) {
             window.checkFilterByVoice(text);
+            // 체크박스 체크 후 필터링 적용
+            const selectedFilters = {};
+            document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
+                const optionName = cb.name;
+                if (!selectedFilters[optionName]) {
+                    selectedFilters[optionName] = [];
+                }
+                selectedFilters[optionName].push(cb.value);
+            });
+            renderProducts(currentCategory, selectedFilters, currentSort);
         }
     }
 
@@ -324,6 +377,48 @@ function handleVoiceCommand(text) {
         if (text.includes('확인') || text.includes('보여 줘') || text.includes('열어 줘')) {
             console.log('장바구니 페이지로 이동');
             window.location.href = 'cart.html';
+        } else if (text.includes('담아') || text.includes('추가')) {
+            const productName = text.replace(/장바구니|담아|추가|해줘|주세요/g, '').trim();
+            
+            if (productName) {
+                // 모든 카테고리의 상품을 검색
+                const allProducts = {
+                    ...vgaProducts,
+                    ...cpuProducts,
+                    ...motherboardProducts,
+                    ...ramProducts,
+                    ...coolerProducts,
+                    ...ssdProducts,
+                    ...hddProducts,
+                    ...powerProducts
+                };
+
+                // 상품명으로 검색
+                const foundProduct = Object.entries(allProducts).find(([_, product]) => 
+                    product.name.toLowerCase().includes(productName.toLowerCase())
+                );
+
+                if (foundProduct) {
+                    const [productId, product] = foundProduct;
+                    // cart.js의 addToCart 함수 호출
+                    if (typeof addToCart === 'function') {
+                        addToCart(
+                            productId,
+                            product.name,
+                            product.price,
+                            product.image,
+                            1
+                        );
+                        const utterance = new SpeechSynthesisUtterance(`${product.name}을(를) 장바구니에 담았습니다.`);
+                        utterance.lang = 'ko-KR';
+                        speechSynthesis.speak(utterance);
+                    }
+                } else {
+                    const utterance = new SpeechSynthesisUtterance('해당 상품을 찾을 수 없습니다. 정확한 상품명을 말씀해 주세요.');
+                    utterance.lang = 'ko-KR';
+                    speechSynthesis.speak(utterance);
+                }
+            }
         }
     }
 
@@ -349,10 +444,10 @@ function handleVoiceCommand(text) {
     }
 
     // 스크롤 관련 명령어
-    if (text.includes('스크롤') || text.includes('이동')) {
+    if (text.includes('스크롤') || text.includes('이동') || text.includes('내려 줘')) {
         if (text.includes('위로')) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (text.includes('아래로')) {
+        } else if (text.includes('아래로') || text.includes('내려 줘')) {
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         } else if (text.includes('그래픽카드')) {
             const section = document.getElementById('vga-section');
@@ -437,4 +532,53 @@ window.addEventListener('beforeunload', () => {
 // 페이지 로드 시 음성 인식 초기화
 document.addEventListener('DOMContentLoaded', function() {
     initVoiceRecognition();
+});
+
+// WebSocket 메시지 전송 함수 추가
+function sendProductStateToServer() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        const productState = {
+            type: 'productState',
+            currentProducts: currentDisplayedProducts,
+            selectedFilters: getSelectedFilters(),
+            currentCategory: currentCategory
+        };
+        ws.send(JSON.stringify(productState));
+    }
+}
+
+// 선택된 필터 정보 가져오기
+function getSelectedFilters() {
+    const filters = {};
+    document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
+        const optionName = cb.name;
+        if (!filters[optionName]) {
+            filters[optionName] = [];
+        }
+        filters[optionName].push(cb.value);
+    });
+    return filters;
+}
+
+// renderProducts 함수 수정
+function renderProducts(category, filters = {}, sortType = 'popularity') {
+    // ... existing renderProducts code ...
+
+    // 현재 표시된 제품 목록 저장
+    currentDisplayedProducts = productList;
+
+    // 서버에 제품 상태 전송
+    sendProductStateToServer();
+
+    // ... rest of renderProducts code ...
+}
+
+// 체크박스 변경 이벤트 리스너 추가
+document.addEventListener('DOMContentLoaded', function() {
+    const detailSearchForm = document.getElementById('detail-search-form');
+    if (detailSearchForm) {
+        detailSearchForm.addEventListener('change', function() {
+            sendProductStateToServer();
+        });
+    }
 }); 
