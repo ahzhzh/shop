@@ -1204,3 +1204,86 @@ function checkFilterByVoice(text) {
 }
 window.checkFilterByVoice = checkFilterByVoice;
 
+// 전역 변수
+let currentDisplayedProducts = [];
+let ws = null;
+
+// WebSocket 연결 설정
+function initProductWebSocket() {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${protocol}//${window.location.hostname}:3001`;
+    
+    ws = new WebSocket(wsUrl);
+    
+    ws.onopen = () => {
+        console.log('Product WebSocket connected');
+        // 초기 제품 상태 전송
+        sendProductStateToServer();
+    };
+
+    ws.onerror = (error) => {
+        console.error('Product WebSocket error:', error);
+    };
+
+    ws.onclose = () => {
+        console.log('Product WebSocket closed');
+    };
+}
+
+// 제품 상태를 서버로 전송하는 함수
+function sendProductStateToServer() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        const productState = {
+            type: 'productState',
+            currentProducts: currentDisplayedProducts,
+            selectedFilters: getSelectedFilters(),
+            currentCategory: currentCategory
+        };
+        ws.send(JSON.stringify(productState));
+    }
+}
+
+// 선택된 필터 정보 가져오기
+function getSelectedFilters() {
+    const filters = {};
+    document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
+        const optionName = cb.name;
+        if (!filters[optionName]) {
+            filters[optionName] = [];
+        }
+        filters[optionName].push(cb.value);
+    });
+    return filters;
+}
+
+// renderProducts 함수 수정
+function renderProducts(category, filters = {}, sortType = 'popularity') {
+    // ... existing renderProducts code ...
+    
+    // 현재 표시된 제품 목록 저장 및 서버로 전송
+    currentDisplayedProducts = productList;
+    sendProductStateToServer();
+    
+    // ... rest of renderProducts code ...
+}
+
+// 페이지 로드 시 WebSocket 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    initProductWebSocket();
+    
+    // 체크박스 변경 이벤트 리스너 추가
+    const detailSearchForm = document.getElementById('detail-search-form');
+    if (detailSearchForm) {
+        detailSearchForm.addEventListener('change', function() {
+            sendProductStateToServer();
+        });
+    }
+});
+
+// 페이지를 떠날 때 WebSocket 연결 정리
+window.addEventListener('beforeunload', () => {
+    if (ws) {
+        ws.close();
+    }
+});
+

@@ -17,8 +17,6 @@ let pendingCommand = null; // 대기 중인 명령어 저장
 let silenceTimer = null;
 const SILENCE_TIMEOUT = 3000; // 3초
 
-// 전역 변수로 현재 표시된 제품 목록 저장
-let currentDisplayedProducts = [];
 
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
@@ -534,51 +532,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initVoiceRecognition();
 });
 
-// WebSocket 메시지 전송 함수 추가
-function sendProductStateToServer() {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        const productState = {
-            type: 'productState',
-            currentProducts: currentDisplayedProducts,
-            selectedFilters: getSelectedFilters(),
-            currentCategory: currentCategory
-        };
-        ws.send(JSON.stringify(productState));
-    }
-}
 
-// 선택된 필터 정보 가져오기
-function getSelectedFilters() {
-    const filters = {};
-    document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
-        const optionName = cb.name;
-        if (!filters[optionName]) {
-            filters[optionName] = [];
-        }
-        filters[optionName].push(cb.value);
-    });
-    return filters;
-}
 
-// renderProducts 함수 수정
-function renderProducts(category, filters = {}, sortType = 'popularity') {
-    // ... existing renderProducts code ...
 
-    // 현재 표시된 제품 목록 저장
-    currentDisplayedProducts = productList;
-
-    // 서버에 제품 상태 전송
-    sendProductStateToServer();
-
-    // ... rest of renderProducts code ...
-}
-
-// 체크박스 변경 이벤트 리스너 추가
-document.addEventListener('DOMContentLoaded', function() {
-    const detailSearchForm = document.getElementById('detail-search-form');
-    if (detailSearchForm) {
-        detailSearchForm.addEventListener('change', function() {
-            sendProductStateToServer();
-        });
-    }
-}); 
