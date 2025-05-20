@@ -1206,40 +1206,40 @@ window.checkFilterByVoice = checkFilterByVoice;
 
 // 전역 변수
 let currentDisplayedProducts = [];
-let ws = null;
+let productWs = null;
 
 // WebSocket 연결 설정
 function initProductWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.hostname}:3001`;
     
-    ws = new WebSocket(wsUrl);
+    productWs = new WebSocket(wsUrl);
     
-    ws.onopen = () => {
+    productWs.onopen = () => {
         console.log('Product WebSocket connected');
         // 초기 제품 상태 전송
         sendProductStateToServer();
     };
 
-    ws.onerror = (error) => {
+    productWs.onerror = (error) => {
         console.error('Product WebSocket error:', error);
     };
 
-    ws.onclose = () => {
+    productWs.onclose = () => {
         console.log('Product WebSocket closed');
     };
 }
 
 // 제품 상태를 서버로 전송하는 함수
 function sendProductStateToServer() {
-    if (ws && ws.readyState === WebSocket.OPEN) {
+    if (productWs && productWs.readyState === WebSocket.OPEN) {
         const productState = {
             type: 'productState',
             currentProducts: currentDisplayedProducts,
             selectedFilters: getSelectedFilters(),
             currentCategory: currentCategory
         };
-        ws.send(JSON.stringify(productState));
+        productWs.send(JSON.stringify(productState));
     }
 }
 
@@ -1282,8 +1282,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 페이지를 떠날 때 WebSocket 연결 정리
 window.addEventListener('beforeunload', () => {
-    if (ws) {
-        ws.close();
+    if (productWs) {
+        productWs.close();
     }
 });
 
