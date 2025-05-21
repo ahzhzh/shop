@@ -1,3 +1,6 @@
+// products.js file loaded flag
+console.log('products.js file loaded');
+
 // 카테고리별 상품 객체 분리
 const vgaProducts = {
     "a": {
@@ -2636,27 +2639,45 @@ const categoryMap = {
 };
 
 function renderProducts(filterCategory, filters = {}) {
+  
+  console.log('renderProducts 함수 시작 - 1', { filterCategory, filters });
+  
   const container = document.getElementById('product-list-container');
-  if (!container) return;
+  console.log('renderProducts 함수 - 2: container', container); // Add log
+  if (!container) {
+    console.warn('renderProducts 함수 - 2a: product-list-container not found'); // Add log
+    return;
+  }
   container.innerHTML = '';
+  console.log('renderProducts 함수 - 3: container cleared'); // Add log
 
-  if (!categoryMap[filterCategory]) return;
+  console.log('renderProducts 함수 - 4: Checking categoryMap for', filterCategory); // Add log
+  if (!categoryMap[filterCategory]) {
+    console.warn('renderProducts 함수 - 4a: Invalid category:', filterCategory); // Add log
+    return;
+  }
+  console.log('renderProducts 함수 - 4b: category found'); // Add log
 
   const allProducts = Object.entries(categoryMap[filterCategory]);
+  console.log('renderProducts 함수 - 5: allProducts count', allProducts.length); // Add log
   
   // 1. 모든 필터 값을 하나의 배열로 추출 (중복 제거)
   const allFilterValues = Object.values(filters)
     .flat()
     .map(v => v.toLowerCase());
+  console.log('renderProducts 함수 - 6: allFilterValues', allFilterValues); // Add log
 
   // 2. 상품 필터링
   const filteredProducts = allProducts.filter(([id, product]) => {
+    // console.log('renderProducts 함수 - 7: Filtering product', product.name); // Optional: very verbose
     if (allFilterValues.length === 0) return true;
 
     // 3. 상품 정보 문자열화 (이름 + 설명)
+    // console.log('renderProducts 함수 - 8: Product desc', product.desc); // Optional: very verbose
+    // Ensure product.desc is an array before joining
     const productInfo = [
       product.name, 
-      ...product.desc
+      ...(Array.isArray(product.desc) ? product.desc : []) // Ensure desc is array
     ].join(' ').toLowerCase();
 
     // 4. 모든 필터 값이 상품 정보에 포함되는지 확인 (AND 조건)
@@ -2665,28 +2686,68 @@ function renderProducts(filterCategory, filters = {}) {
     );
   });
 
+  console.log('renderProducts 함수 - 9: Filtered products count', filteredProducts.length); // Add log
+
   // 5. 필터링된 상품 렌더링
-  filteredProducts.forEach(([id, product]) => {
-    const descHtml = product.desc.join(" / ");
-    const html = `
-      <div class="product-list-item">
-        <div class="product-image">
-          <img src="${product.image}" alt="${product.name}">
-        </div>
-        <div class="product-main-info">
-          <div class="product-title">
-            <a href="product.html?id=${id}" class="product-link">
-              ${product.name}
-            </a>
+  console.log('renderProducts 함수 - 10: Starting product rendering'); // Add log
+  if (filteredProducts.length > 0) {
+      filteredProducts.forEach(([id, product]) => {
+        // Ensure product.desc is an array before joining
+        const descHtml = (Array.isArray(product.desc) ? product.desc : []).join(" / ");
+        const html = `
+          <div class="product-list-item">
+            <div class="product-image">
+              <img src="${product.image}" alt="${product.name}">
+            </div>
+            <div class="product-main-info">
+              <div class="product-title">
+                <a href="product.html?id=${id}" class="product-link">
+                  ${product.name}
+                </a>
+              </div>
+              <div class="product-desc">${descHtml}</div>
+            </div>
+            <div class="product-price-box">
+              <div class="product-price">${product.price}</div>
+            </div>
           </div>
-          <div class="product-desc">${descHtml}</div>
-        </div>
-        <div class="product-price-box">
-          <div class="product-price">${product.price}</div>
-        </div>
-      </div>
-    `;
-    container.insertAdjacentHTML('beforeend', html);
-  });
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+      });
+       console.log('renderProducts 함수 - 11: Product rendering complete'); // Add log
+  } else {
+      console.log('renderProducts 함수 - 10a: No filtered products to render'); // Add log
+  }
+
+
+// === 여기서 서버로 전송 ===
+  console.log('renderProducts 함수 - 12: Checking WebSocket for server send'); // Add log
+  if (window.productWs && window.productWs.readyState === WebSocket.OPEN) {
+    console.log('renderProducts 함수 - 12a: WebSocket is open, preparing data'); // Add log
+    const productState = {
+      type: 'productState',
+      currentProducts: filteredProducts.map(([id, product]) => ({
+        id,
+        name: product.name,
+        price: product.price,
+        category: filterCategory
+      })),
+      selectedFilters: filters,
+      currentCategory: filterCategory
+    };
+    // 콘솔에 전송 정보 출력
+    console.log('[products.js] 서버로 전송되는 상품 상태:', {
+      상품_개수: productState.currentProducts.length,
+      상품_목록: productState.currentProducts,
+      선택된_필터: productState.selectedFilters,
+      현재_카테고리: productState.currentCategory
+    });
+    window.productWs.send(JSON.stringify(productState));
+     console.log('renderProducts 함수 - 12b: Product state sent'); // Add log
+  } else {
+    console.warn('[products.js] WebSocket이 열려있지 않거나 연결이 없습니다.');
+     console.log('renderProducts 함수 - 12c: WebSocket not open or available'); // Add log
+  }
+   console.log('renderProducts 함수 - 13: Function finished'); // Add log
 }
 

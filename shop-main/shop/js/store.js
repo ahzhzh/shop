@@ -1190,100 +1190,175 @@ function getThirdBoxContent(categoryId) {
     }
 }
 
-// [음성 명령어로 상세검색 체크박스 체크 함수]
-function checkFilterByVoice(text) {
-    const normalizedText = text.replace(/\s/g, '').toLowerCase();
-    document.querySelectorAll('#detail-search-form input[type="checkbox"]').forEach(cb => {
-        const label = cb.nextElementSibling;
-        if (!label) return;
-        const labelText = label.textContent.replace(/\s/g, '').toLowerCase();
-        if (normalizedText.includes(labelText)) {
-            cb.checked = true;
-        }
-    });
-}
-window.checkFilterByVoice = checkFilterByVoice;
-
-// 전역 변수
-let currentDisplayedProducts = [];
-let productWs = null;
-
 // WebSocket 연결 설정
+let productWs = null;
 function initProductWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.hostname}:3001`;
     
+    // console.log('Attempting to connect to WebSocket at:', wsUrl); // Log removed
+
     productWs = new WebSocket(wsUrl);
-    
+
     productWs.onopen = () => {
-        console.log('Product WebSocket connected');
-        // 초기 제품 상태 전송
-        sendProductStateToServer();
+        console.log('WebSocket connected'); // Simplified log
+        window.productWs = productWs;
+        // console.log('WebSocket object exposed globally as window.productWs'); // Log removed
+
+        // WebSocket 연결 성공 후, 초기 제품 목록 로드 및 서버 전송
+        loadInitialProducts();
     };
 
     productWs.onerror = (error) => {
-        console.error('Product WebSocket error:', error);
+        console.error('WebSocket error:', error); // Simplified log
     };
 
     productWs.onclose = () => {
-        console.log('Product WebSocket closed');
+        console.log('WebSocket closed'); // Simplified log
+        window.productWs = null;
     };
 }
 
-// 제품 상태를 서버로 전송하는 함수
-function sendProductStateToServer() {
-    if (productWs && productWs.readyState === WebSocket.OPEN) {
-        const productState = {
-            type: 'productState',
-            currentProducts: currentDisplayedProducts,
-            selectedFilters: getSelectedFilters(),
-            currentCategory: currentCategory
-        };
-        productWs.send(JSON.stringify(productState));
-    }
-}
-
-// 선택된 필터 정보 가져오기
+// 상세 검색 필터 정보 가져오기
 function getSelectedFilters() {
     const filters = {};
     document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
-        const optionName = cb.name;
-        if (!filters[optionName]) {
-            filters[optionName] = [];
+        // 여기서 cb.name과 cb.value가 제품 데이터의 어떤 필드와 매칭되는지 확인하고 사용해야 합니다.
+        // 예시: data-filter-type="제조사" data-filter-value="인텔"
+        // HTML 구조상 label의 textContent를 사용하는 것이 적합해 보입니다.
+        const filterValue = cb.nextElementSibling?.textContent.trim();
+        // 필터 유형은 checkbox의 name 속성이나 부모 요소에서 가져와야 합니다.
+        // 현재 HTML 구조를 알 수 없어 임시로 name 속성을 사용합니다.
+        const filterType = cb.name; // 또는 cb.closest('tr')?.querySelector('th')?.textContent.trim(); 등을 사용
+
+        // filterType이 정의되지 않은 경우 (name 속성이 없는 경우 등) 필터에 추가하지 않음
+        if (filterValue && filterType) {
+             if (!filters[filterType]) {
+                filters[filterType] = [];
+            }
+            filters[filterType].push(filterValue);
         }
-        filters[optionName].push(cb.value);
+         console.log('Selected filters:', filters); // Log for debugging
     });
+    // console.log('getSelectedFilters:', filters); // Log removed
     return filters;
 }
 
-// renderProducts 함수 수정
-function renderProducts(category, filters = {}, sortType = 'popularity') {
-    // ... existing renderProducts code ...
-    
-    // 현재 표시된 제품 목록 저장 및 서버로 전송
-    currentDisplayedProducts = productList;
-    sendProductStateToServer();
-    
-    // ... rest of renderProducts code ...
+// 현재 활성화된 카테고리 ID 가져오기
+function getCurrentCategory() {
+    // store.html에서 카테고리 항목은 ul#category-list li 요소에 active 클래스가 붙는 방식입니다.
+    const activeListItem = document.querySelector('ul#category-list li.active');
+    // data-category 속성에서 category ID를 가져옵니다.
+    const categoryId = activeListItem ? activeListItem.dataset.category : 'cpu'; // 기본값 'cpu'
+    // console.log('getCurrentCategory:', categoryId); // Log removed
+    return categoryId;
 }
 
-// 페이지 로드 시 WebSocket 초기화
+// 제품 로딩 및 렌더링 (products.js의 renderProducts 호출)
+function loadProducts() {
+    const currentCategory = getCurrentCategory();
+    const selectedFilters = getSelectedFilters();
+    // 현재 활성화된 정렬 버튼에서 data-sort 값 가져오기
+    const activeSortButton = document.querySelector('.product-sort-btn.active');
+    const sortType = activeSortButton ? activeSortButton.dataset.sort : 'popularity'; // 기본 정렬 'popularity'
+
+    // products.js의 renderProducts 함수를 호출
+    if (typeof window.renderProducts === 'function') {
+         console.log('Calling renderProducts with:', { currentCategory, selectedFilters, sortType }); // Keep this log - important flow indicator
+        window.renderProducts(currentCategory, selectedFilters, sortType);
+    } else {
+        console.error('renderProducts function not found in products.js');
+    }
+}
+
+// 페이지 로드 시 초기 제품 목록 로드 (WebSocket 연결 후 호출)
+function loadInitialProducts() {
+     // console.log('Loading initial products...'); // Log removed
+    loadProducts();
+}
+
+// 페이지 로드 시 WebSocket 초기화 및 이벤트 리스너 설정
 document.addEventListener('DOMContentLoaded', function() {
+    // console.log('DOM Content Loaded - Initializing WebSocket connection and setting up events...'); // Log removed
     initProductWebSocket();
-    
-    // 체크박스 변경 이벤트 리스너 추가
+
+    // 카테고리 클릭 이벤트 리스너
+    document.querySelectorAll('ul#category-list li').forEach(item => {
+        item.addEventListener('click', function() {
+            console.log('Category clicked:', this.dataset.category); // Log for debugging
+            // 다른 모든 카테고리에서 .active 클래스 제거
+            document.querySelectorAll('ul#category-list li').forEach(category => category.classList.remove('active'));
+            // 현재 클릭된 카테고리에 .active 클래스 추가
+            this.classList.add('active');
+            
+            // 해당 카테고리의 상세 검색 필터 UI 업데이트
+            const categoryId = this.dataset.category;
+            const thirdBoxContent = getThirdBoxContent(categoryId); // store.js에 있는 함수
+            const thirdBox = document.querySelector('#detail-search-form');
+            if (thirdBox) {
+                thirdBox.innerHTML = thirdBoxContent;
+                 console.log('Detail search form updated for category:', categoryId); // Log for debugging
+            }
+
+            // 제품 목록 로드 및 서버 전송
+            // 필터 UI가 업데이트된 후 호출해야 변경된 필터 상태를 loadProducts가 가져갈 수 있음
+            loadProducts();
+        });
+    });
+
+    // 상세 검색 필터 변경 이벤트 리스너 (폼 자체에 이벤트 위임)
     const detailSearchForm = document.getElementById('detail-search-form');
     if (detailSearchForm) {
-        detailSearchForm.addEventListener('change', function() {
-            sendProductStateToServer();
+        detailSearchForm.addEventListener('change', function(event) {
+            // 체크박스 변경 이벤트만 처리
+            if (event.target.tagName === 'INPUT' && event.target.type === 'checkbox') {
+                 console.log('Filter checkbox changed:', event.target.id, event.target.checked); // Log for debugging
+                // 필터 변경 후 제품 목록 로드 및 서버 전송
+                loadProducts();
+            }
         });
     }
+
+    // 정렬 버튼 이벤트 리스너
+    document.querySelectorAll('.product-sort-btn').forEach(button => {
+        button.addEventListener('click', function() {
+             console.log('Sort button clicked:', this.dataset.sort); // Log for debugging
+            // 모든 정렬 버튼에서 active 클래스 제거
+            document.querySelectorAll('.product-sort-btn').forEach(btn => btn.classList.remove('active'));
+            // 클릭된 버튼에 active 클래스 추가
+            this.classList.add('active');
+
+            // 정렬 변경 후 제품 목록 로드 및 서버 전송
+            loadProducts();
+        });
+    });
+
+    // 페이지 로드 시 첫 번째 카테고리 활성화 및 상세 검색 폼 표시
+    // WebSocket 연결 여부와 관계없이 초기 UI는 DOMContentLoaded에서 설정
+    const firstCategoryItem = document.querySelector('ul#category-list li');
+    if(firstCategoryItem) {
+        // 기본 카테고리가 이미 active 상태가 아니라면 active 클래스 추가 및 UI 업데이트
+        if(!firstCategoryItem.classList.contains('active')) {
+             firstCategoryItem.classList.add('active');
+        }
+         const categoryId = firstCategoryItem.dataset.category;
+         const thirdBoxContent = getThirdBoxContent(categoryId); // store.js에 있는 함수
+         const thirdBox = document.querySelector('#detail-search-form');
+         if (thirdBox) {
+             thirdBox.innerHTML = thirdBoxContent;
+              console.log('Initial detail search form set for category:', categoryId); // Log for debugging
+         }
+    }
+
+    // WebSocket 초기화는 DOMContentLoaded에서 시작하되,
+    // 초기 제품 로드는 WebSocket 연결 성공 시 진행
 });
 
 // 페이지를 떠날 때 WebSocket 연결 정리
 window.addEventListener('beforeunload', () => {
     if (productWs) {
         productWs.close();
+         // console.log('WebSocket closing on beforeunload'); // Log removed
     }
 });
 

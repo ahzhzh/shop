@@ -305,43 +305,6 @@ function handleVoiceCommand(text) {
         clearTimeout(silenceTimeout);
     }
 
-    // 상품 검색 및 상세 페이지 이동
-    if (text.includes('상품') || text.includes('제품') || text.includes('정보')) {
-        const productName = text.replace(/상품|제품|정보|보여줘|보여주세요|찾아줘|검색해줘|페이지|로|가줘|이동해줘/g, '').trim();
-        
-        if (productName) {
-            console.log('검색할 상품명:', productName);
-            
-            // 모든 카테고리의 상품을 검색
-            const allProducts = {
-                ...vgaProducts,
-                ...cpuProducts,
-                ...motherboardProducts,
-                ...ramProducts,
-                ...coolerProducts,
-                ...ssdProducts,
-                ...hddProducts,
-                ...powerProducts
-            };
-
-            // 상품명으로 검색
-            const foundProduct = Object.entries(allProducts).find(([_, product]) => 
-                product.name.toLowerCase().includes(productName.toLowerCase())
-            );
-
-            if (foundProduct) {
-                const [productId, product] = foundProduct;
-                const utterance = new SpeechSynthesisUtterance(`${product.name} 상품 페이지로 이동합니다.`);
-                utterance.lang = 'ko-KR';
-                speechSynthesis.speak(utterance);
-                window.location.href = `product.html?id=${productId}`;
-            } else {
-                const utterance = new SpeechSynthesisUtterance('해당 상품을 찾을 수 없습니다. 정확한 상품명을 말씀해 주세요.');
-                utterance.lang = 'ko-KR';
-                speechSynthesis.speak(utterance);
-            }
-        }
-    }
 
     // [음성 명령어로 상세검색 체크박스 체크]
     if (text.includes('보여 줘') || text.includes('체크해 줘') || text.includes('선택해 줘')) {
