@@ -1,76 +1,88 @@
 // 페이지 로드 시 기본 활성화 상태 설정
 document.addEventListener('DOMContentLoaded', function () {
-    const defaultCategory = document.querySelector('#cpu'); // CPU 카테고리 기본 선택
+    // URL 파라미터에서 cat 값 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCategory = urlParams.get('cat') || 'cpu'; // 기본값 cpu
+
+    // 해당 카테고리 항목 선택
+    const defaultCategory = document.querySelector(`[data-category="${initialCategory}"]`);
     if (defaultCategory) {
         defaultCategory.classList.add('active');
-        showSubItems('cpu'); // CPU의 서브 아이템을 초기 표시
+        showSubItems(initialCategory);
+        printCategoryProducts(initialCategory);
+    } else {
+        console.error('존재하지 않는 카테고리:', initialCategory);
     }
 });
 
-function showSubItems(categoryId) {
-    // 첫 번째 박스에서 선택된 서브 목록 가져오기
-    const subItems = document.querySelector(`#${categoryId}`).querySelectorAll('.sub_item');
-
-    // 두 번째 박스의 리스트 초기화
-    const secondBox = document.querySelector('#second_box');
-    secondBox.innerHTML = '';
-
-    // 총 10칸으로 나누기 위한 빈 배열 생성
-    const totalCells = 10;
-    const gridItems = Array.from(subItems).map(item => item.innerHTML);
-    const emptyCellsCount = totalCells - gridItems.length;
-
-    for (let i = 0; i < emptyCellsCount; i++) {
-        gridItems.push('');
+// 선택 카테고리 상품만 콘솔에 표로 출력하는 함수
+function printCategoryProducts(categoryId) {
+    if (window.categoryMap && window.categoryMap[categoryId]) {
+        const productsObj = window.categoryMap[categoryId];
+        console.clear();
+        console.table(
+            Object.values(productsObj).map(product => ({
+                이름: product.name,
+                가격: product.price,
+                카테고리: product.category || categoryId
+            }))
+        );
+    } else {
+        console.warn('해당 카테고리 상품이 없습니다:', categoryId);
     }
+}
 
-    // 그리드 레이아웃으로 아이템 배치
+function showSubItems(categoryId) {
+    const secondBox = document.querySelector('#second_box');
+    if (secondBox) secondBox.innerHTML = '';
+
+    // 예시: gridItems (실제 데이터로 채워야 함)
+    const gridItems = [];
+    for (let i = 0; i < 10; i++) gridItems.push('');
+
     gridItems.forEach(content => {
         const gridItem = document.createElement('div');
         gridItem.className = 'grid-item';
         gridItem.innerHTML = content;
 
-        // 클릭 이벤트 추가 (핵심 수정 부분)
         gridItem.addEventListener('click', function () {
             if (this.innerHTML.trim() === '') return;
-
-            // 이미 활성화된 항목을 다시 클릭하면 비활성화
             if (this.classList.contains('active')) {
                 this.classList.remove('active');
-                return; // 여기서 종료하여 다른 항목의 활성화 상태를 변경하지 않음
+                return;
             }
-
-            // 다른 모든 항목에서 .active 클래스 제거
             document.querySelectorAll('.grid-item').forEach(item => item.classList.remove('active'));
-
-            // 현재 클릭된 항목에 .active 클래스 추가
             this.classList.add('active');
         });
 
-        secondBox.appendChild(gridItem);
+        if (secondBox) secondBox.appendChild(gridItem);
     });
 
-    // 세 번째 박스 내용 업데이트
     const thirdBoxContent = getThirdBoxContent(categoryId);
-    const thirdBox = document.querySelector('#detail-search-form');
-    thirdBox.innerHTML = thirdBoxContent;
+    const thirdBox = document.querySelector('#third_cat_list');
+    if (thirdBox) thirdBox.innerHTML = thirdBoxContent;
 }
 
 // 모든 카테고리 항목에 클릭 이벤트 추가
-document.querySelectorAll('.category-item').forEach(item => {
+document.querySelectorAll('#category-list li').forEach(item => {
     item.addEventListener('click', function () {
-        // 다른 모든 카테고리에서 .active 클래스 제거
-        document.querySelectorAll('.category-item').forEach(category => category.classList.remove('active'));
-
-        // 현재 클릭된 카테고리에 .active 클래스 추가
+        document.querySelectorAll('#category-list li').forEach(category => category.classList.remove('active'));
         this.classList.add('active');
 
-        // 해당 카테고리의 서브 아이템 표시
-        showSubItems(this.id);
+        // URL 업데이트
+        const categoryId = this.getAttribute('data-category');
+        window.history.pushState({}, '', `?cat=${categoryId}`);
+
+        // 해당 카테고리 정보 출력
+        printCategoryProducts(categoryId);
+        showSubItems(categoryId);
     });
 });
 
-// 세 번째 박스 내용 생성 함수
+
+
+
+// 상세 검색 내용 생성 함수
 function getThirdBoxContent(categoryId) {
     switch (categoryId) {
         case 'cpu': // CPU 카테고리
@@ -1182,108 +1194,5 @@ function getThirdBoxContent(categoryId) {
             </tbody >
         </table >
     `;
-
-
-
-
-
     }
 }
-
-// [음성 명령어로 상세검색 체크박스 체크 함수]
-function checkFilterByVoice(text) {
-    const normalizedText = text.replace(/\s/g, '').toLowerCase();
-    document.querySelectorAll('#detail-search-form input[type="checkbox"]').forEach(cb => {
-        const label = cb.nextElementSibling;
-        if (!label) return;
-        const labelText = label.textContent.replace(/\s/g, '').toLowerCase();
-        if (normalizedText.includes(labelText)) {
-            cb.checked = true;
-        }
-    });
-}
-window.checkFilterByVoice = checkFilterByVoice;
-
-// 전역 변수
-let currentDisplayedProducts = [];
-let ws = null;
-
-// WebSocket 연결 설정
-function initProductWebSocket() {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.hostname}:3001`;
-    
-    ws = new WebSocket(wsUrl);
-    
-    ws.onopen = () => {
-        console.log('Product WebSocket connected');
-        // 초기 제품 상태 전송
-        sendProductStateToServer();
-    };
-
-    ws.onerror = (error) => {
-        console.error('Product WebSocket error:', error);
-    };
-
-    ws.onclose = () => {
-        console.log('Product WebSocket closed');
-    };
-}
-
-// 제품 상태를 서버로 전송하는 함수
-function sendProductStateToServer() {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        const productState = {
-            type: 'productState',
-            currentProducts: currentDisplayedProducts,
-            selectedFilters: getSelectedFilters(),
-            currentCategory: currentCategory
-        };
-        ws.send(JSON.stringify(productState));
-    }
-}
-
-// 선택된 필터 정보 가져오기
-function getSelectedFilters() {
-    const filters = {};
-    document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
-        const optionName = cb.name;
-        if (!filters[optionName]) {
-            filters[optionName] = [];
-        }
-        filters[optionName].push(cb.value);
-    });
-    return filters;
-}
-
-// renderProducts 함수 수정
-function renderProducts(category, filters = {}, sortType = 'popularity') {
-    // ... existing renderProducts code ...
-    
-    // 현재 표시된 제품 목록 저장 및 서버로 전송
-    currentDisplayedProducts = productList;
-    sendProductStateToServer();
-    
-    // ... rest of renderProducts code ...
-}
-
-// 페이지 로드 시 WebSocket 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    initProductWebSocket();
-    
-    // 체크박스 변경 이벤트 리스너 추가
-    const detailSearchForm = document.getElementById('detail-search-form');
-    if (detailSearchForm) {
-        detailSearchForm.addEventListener('change', function() {
-            sendProductStateToServer();
-        });
-    }
-});
-
-// 페이지를 떠날 때 WebSocket 연결 정리
-window.addEventListener('beforeunload', () => {
-    if (ws) {
-        ws.close();
-    }
-});
-
