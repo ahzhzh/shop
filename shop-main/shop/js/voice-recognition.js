@@ -17,6 +17,7 @@ let pendingCommand = null; // 대기 중인 명령어 저장
 let silenceTimer = null;
 const SILENCE_TIMEOUT = 3000; // 3초
 
+let isGeminiResponding = false; // Gemini 응답 중인지 추적하는 변수 추가
 
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
@@ -138,12 +139,13 @@ function setupAudioProcessing(stream) {
             if (audioData.some(sample => Math.abs(sample) > 50)) {
                 lastAudioTime = Date.now();
                 
-                // 음성이 감지되면 3초 타이머 리셋
+                // 음성이 감지되면 타이머들 리셋
                 if (silenceTimeout) {
                     clearTimeout(silenceTimeout);
                 }
-                // 초기 음성 인식 시작 시에는 3초 타이머를 설정하지 않음
-                // 음성 인식 결과가 오고 오디오 재생이 완료된 후에 타이머가 설정됨
+                if (autoStopTimer) {
+                    clearInterval(autoStopTimer);
+                }
             }
 
             try {
@@ -172,11 +174,16 @@ function setupAudioProcessing(stream) {
     }
     sessionStorage.setItem('voiceRecognitionActive', 'true');
 
-    // 초기 3초 무음 감지 타이머는 제거
-    // 대신 음성 인식 결과가 오고 오디오 재생이 완료된 후에 타이머가 설정됨
+    // 4초 무음 감지 타이머 설정
+    silenceTimeout = setTimeout(() => {
+        if (!isGeminiResponding) {
+            ws.send(JSON.stringify({ type: 'silence' }));
+        }
+    }, 4000);
 
+    // 1분 무음 감지 타이머 설정
     autoStopTimer = setInterval(() => {
-        if (Date.now() - lastAudioTime > 60000) {
+        if (!isGeminiResponding && Date.now() - lastAudioTime > 60000) {
             stopListening('1분 동안 음성이 감지되지 않아 종료합니다.');
             setTimeout(() => {
                 location.reload();
@@ -202,26 +209,23 @@ function startWebSocket() {
 
             if (data.type === 'interim') {
                 console.log('Interim transcript:', data.transcript);
-                // searchInput이 정의되어 있는지 확인
                 if (searchInput) {
                     searchInput.value = data.transcript;
                 } else {
                     console.log('검색 입력 필드를 찾을 수 없습니다. 음성 인식 결과:', data.transcript);
                 }
                 
-                // 중간 결과가 수신되면 3초 타이머 리셋
+                // 중간 결과가 수신되면 타이머 리셋
                 if (silenceTimeout) {
                     clearTimeout(silenceTimeout);
                 }
                 silenceTimeout = setTimeout(() => {
-                    // 3초 동안 추가 음성이 없으면 최종 결과로 처리
-                    if (data.transcript) {
+                    if (!isGeminiResponding && data.transcript) {
                         handleVoiceCommand(data.transcript.toLowerCase());
                     }
-                }, 3000);
+                }, 4000);
             } else if (data.type === 'result') {
                 console.log('Final transcript:', data.transcript);
-                // searchInput이 정의되어 있는지 확인
                 if (searchInput) {
                     searchInput.value = data.transcript;
                 } else {
@@ -234,35 +238,43 @@ function startWebSocket() {
                 if (data.audio) {
                     console.log('오디오 데이터 수신됨, 길이:', data.audio.length);
                     try {
+                        isGeminiResponding = true; // Gemini 응답 시작
                         const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
                         audio.onerror = (e) => {
                             console.error('오디오 재생 오류:', e);
+                            isGeminiResponding = false; // 오류 발생 시 응답 종료
                         };
                         await audio.play();
                         console.log('오디오 재생 성공');
                         
-                        // 오디오 재생이 완료된 후 5초 타이머 시작
+                        // 오디오 재생이 완료된 후 4초 타이머 시작
                         audio.onended = () => {
-                            console.log('오디오 재생 완료, 5초 타이머 시작');
+                            console.log('오디오 재생 완료, 4초 타이머 시작');
+                            isGeminiResponding = false; // Gemini 응답 종료
                             if (silenceTimeout) {
                                 clearTimeout(silenceTimeout);
                             }
                             silenceTimeout = setTimeout(() => {
-                                stopListening('5초 동안 음성이 감지되지 않아 종료합니다.');
-                            }, 5000);
+                                if (!isGeminiResponding) {
+                                    stopListening('4초 동안 음성이 감지되지 않아 종료합니다.');
+                                }
+                            }, 4000);
                         };
                     } catch (error) {
                         console.error('오디오 재생 오류:', error);
+                        isGeminiResponding = false; // 오류 발생 시 응답 종료
                     }
                 } else {
                     console.log('오디오 데이터가 없습니다.');
-                    // 오디오 데이터가 없는 경우에도 5초 타이머 시작
+                    // 오디오 데이터가 없는 경우에도 4초 타이머 시작
                     if (silenceTimeout) {
                         clearTimeout(silenceTimeout);
                     }
                     silenceTimeout = setTimeout(() => {
-                        stopListening('5초 동안 음성이 감지되지 않아 종료합니다.');
-                    }, 5000);
+                        if (!isGeminiResponding) {
+                            stopListening('4초 동안 음성이 감지되지 않아 종료합니다.');
+                        }
+                    }, 4000);
                 }
                 
                 // 명령어 처리
@@ -270,6 +282,7 @@ function startWebSocket() {
             }
         } catch (error) {
             console.error('WebSocket message processing error:', error);
+            isGeminiResponding = false; // 오류 발생 시 응답 종료
         }
     };
 
@@ -292,43 +305,6 @@ function handleVoiceCommand(text) {
         clearTimeout(silenceTimeout);
     }
 
-    // 상품 검색 및 상세 페이지 이동
-    if (text.includes('상품') || text.includes('제품') || text.includes('정보')) {
-        const productName = text.replace(/상품|제품|정보|보여줘|보여주세요|찾아줘|검색해줘|페이지|로|가줘|이동해줘/g, '').trim();
-        
-        if (productName) {
-            console.log('검색할 상품명:', productName);
-            
-            // 모든 카테고리의 상품을 검색
-            const allProducts = {
-                ...vgaProducts,
-                ...cpuProducts,
-                ...motherboardProducts,
-                ...ramProducts,
-                ...coolerProducts,
-                ...ssdProducts,
-                ...hddProducts,
-                ...powerProducts
-            };
-
-            // 상품명으로 검색
-            const foundProduct = Object.entries(allProducts).find(([_, product]) => 
-                product.name.toLowerCase().includes(productName.toLowerCase())
-            );
-
-            if (foundProduct) {
-                const [productId, product] = foundProduct;
-                const utterance = new SpeechSynthesisUtterance(`${product.name} 상품 페이지로 이동합니다.`);
-                utterance.lang = 'ko-KR';
-                speechSynthesis.speak(utterance);
-                window.location.href = `product.html?id=${productId}`;
-            } else {
-                const utterance = new SpeechSynthesisUtterance('해당 상품을 찾을 수 없습니다. 정확한 상품명을 말씀해 주세요.');
-                utterance.lang = 'ko-KR';
-                speechSynthesis.speak(utterance);
-            }
-        }
-    }
 
     // [음성 명령어로 상세검색 체크박스 체크]
     if (text.includes('보여 줘') || text.includes('체크해 줘') || text.includes('선택해 줘')) {

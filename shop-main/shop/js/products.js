@@ -1,3 +1,6 @@
+// products.js file loaded flag
+console.log('products.js file loaded');
+
 // 카테고리별 상품 객체 분리
 const vgaProducts = {
   "a": {
@@ -2640,68 +2643,58 @@ power: powerProducts
 
 // 2. renderProducts 함수 정의
 function renderProducts(filterCategory, filters = {}) {
-const container = document.getElementById('product-list-container');
-if (!container) return;
-container.innerHTML = '';
+  const container = document.getElementById('product-list-container');
+  if (!container) return;
+  container.innerHTML = '';
 
-if (!window.categoryMap[filterCategory]) return;
+  if (!categoryMap[filterCategory]) return;
 
-const allProducts = Object.entries(window.categoryMap[filterCategory]);
+  const allProducts = Object.entries(categoryMap[filterCategory]);
+  
+  // 1. 모든 필터 값을 하나의 배열로 추출 (중복 제거)
+  const allFilterValues = Object.values(filters)
+    .flat()
+    .map(v => v.toLowerCase());
 
-// 1. 모든 필터 값을 하나의 배열로 추출 (중복 제거)
-const allFilterValues = Object.values(filters)
-  .flat()
-  .map(v => v.toLowerCase());
+  // 2. 상품 필터링
+  const filteredProducts = allProducts.filter(([id, product]) => {
+    if (allFilterValues.length === 0) return true;
 
-// 2. 상품 필터링
-const filteredProducts = allProducts.filter(([id, product]) => {
-  if (allFilterValues.length === 0) return true;
+    // 3. 상품 정보 문자열화 (이름 + 설명)
+    const productInfo = [
+      product.name, 
+      ...product.desc
+    ].join(' ').toLowerCase();
 
-  // 3. 상품 정보 문자열화 (이름 + 설명)
-  const productInfo = [
-    product.name, 
-    ...(Array.isArray(product.desc) ? product.desc : [])
-  ].join(' ').toLowerCase();
+    // 4. 모든 필터 값이 상품 정보에 포함되는지 확인 (AND 조건)
+    return allFilterValues.every(filterValue => 
+      productInfo.includes(filterValue)
+    );
+  });
 
-  // 4. 모든 필터 값이 상품 정보에 포함되는지 확인 (AND 조건)
-  return allFilterValues.every(filterValue => 
-    productInfo.includes(filterValue)
-  );
-});
-
-// ★ 콘솔에 필터링된 상품만 표로 출력 (기존 내용 지우고 새로 출력)
-console.clear();
-console.table(
-  filteredProducts.map(([id, product]) => ({
-    이름: product.name,
-    가격: product.price,
-    카테고리: product.category || filterCategory
-  }))
-);
-
-// 5. 필터링된 상품 렌더링
-filteredProducts.forEach(([id, product]) => {
-  const descHtml = (Array.isArray(product.desc) ? product.desc : []).join(" / ");
-  const html = `
-    <div class="product-list-item">
-      <div class="product-image">
-        <img src="${product.image}" alt="${product.name}">
-      </div>
-      <div class="product-main-info">
-        <div class="product-title">
-          <a href="product.html?id=${id}" class="product-link">
-            ${product.name}
-          </a>
+  // 5. 필터링된 상품 렌더링
+  filteredProducts.forEach(([id, product]) => {
+    const descHtml = product.desc.join(" / ");
+    const html = `
+      <div class="product-list-item">
+        <div class="product-image">
+          <img src="${product.image}" alt="${product.name}">
         </div>
-        <div class="product-desc">${descHtml}</div>
+        <div class="product-main-info">
+          <div class="product-title">
+            <a href="product.html?id=${id}" class="product-link">
+              ${product.name}
+            </a>
+          </div>
+          <div class="product-desc">${descHtml}</div>
+        </div>
+        <div class="product-price-box">
+          <div class="product-price">${product.price}</div>
+        </div>
       </div>
-      <div class="product-price-box">
-        <div class="product-price">${product.price}</div>
-      </div>
-    </div>
-  `;
-  container.insertAdjacentHTML('beforeend', html);
-});
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  });
 }
 
 // 3. 전역 함수 등록 (store.js 등에서 호출 가능하게)
