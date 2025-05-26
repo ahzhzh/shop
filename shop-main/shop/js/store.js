@@ -9,26 +9,60 @@ document.addEventListener('DOMContentLoaded', function () {
     if (defaultCategory) {
         defaultCategory.classList.add('active');
         showSubItems(initialCategory);
-        printCategoryProducts(initialCategory);
+        // Initially render products to the page and also print to console
+        renderProducts(initialCategory); // Render to page
+        printCategoryProducts(initialCategory); // Print to console
     } else {
         console.error('존재하지 않는 카테고리:', initialCategory);
+    }
+
+    // Add the change listener for checkboxes on DOMContentLoaded
+    const detailSearchForm = document.getElementById('detail-search-form');
+    if (detailSearchForm) {
+        detailSearchForm.addEventListener('change', function() {
+            updateConsoleWithFilters();
+        });
     }
 });
 
 // 선택 카테고리 상품만 콘솔에 표로 출력하는 함수
-function printCategoryProducts(categoryId) {
+function printCategoryProducts(categoryId, filters = {}) {
     if (window.categoryMap && window.categoryMap[categoryId]) {
-        const productsObj = window.categoryMap[categoryId];
+        let productsObj = window.categoryMap[categoryId];
+        let productList = Object.values(productsObj);
+
+        // Apply filters if provided
+        if (Object.keys(filters).length > 0) {
+            const allFilterValues = Object.values(filters).flat().map(v => v.toLowerCase());
+
+            productList = productList.filter(product => {
+                const productInfo = [
+                    product.name,
+                    ...(product.desc || []) // Ensure desc is an array or default to empty
+                ].join(' ').toLowerCase();
+
+                return allFilterValues.every(filterValue =>
+                    productInfo.includes(filterValue) || // Check if filter value is in product name or description
+                   (product.chipset && product.chipset.toLowerCase().includes(filterValue)) || // Also check chipset for VGA/CPU
+                   (product.category && product.category.toLowerCase().includes(filterValue))
+                );
+            });
+        }
+
+        // Update the global variable with the filtered list
+        currentDisplayedProducts = productList.map(product => ({
+             이름: product.name,
+             가격: product.price,
+             카테고리: product.category || categoryId // Include category in the object sent to server
+        }));
+
         console.clear();
-        console.table(
-            Object.values(productsObj).map(product => ({
-                이름: product.name,
-                가격: product.price,
-                카테고리: product.category || categoryId
-            }))
-        );
+        console.log(`Filtered Product List for Category: ${categoryId}`);
+        console.table(currentDisplayedProducts);
+
     } else {
         console.warn('해당 카테고리 상품이 없습니다:', categoryId);
+        currentDisplayedProducts = []; // Clear the list if category is not found
     }
 }
 
@@ -73,14 +107,18 @@ document.querySelectorAll('#category-list li').forEach(item => {
         const categoryId = this.getAttribute('data-category');
         window.history.pushState({}, '', `?cat=${categoryId}`);
 
-        // 해당 카테고리 정보 출력
+        // 해당 카테고리 정보 출력 (필터 없이 초기 호출)
         printCategoryProducts(categoryId);
         showSubItems(categoryId);
+         // 상세 검색 필터 상태 업데이트 및 콘솔 출력 (초기화)
+         const detailSearchForm = document.getElementById('detail-search-form');
+         if (detailSearchForm) {
+             detailSearchForm.reset(); // Reset checkboxes on category change
+             // No need to explicitly call updateConsoleWithFilters here,
+             // as the printCategoryProducts call above handles initial load.
+         }
     });
 });
-
-
-
 
 // 상세 검색 내용 생성 함수
 function getThirdBoxContent(categoryId) {
@@ -1212,7 +1250,6 @@ function checkFilterByVoice(text) {
 window.checkFilterByVoice = checkFilterByVoice;
 
 // 전역 변수
-let currentDisplayedProducts = [];
 let ws = null;
 
 // WebSocket 연결 설정
@@ -1250,16 +1287,37 @@ function sendProductStateToServer() {
     }
 }
 
-// 선택된 필터 정보 가져오기
+// 선택된 필터 정보 가져오기 - 체크박스 ID를 기반으로 필터 정보 수집
 function getSelectedFilters() {
     const filters = {};
     document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
-        const optionName = cb.name;
+        const checkboxId = cb.id;
+        const filterValue = cb.nextElementSibling ? cb.nextElementSibling.textContent.trim() : ''; // Get filter value from label text
+
+        // Map checkbox ID to filter category name
+        let optionName = '기타'; // Default category name if not mapped
+
+        // 예시 매핑: 실제 상세 검색 체크박스 ID와 getThirdBoxContent 함수의 th 텍스트를 맞춰야 합니다.
+        // CPU 카테고리 필터 매핑
+        if (['intel', 'amd'].includes(checkboxId)) optionName = '제조사별';
+        else if (['series1', 'series2', 'series3', 'series4'].includes(checkboxId)) optionName = 'CPU 시리즈';
+        else if (['type1', 'type2'].includes(checkboxId)) optionName = 'CPU 종류';
+        else if (['core24', 'core16'].includes(checkboxId)) optionName = '코어 수';
+        else if (['thread32', 'thread16'].includes(checkboxId)) optionName = '스레드 수';
+        else if (['graphics1', 'graphics2'].includes(checkboxId)) optionName = '내장 그래픽';
+        // 메인보드 카테고리 필터 매핑 (추가 필요)
+        // RAM 카테고리 필터 매핑 (추가 필요)
+        // 그래픽카드 카테고리 필터 매핑 (추가 필요)
+        // SSD 카테고리 필터 매핑 (추가 필요)
+        // HDD 카테고리 필터 매핑 (추가 필요)
+
+
         if (!filters[optionName]) {
             filters[optionName] = [];
         }
-        filters[optionName].push(cb.value);
+        filters[optionName].push(filterValue);
     });
+    console.log('수집된 필터 정보:', filters); // Debugging line
     return filters;
 }
 
@@ -1291,6 +1349,82 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('beforeunload', () => {
     if (ws) {
         ws.close();
+    }
+});
+
+// Add event listener for checkbox changes in detailed search form
+document.addEventListener('change', function(event) {
+    // Check if the change event occurred on a checkbox within the detail search form
+    if (event.target.matches('#detail-search-form input[type="checkbox"]')) {
+        // Prevent form submission
+        event.preventDefault();
+        console.log('체크박스 변경 감지, 필터 업데이트 시도...'); // Debugging line
+        updateConsoleWithFilters();
+    }
+});
+
+// Add submit event listener to prevent form submission if user presses Enter (though less likely with checkboxes)
+const detailSearchForm = document.getElementById('detail-search-form');
+if (detailSearchForm) {
+    detailSearchForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        console.log('폼 제출 기본 동작 차단됨'); // Debugging line
+        // No need to call updateConsoleWithFilters here, as the change event handles it
+    });
+}
+
+// Function to update the console with filtered products and send to server
+function updateConsoleWithFilters() {
+    const activeCategoryItem = document.querySelector('#category-list li.active');
+    if (activeCategoryItem) {
+        const categoryId = activeCategoryItem.getAttribute('data-category');
+        const currentFilters = getSelectedFilters();
+        console.log('카테고리:', categoryId, '필터:', currentFilters); // Debugging line
+        
+        // printCategoryProducts now updates currentDisplayedProducts internally
+        printCategoryProducts(categoryId, currentFilters);
+        
+        // Send the updated product state to the server
+        sendProductStateToServer();
+
+    } else {
+        console.warn('활성화된 카테고리가 선택되지 않았습니다.'); // Debugging line
+    }
+}
+
+// Restore the initial page load logic to render products and show console table
+document.addEventListener('DOMContentLoaded', function () {
+    // URL 파라미터에서 cat 값 추출
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCategory = urlParams.get('cat') || 'cpu'; // 기본값 cpu
+
+    // 해당 카테고리 항목 선택
+    const defaultCategory = document.querySelector(`[data-category="${initialCategory}"]`);
+    if (defaultCategory) {
+        defaultCategory.classList.add('active');
+        showSubItems(initialCategory);
+        
+        // Initially render products to the page
+        renderProducts(initialCategory); 
+        
+        // Print initial products to console and update currentDisplayedProducts
+        printCategoryProducts(initialCategory); 
+        
+        // Send initial product state to the server
+        sendProductStateToServer();
+
+    } else {
+        console.error('존재하지 않는 카테고리:', initialCategory);
+        currentDisplayedProducts = []; // Clear on page load if category is invalid
+        sendProductStateToServer(); // Send empty state
+    }
+
+    // Add the change listener for checkboxes on DOMContentLoaded
+    const detailSearchForm = document.getElementById('detail-search-form');
+    if (detailSearchForm) {
+        detailSearchForm.addEventListener('change', function() {
+            updateConsoleWithFilters(); // This now handles sending to server
+        });
     }
 });
 

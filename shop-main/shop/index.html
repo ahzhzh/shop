@@ -725,8 +725,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 		<script>
-			let cartItems = [];
-
 			function addToCart(productId, productName, price) {
 				let existingItem = cartItems.find(item => item.id === productId);
 				
@@ -734,7 +732,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					existingItem.quantity++;
 				} else {
 					cartItems.push({
-				id: productId.toString(),
+					id: productId.toString(),
 				name: name,
 				price: numericPrice,
 				quantity: 1,

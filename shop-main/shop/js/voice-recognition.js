@@ -1,6 +1,5 @@
 // 전역 변수로 음성 인식 상태 관리
 let isListening = false;
-let ws = null;
 let audioContext = null;
 let mediaStreamSource = null;
 let processor = null;
@@ -176,14 +175,14 @@ function setupAudioProcessing(stream) {
 
     // 4초 무음 감지 타이머 설정
     silenceTimeout = setTimeout(() => {
-        if (!isGeminiResponding) {
+        if (!isGeminiResponding && ws && ws.readyState === WebSocket.OPEN) {
             ws.send(JSON.stringify({ type: 'silence' }));
         }
     }, 4000);
 
     // 1분 무음 감지 타이머 설정
     autoStopTimer = setInterval(() => {
-        if (!isGeminiResponding && Date.now() - lastAudioTime > 60000) {
+        if (!isGeminiResponding && Date.now() - lastAudioTime > 60000 && ws && ws.readyState === WebSocket.OPEN) {
             stopListening('1분 동안 음성이 감지되지 않아 종료합니다.');
             setTimeout(() => {
                 location.reload();
@@ -196,7 +195,7 @@ function startWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.hostname}:3001`;
     
-    ws = new WebSocket(wsUrl);
+    const ws = new WebSocket(wsUrl);
     
     ws.onopen = () => {
         console.log('WebSocket connected to:', wsUrl);
@@ -507,6 +506,9 @@ window.addEventListener('beforeunload', () => {
 document.addEventListener('DOMContentLoaded', function() {
     initVoiceRecognition();
 });
+
+// initVoiceRecognition 함수를 전역 스코프에 노출
+window.initVoiceRecognition = initVoiceRecognition;
 
 
 
