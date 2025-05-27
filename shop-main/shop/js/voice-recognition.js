@@ -17,6 +17,7 @@ let silenceTimer = null;
 const SILENCE_TIMEOUT = 3000; // 3초
 
 let isGeminiResponding = false; // Gemini 응답 중인지 추적하는 변수 추가
+let wz = null; // ws → wz로 전역 선언
 
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
@@ -130,7 +131,7 @@ function setupAudioProcessing(stream) {
     }
     
     processor.onaudioprocess = (e) => {
-        if (ws && ws.readyState === WebSocket.OPEN) {
+        if (wz && wz.readyState === WebSocket.OPEN) {
             const inputData = e.inputBuffer.getChannelData(0);
             const audioData = convertFloat32ToInt16(inputData);
             
@@ -151,7 +152,7 @@ function setupAudioProcessing(stream) {
                 const audioArray = new Uint8Array(audioData.buffer);
                 const base64Audio = btoa(String.fromCharCode.apply(null, audioArray));
                 
-                ws.send(JSON.stringify({
+                wz.send(JSON.stringify({
                     type: 'audio',
                     audio: base64Audio
                 }));
@@ -175,14 +176,14 @@ function setupAudioProcessing(stream) {
 
     // 4초 무음 감지 타이머 설정
     silenceTimeout = setTimeout(() => {
-        if (!isGeminiResponding && ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: 'silence' }));
+        if (!isGeminiResponding && wz && wz.readyState === WebSocket.OPEN) {
+            wz.send(JSON.stringify({ type: 'silence' }));
         }
     }, 4000);
 
     // 1분 무음 감지 타이머 설정
     autoStopTimer = setInterval(() => {
-        if (!isGeminiResponding && Date.now() - lastAudioTime > 60000 && ws && ws.readyState === WebSocket.OPEN) {
+        if (!isGeminiResponding && Date.now() - lastAudioTime > 60000 && wz && wz.readyState === WebSocket.OPEN) {
             stopListening('1분 동안 음성이 감지되지 않아 종료합니다.');
             setTimeout(() => {
                 location.reload();
@@ -194,15 +195,14 @@ function setupAudioProcessing(stream) {
 function startWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.hostname}:3001`;
+    wz = new WebSocket(wsUrl);
     
-    const ws = new WebSocket(wsUrl);
-    
-    ws.onopen = () => {
+    wz.onopen = () => {
         console.log('WebSocket connected to:', wsUrl);
-        ws.send(JSON.stringify({ type: 'start' }));
+        wz.send(JSON.stringify({ type: 'start' }));
     };
 
-    ws.onmessage = async (event) => {
+    wz.onmessage = async (event) => {
         try {
             const data = JSON.parse(event.data);
 
@@ -285,11 +285,11 @@ function startWebSocket() {
         }
     };
 
-    ws.onerror = (error) => {
+    wz.onerror = (error) => {
         console.error('WebSocket error:', error);
     };
 
-    ws.onclose = () => {
+    wz.onclose = () => {
         console.log('WebSocket closed');
     };
 }
@@ -460,9 +460,11 @@ function stopListening(message = '음성 인식을 종료합니다.') {
             silenceTimeout = null;
         }
 
-        if (ws) {
-            ws.send(JSON.stringify({ type: 'stop' }));
-            ws.close();
+        if (wz && wz.readyState === WebSocket.OPEN) {
+            wz.send(JSON.stringify({ type: 'stop' }));
+            wz.close();
+        } else if (wz) {
+            wz.close();
         }
         
         if (processor) {
@@ -496,8 +498,8 @@ function convertFloat32ToInt16(float32Array) {
 // 페이지를 떠날 때 WebSocket 연결 정리
 window.addEventListener('beforeunload', () => {
     if (isListening) {
-        if (ws) {
-            ws.close();
+        if (wz) {
+            wz.close();
         }
     }
 });
