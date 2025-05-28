@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // 선택 카테고리 상품만 콘솔에 표로 출력하는 함수
+let lastSentProductsJSON = '';
 function printCategoryProducts(categoryId, filters = {}) {
     if (window.categoryMap && window.categoryMap[categoryId]) {
         let productsObj = window.categoryMap[categoryId];
@@ -55,6 +56,15 @@ function printCategoryProducts(categoryId, filters = {}) {
              가격: product.price,
              카테고리: product.category || categoryId // Include category in the object sent to server
         }));
+        window.currentDisplayedProducts = currentDisplayedProducts;
+        window.currentCategory = categoryId;
+
+        // 중복 전송 방지: 이전에 보낸 값과 다를 때만 전송
+        const currentProductsJSON = JSON.stringify(currentDisplayedProducts);
+        if (window.sendProductStateToVoiceWS && currentProductsJSON !== lastSentProductsJSON) {
+            window.sendProductStateToVoiceWS();
+            lastSentProductsJSON = currentProductsJSON;
+        }
 
         console.clear();
         console.log(`Filtered Product List for Category: ${categoryId}`);
@@ -63,6 +73,14 @@ function printCategoryProducts(categoryId, filters = {}) {
     } else {
         console.warn('해당 카테고리 상품이 없습니다:', categoryId);
         currentDisplayedProducts = []; // Clear the list if category is not found
+        window.currentDisplayedProducts = currentDisplayedProducts;
+        window.currentCategory = categoryId;
+        // 중복 전송 방지: 이전에 보낸 값과 다를 때만 전송
+        const currentProductsJSON = JSON.stringify(currentDisplayedProducts);
+        if (window.sendProductStateToVoiceWS && currentProductsJSON !== lastSentProductsJSON) {
+            window.sendProductStateToVoiceWS();
+            lastSentProductsJSON = currentProductsJSON;
+        }
     }
 }
 
@@ -1327,7 +1345,10 @@ function renderProducts(category, filters = {}, sortType = 'popularity') {
     
     // 현재 표시된 제품 목록 저장 및 서버로 전송
     currentDisplayedProducts = productList;
+    window.currentDisplayedProducts = currentDisplayedProducts;
+    window.currentCategory = category;
     sendProductStateToServer();
+    if (window.sendProductStateToVoiceWS) window.sendProductStateToVoiceWS();
     
     // ... rest of renderProducts code ...
 }
@@ -1342,13 +1363,6 @@ document.addEventListener('DOMContentLoaded', function() {
         detailSearchForm.addEventListener('change', function() {
             sendProductStateToServer();
         });
-    }
-});
-
-// 페이지를 떠날 때 WebSocket 연결 정리
-window.addEventListener('beforeunload', () => {
-    if (ws) {
-        ws.close();
     }
 });
 
@@ -1379,6 +1393,8 @@ function updateConsoleWithFilters() {
     if (activeCategoryItem) {
         const categoryId = activeCategoryItem.getAttribute('data-category');
         const currentFilters = getSelectedFilters();
+        window.getSelectedFilters = getSelectedFilters;
+        window.currentCategory = categoryId;
         console.log('카테고리:', categoryId, '필터:', currentFilters); // Debugging line
         
         // printCategoryProducts now updates currentDisplayedProducts internally
@@ -1386,6 +1402,7 @@ function updateConsoleWithFilters() {
         
         // Send the updated product state to the server
         sendProductStateToServer();
+        if (window.sendProductStateToVoiceWS) window.sendProductStateToVoiceWS();
 
     } else {
         console.warn('활성화된 카테고리가 선택되지 않았습니다.'); // Debugging line
@@ -1427,4 +1444,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+window.getSelectedFilters = getSelectedFilters;
+window.currentCategory = typeof currentCategory !== 'undefined' ? currentCategory : undefined;
+window.currentDisplayedProducts = typeof currentDisplayedProducts !== 'undefined' ? currentDisplayedProducts : [];
 

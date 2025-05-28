@@ -21,6 +21,10 @@ let wz = null; // ws → wz로 전역 선언
 
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
+    if (window.wz && window.wz.readyState === WebSocket.OPEN) {
+        // 이미 연결되어 있으면 재연결하지 않음
+        return;
+    }
     const voiceSearchBtn = document.getElementById('voice-search-btn');
     searchInput = document.querySelector('.header-search input.input');
     
@@ -52,6 +56,11 @@ function initVoiceRecognition() {
                 stopListening();
             }
         });
+    }
+
+    // WebSocket을 한 번만 연결
+    if (!window.wz || window.wz.readyState !== WebSocket.OPEN) {
+        startWebSocket();
     }
 
     // 이전 페이지에서 음성 인식 중이었다면 자동으로 시작
@@ -192,14 +201,36 @@ function setupAudioProcessing(stream) {
     }, 1000);
 }
 
+// 상품 목록을 음성 인식용 WebSocket(wz)에 전송하는 함수
+function sendProductStateToVoiceWS() {
+    // store.html에서만 전송
+    if (!window.location.pathname.endsWith('store.html')) return;
+    if (window.wz && wz.readyState === WebSocket.OPEN) {
+        wz.send(JSON.stringify({
+            type: 'productState',
+            currentProducts: window.currentDisplayedProducts || [],
+            selectedFilters: window.getSelectedFilters ? window.getSelectedFilters() : {},
+            currentCategory: window.currentCategory || ''
+        }));
+    }
+}
+window.sendProductStateToVoiceWS = sendProductStateToVoiceWS;
+
 function startWebSocket() {
+    if (window.wz && window.wz.readyState === WebSocket.OPEN) {
+        // 이미 연결되어 있으면 재연결하지 않음
+        return;
+    }
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${window.location.hostname}:3001`;
     wz = new WebSocket(wsUrl);
+    window.wz = wz;
     
     wz.onopen = () => {
         console.log('WebSocket connected to:', wsUrl);
         wz.send(JSON.stringify({ type: 'start' }));
+        // 상품 목록도 같이 전송
+        sendProductStateToVoiceWS();
     };
 
     wz.onmessage = async (event) => {

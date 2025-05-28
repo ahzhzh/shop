@@ -637,13 +637,11 @@
 				fetch('header.html')
 					.then(response => response.text())
 					.then(data => {
-						// header 태그 내용을 header.html의 내용 중 header 태그 내부 내용만 추출하여 교체
 						const tempDiv = document.createElement('div');
 						tempDiv.innerHTML = data;
 						const headerContent = tempDiv.querySelector('header').innerHTML;
 						document.querySelector('header').innerHTML = headerContent;
-						
-						// 헤더가 로드된 후 음성 인식 초기화
+						// 헤더 삽입 후 음성 인식 초기화
 						if (typeof initVoiceRecognition === 'function') {
 							initVoiceRecognition();
 						}
@@ -659,72 +657,13 @@
 					.catch(error => console.error('푸터 로드 중 오류:', error));
 			});
 		</script>
-
+	
 		<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const slider = document.querySelector('.banner-slider');
-  const slides = document.querySelectorAll('.branding-banner');
-  const prevBtn = document.querySelector('.banner-arrow-left');
-  const nextBtn = document.querySelector('.banner-arrow-right');
-  
-  // 클론 생성
-  const firstClone = slides[0].cloneNode(true);
-  const lastClone = slides[slides.length-1].cloneNode(true);
-  slider.prepend(lastClone);
-  slider.append(firstClone);
-
-  let currentIndex = 1;
-  let isTransitioning = false;
-  const totalSlides = slides.length;
-  const sliderWidth = slider.offsetWidth;
-
-  // 초기 위치 설정
-  slider.style.transform = `translateX(-${currentIndex * sliderWidth}px)`;
-
-  // 슬라이드 이동 함수
-  function moveSlide(direction) {
-    if (isTransitioning) return;
-    isTransitioning = true;
-
-    currentIndex += direction;
-    slider.style.transition = 'transform 0.5s ease-in-out';
-    slider.style.transform = `translateX(-${currentIndex * sliderWidth}px)`;
-  }
-
-  // 전환 완료 후 처리
-  slider.addEventListener('transitionend', () => {
-    if (currentIndex === 0) {
-      currentIndex = totalSlides;
-      slider.style.transition = 'none';
-      slider.style.transform = `translateX(-${currentIndex * sliderWidth}px)`;
-    }
-    if (currentIndex === totalSlides + 1) {
-      currentIndex = 1;
-      slider.style.transition = 'none';
-      slider.style.transform = `translateX(-${currentIndex * sliderWidth}px)`;
-    }
-    isTransitioning = false;
-  });
-
-  // 버튼 클릭 이벤트
-  prevBtn.addEventListener('click', () => moveSlide(-1));
-  nextBtn.addEventListener('click', () => moveSlide(1));
-
-  // 자동 슬라이드
-  let autoSlide = setInterval(() => moveSlide(1), 3000);
-
-  // 호버시 자동 슬라이드 일시정지
-  slider.parentElement.addEventListener('mouseenter', () => clearInterval(autoSlide));
-  slider.parentElement.addEventListener('mouseleave', () => {
-    autoSlide = setInterval(() => moveSlide(1), 5000);
-  });
-});
-</script>
 
 
 
 
-		<script>
+		
 			function addToCart(productId, productName, price) {
 				let existingItem = cartItems.find(item => item.id === productId);
 				
