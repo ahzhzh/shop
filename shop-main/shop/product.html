@@ -8,34 +8,25 @@
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
-
     <!-- Bootstrap -->
     <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
-
     <!-- Slick -->
     <link type="text/css" rel="stylesheet" href="css/slick.css"/>
     <link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
-
     <!-- nouislider -->
     <link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
-
     <!-- Font Awesome Icon -->
     <link rel="stylesheet" href="css/font-awesome.min.css">
-
     <!-- Custom stylesheet -->
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
     <link type="text/css" rel="stylesheet" href="css/voice-search.css"/>
     <!-- 상품 상세 전용 CSS -->
     <link rel="stylesheet" href="css/products-Detail.css">
-    <style>
-        
-    </style>
 </head>
 <body>
 
 <!-- Header Placeholder -->
 <header></header>
-
 <!-- Navigation Placeholder -->
 <nav></nav>
 
@@ -43,8 +34,7 @@
 <div id="breadcrumb" class="section">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-            </div>
+            <div class="col-md-12"></div>
         </div>
     </div>
 </div>
@@ -57,52 +47,42 @@
             <div id="product-main-img" class="col-md-6">
                 <img id="product-image" src="" alt="">
             </div>
-            
             <!-- 상품 정보 -->
             <div class="col-md-6 product-details">
                 <h2 id="product-name" class="product-name"></h2>
-                <h3 id="product-price" class="product-price"></h3>
-                <div class="add-to-cart">
-                    <div class="qty-label">
-                        수량
-                        <div class="input-number">
-                            <input type="number" value="1" id="quantity-input" min="1">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 합계(총 가격) 영역 추가 -->
+                <!-- 단품 가격(h3.product-price)은 완전히 삭제 -->
+                <!-- 합계(총 가격)만 표시 -->
                 <div class="total-price-area">
-                    <span>합계 :</span>
                     <span id="total-price">0원</span>
                 </div>
-                <!-- 버튼 영역 추가 -->
-                <div class="product-actions">
-                <button id="add-to-cart-btn" class="add-to-cart-btn">
-                    <i class="fa fa-shopping-cart"></i> 장바구니에 추가
-                </button>
-                <button id="go-to-category-btn" class="btn-category-search">
-                    <i class="fa fa-search"></i> 다른 상품 찾아보기
-                </button>
+                <div class="qty-label">
+                    수량
+                    <div class="input-number">
+                        <input type="number" value="1" id="quantity-input" min="1">
+                        <span class="qty-up">+</span>
+                        <span class="qty-down">-</span>
+                    </div>
+                </div>
+                <!-- 버튼 영역 -->
+                <div class="product-actions-vertical">
+                    <button id="add-to-cart-btn" class="add-to-cart-btn">
+                        <i class="fa fa-shopping-cart"></i> 장바구니에 추가
+                    </button>
+                    <button id="go-to-category-btn" class="btn-category-search">
+                        <i class="fa fa-search"></i> 다른 상품 찾아보기
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
-     
-
-        <!-- 상품 사양 표 -->
-        <div class="product-specs-outer" style="position: relative; max-width: 1170px; margin: 0 auto 40px auto;">
-            <div class="product-specs-title-abs">상세 정보</div>
-            <div id="product-specs" class="product-specs">
-              <table>
-      <!-- 사양 표 내용이 여기에 들어갑니다 -->
-    </table>
-  </div>
-  
+    <!-- 상품 사양 표는 .section 안, .container 바깥에 위치 -->
+    <div class="product-specs-outer" style="position: relative; max-width: 1170px; margin: 0 auto 40px auto;">
+        <div class="product-specs-title-abs">상세 정보</div>
+        <div id="product-specs" class="product-specs">
+            <table>
+                <!-- 사양 표 내용이 여기에 들어갑니다 -->
+            </table>
+        </div>
     </div>
 </div>
 
@@ -117,34 +97,32 @@
 <script src="./js/main.js"></script>
 <script src="./js/products-Detail.js"></script>
 <script src="./js/cart.js"></script>
-<script src="js/voice-recognition.js"></script>
+<script src="./js/voice-recognition.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 헤더 로드
-    fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = data;
-            const headerContent = tempDiv.querySelector('header').innerHTML;
-            document.querySelector('header').innerHTML = headerContent;
-            // 헤더 삽입 후 음성 인식 초기화
-            if (typeof initVoiceRecognition === 'function') {
-                initVoiceRecognition();
-            }
-        })
-        .catch(error => console.error('헤더 로드 중 오류:', error));
+    document.addEventListener('DOMContentLoaded', function() {
+        // 헤더 로드
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data;
+                const headerContent = tempDiv.querySelector('header').innerHTML;
+                document.querySelector('header').innerHTML = headerContent;
+                if (typeof initVoiceRecognition === 'function') {
+                    initVoiceRecognition();
+                }
+            })
+            .catch(error => console.error('헤더 로드 중 오류:', error));
 
-    // 푸터 로드
-    fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.querySelector('footer').innerHTML = data;
-        })
-        .catch(error => console.error('푸터 로드 중 오류:', error));
-});
+        // 푸터 로드
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('footer').innerHTML = data;
+            })
+            .catch(error => console.error('푸터 로드 중 오류:', error));
+    });
 </script>
-
 
 </body>
 </html>
