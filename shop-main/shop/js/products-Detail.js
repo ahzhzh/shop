@@ -2321,8 +2321,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 이름 및 가격 렌더링 (가격 숫자만 추출)
     document.getElementById("product-name").textContent = product.name;
-    const priceValue = parseInt(product.price.replace(/[^0-9]/g, '')); // 가격에서 숫자만 추출
-    document.getElementById("product-price").textContent = priceValue.toLocaleString() + '원';
+const priceValue = parseInt(product.price.replace(/[^0-9]/g, '')); // 가격에서 숫자만 추출
+
+const priceElem = document.getElementById("product-price");
+if (priceElem) {
+  priceElem.textContent = priceValue.toLocaleString() + '원';
+}
 
     // 합계 계산을 위한 전역 변수
     window.currentProductPrice = priceValue;
