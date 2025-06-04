@@ -171,45 +171,47 @@
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
 
-        <!-- Voice Recognition -->
-        <script src="js/voice-recognition.js"></script>
-
-        <!-- Header and Footer Load Script -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-    const orderProductsElement = document.getElementById('orderProducts');
-    const orderTotalElement = document.getElementById('orderTotal');
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    let total = 0;
+                // 음성 인식 스크립트 동적 로드
+                const voiceScript = document.createElement('script');
+                voiceScript.src = 'js/voice-recognition.js';
+                voiceScript.onload = function() {
+                    console.log('voice-recognition.js 로드 완료.');
+                    // 스크립트 로드 완료 후 헤더와 푸터 로드 및 음성 인식 초기화
+                    
+                    // 헤더 로드
+                    fetch('header.html')
+                        .then(response => response.text())
+                        .then(data => {
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = data;
+                            const headerContent = tempDiv.querySelector('header').innerHTML;
+                            document.querySelector('header').innerHTML = headerContent;
+                            
+                            // 헤더 삽입 후 음성 인식 초기화
+                            if (typeof initVoiceRecognition === 'function') {
+                                console.log('헤더 로드 후 initVoiceRecognition 함수 확인됨. 초기화 시도...');
+                                initVoiceRecognition();
+                            } else {
+                                console.error('헤더 로드 후 initVoiceRecognition 함수를 찾을 수 없습니다. 스크립트 로드 문제.');
+                            }
+                        })
+                        .catch(error => console.error('헤더 로드 중 오류:', error));
 
-    cartItems.forEach(item => {
-        const quantity = item.quantity || 1;
-        const price = Number(item.price);
-        const itemTotal = price * quantity;
-        total += itemTotal;
-
-        const productElement = document.createElement('div');
-        productElement.className = 'order-col';
-
-        // 상품명 / 수량(xN) / 가격(합계) 3단 분리, 수량은 "x3"처럼
-        productElement.innerHTML = `
-            <div class="order-product-name">${item.name}</div>
-            <div class="order-product-qty">x${quantity}</div>
-            <div class="order-product-price">
-                ₩${price.toLocaleString()}
-                <br>
-                <span class="item-total-price">₩${itemTotal.toLocaleString()}</span>
-            </div>
-        `;
-        orderProductsElement.appendChild(productElement);
-    });
-
-    orderTotalElement.textContent = `₩${total.toLocaleString()}`;
-});
-
-
-
-
+                    // 푸터 로드
+                    fetch('footer.html')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.querySelector('footer').innerHTML = data;
+                        })
+                        .catch(error => console.error('푸터 로드 중 오류:', error));
+                };
+                voiceScript.onerror = function() {
+                    console.error('voice-recognition.js 로드 중 오류 발생.');
+                };
+                document.body.appendChild(voiceScript);
+            });
         </script>
 
 	</body>
