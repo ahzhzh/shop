@@ -15,9 +15,9 @@
 .cart-table td:nth-child(4) { width: 10%; min-width: 40px; text-align: center; }
 
 .scrollable-container {
-    height: 420px;
+    height: 440px;
     overflow-y: auto;
-    margin-top: 20px;
+    margin-top: 44px;
 }
 .scrollable-container::-webkit-scrollbar {
     width: 8px;
@@ -141,8 +141,6 @@
     font-size: 14px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    outline: none; /* 포커스시 검은색/파란색 테두리 제거 */
-    box-shadow: none; /* 일부 브라우저의 추가 그림자도 제거 */
 }
 .input-number .qty-up,
 .input-number .qty-down {
@@ -180,11 +178,12 @@
 .cart-total span {
     font-size: 20px;
     font-weight: bold;
+    color: #000000;
 }
 .btn.order-submit, .primary-btn.order-submit {
     padding: 10px 10px;
     text-align: center;
-    background-color: #007bff;
+    background-color: #0063B2;
     color: #fff;
     border-radius: 5px;
 }

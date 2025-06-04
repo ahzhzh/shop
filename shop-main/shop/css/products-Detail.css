@@ -34,40 +34,42 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: relative;
 }
 
-.product-name {
-  font-size: 22px;
+/* 합계(총 가격) - 단품 가격 자리에 */
+.total-price-area {
+  display: flex;
+  justify-content: flex-start;   /* 왼쪽 정렬 (원하면 center로) */
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
   font-weight: bold;
   color: #222;
-  margin: 0 0 8px 0;
-  line-height: 1.4;
+  padding: 0;
+  border: none;
+  background: none;
+  margin: 0 0 12px 0;   /* 아래 요소와 간격 */
+  border-radius: 0;
+  position: static;
 }
-
-.product-price {
-  font-size: 24px;
-  font-weight: bold;
+.total-price-area span:last-child {
   color: #007bff;
-  margin: 0 0 20px 0;
+  font-size: 22px;
+  font-weight: bold;
 }
 
-.add-to-cart {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: flex-start;
-  margin-top: 15px;
-}
-
-/* 수량 및 버튼 영역 */
+/* 수량 라벨 */
 .qty-label {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 15px;
   color: #555;
+  margin-bottom: 0;
 }
 
+/* 수량 조절 */
 .input-number {
   display: flex;
   align-items: center;
@@ -103,31 +105,19 @@
   background-color: #f8f9fa;
 }
 
-/* 합계(총 가격) 영역 */
-.total-price-area {
+/* 버튼 세로 배치, 오른쪽 중앙에 고정 */
+.product-actions-vertical {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #222;
-  background: #f6f8fa;
-  border-radius: 4px;
-  padding: 10px 18px;
-  margin-top: 10px;
-  border: 1px solid #e3e3e3;
-}
-.total-price-area span:last-child {
-  color: #007bff;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* 버튼 영역(가로 정렬) */
-.product-actions {
-  display: flex;
+  flex-direction: column;
   gap: 12px;
-  margin-top: 18px;
+  position: absolute;
+  right: 0;
+  top: 70%;
+  transform: translateY(-50%);
+  align-items: flex-end;
+  min-width: 178px;
+  z-index: 2;
+  margin: 0; 
 }
 
 .add-to-cart-btn {
@@ -170,13 +160,20 @@
 
 .add-to-cart-btn:hover, .btn-category-search:hover {
   background: #f5f5f5;
-  border: 1.5px solid #007bff;
 }
 
 .add-to-cart-btn i, .btn-category-search i {
   font-size: 18px;
 }
 
+/* 상품명 등 */
+.product-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
 
 /* 상품 사양 박스 바깥쪽 좌측 상단 텍스트 */
 .product-specs-outer {
@@ -199,24 +196,9 @@
 }
 
 
-.total-price-area {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #222;
-  background: #f6f8fa;
-  border-radius: 4px;
-  padding: 10px 18px;
-  margin-top: 10px;
-  border: 1px solid #e3e3e3;
-}
-.total-price-area span:last-child {
-  color: #007bff;
-  font-size: 20px;
-  font-weight: bold;
-}
+
+
+
 
 
 

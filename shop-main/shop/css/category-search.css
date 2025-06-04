@@ -1,6 +1,10 @@
 header { background: #fff; }
 
 body {
+  background-color: #fff !important;
+}
+
+body {
   background: #f7f7f7;
   margin: 0;
   padding: 0;
@@ -15,8 +19,8 @@ body {
 
 .category-sidebar {
   width: 200px;
-  background: #EEF7FF;
-  border-right: 1px solid #e0e0e0;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;        
   padding-bottom: 17px;
   margin-top: 33px;
   border-radius: 10px 0 0 10px;
@@ -24,8 +28,9 @@ body {
   margin-left: 10px;  
 }
 
+
 .category-title {
-  background: #3674B5;
+  background: #50586C;
   color: #fff;
   font-size: 18px;
   border-radius: 10px 0 0 0;
@@ -45,8 +50,8 @@ body {
 
 #category-list li.active, 
 #category-list li:hover {
-  background: #ceeef8;
-  border-left: 4px solid #73aeec;
+  background: #d7dce4;
+  border-left: 4px solid #50586C;
 }
 
 .category-main {
@@ -199,7 +204,7 @@ input[type="checkbox"] {
 }
 .product-list-item:hover {
   box-shadow: 0 4px 18px rgba(30,40,60,0.12);
-  border-color: #0063B2;
+  border-color: #50586C;
 }
 
 /* 왼쪽: 이미지 */
@@ -250,7 +255,7 @@ input[type="checkbox"] {
 
 
 .product-badge {
-  background: #3184e8;
+  background: #50586C;
   color: #fff;
   font-size: 11px;
   border-radius: 3px;
