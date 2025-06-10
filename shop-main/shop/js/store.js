@@ -1256,14 +1256,25 @@ function getThirdBoxContent(categoryId) {
 // [음성 명령어로 상세검색 체크박스 체크 함수]
 function checkFilterByVoice(text) {
     const normalizedText = text.replace(/\s/g, '').toLowerCase();
+    let checkboxChecked = false;
+    
     document.querySelectorAll('#detail-search-form input[type="checkbox"]').forEach(cb => {
         const label = cb.nextElementSibling;
         if (!label) return;
         const labelText = label.textContent.replace(/\s/g, '').toLowerCase();
         if (normalizedText.includes(labelText)) {
             cb.checked = true;
+            checkboxChecked = true;
+            // 체크박스 변경 이벤트 발생
+            const event = new Event('change', { bubbles: true });
+            cb.dispatchEvent(event);
         }
     });
+
+    // 체크박스가 체크되었다면 필터링 적용
+    if (checkboxChecked) {
+        updateConsoleWithFilters();
+    }
 }
 window.checkFilterByVoice = checkFilterByVoice;
 
@@ -1335,7 +1346,7 @@ function getSelectedFilters() {
         }
         filters[optionName].push(filterValue);
     });
-    console.log('수집된 필터 정보:', filters); // Debugging line
+    
     return filters;
 }
 

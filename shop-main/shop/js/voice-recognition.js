@@ -19,6 +19,9 @@ const SILENCE_TIMEOUT = 3000; // 3초
 let isGeminiResponding = false; // Gemini 응답 중인지 추적하는 변수 추가
 let wz = null; // ws → wz로 전역 선언
 
+// 전역 변수 추가
+let pendingNavigation = null;
+
 // 음성 인식 초기화 함수
 function initVoiceRecognition() {
     if (window.wz && window.wz.readyState === WebSocket.OPEN) {
@@ -244,7 +247,8 @@ function startWebSocket() {
                 } else {
                     console.log('검색 입력 필드를 찾을 수 없습니다. 음성 인식 결과:', data.transcript);
                 }
-                
+                // interim 결과에서도 명령어 바로 처리
+                handleVoiceCommand(data.transcript.toLowerCase());
                 // 중간 결과가 수신되면 타이머 리셋
                 if (silenceTimeout) {
                     clearTimeout(silenceTimeout);
@@ -289,6 +293,11 @@ function startWebSocket() {
                                     stopListening('4초 동안 음성이 감지되지 않아 종료합니다.');
                                 }
                             }, 4000);
+                            // 오디오 재생이 끝난 후 pendingNavigation이 있으면 이동
+                            if (pendingNavigation) {
+                                window.location.href = pendingNavigation;
+                                pendingNavigation = null;
+                            }
                         };
                     } catch (error) {
                         console.error('오디오 재생 오류:', error);
@@ -305,6 +314,11 @@ function startWebSocket() {
                             stopListening('4초 동안 음성이 감지되지 않아 종료합니다.');
                         }
                     }, 4000);
+                    // 오디오가 없을 때도 바로 이동
+                    if (pendingNavigation) {
+                        window.location.href = pendingNavigation;
+                        pendingNavigation = null;
+                    }
                 }
                 
                 // 명령어 처리
@@ -335,21 +349,25 @@ function handleVoiceCommand(text) {
         clearTimeout(silenceTimeout);
     }
 
-
     // [음성 명령어로 상세검색 체크박스 체크]
     if (text.includes('보여 줘') || text.includes('체크해 줘') || text.includes('선택해 줘')) {
         if (window.checkFilterByVoice) {
             window.checkFilterByVoice(text);
             // 체크박스 체크 후 필터링 적용
-            const selectedFilters = {};
-            document.querySelectorAll('#detail-search-form input[type="checkbox"]:checked').forEach(cb => {
-                const optionName = cb.name;
-                if (!selectedFilters[optionName]) {
-                    selectedFilters[optionName] = [];
-                }
-                selectedFilters[optionName].push(cb.value);
-            });
-            renderProducts(currentCategory, selectedFilters, currentSort);
+            const selectedFilters = window.getSelectedFilters ? window.getSelectedFilters() : {};
+            const activeCategoryItem = document.querySelector('#category-list li.active');
+            const currentCategory = activeCategoryItem ? activeCategoryItem.getAttribute('data-category') : window.currentCategory;
+            const currentSort = window.currentSort || 'popularity';
+            
+            // 상품 목록 갱신
+            if (window.renderProducts) {
+                window.renderProducts(currentCategory, selectedFilters, currentSort);
+            }
+            
+            // 갱신된 상품 목록을 WebSocket을 통해 전송
+            if (window.sendProductStateToVoiceWS) {
+                window.sendProductStateToVoiceWS();
+            }
         }
     }
 
@@ -476,6 +494,13 @@ function handleVoiceCommand(text) {
             console.log('이전 페이지로 이동');
             window.history.back();
         }
+    }
+
+    // "그거 상품 페이지 보여줘" 또는 "그거 보여줘" 명령어 처리
+    if (text.includes('그거') && (text.includes('상품페이지') || text.includes('보여 줘'))) {
+        // 음성 재생이 끝난 후 이동하도록 플래그 설정
+        pendingNavigation = 'product.html?id=cooler4';
+        return;
     }
 }
 
